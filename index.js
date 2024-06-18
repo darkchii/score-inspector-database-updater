@@ -2,6 +2,7 @@
 //mainly to circumvent extremely slow sql queries that don't need to be live
 const schedule = require('node-schedule');
 const usersCacher = require("./Jobs/JobUsers.js");
+const clansCacher = require("./Jobs/JobClans.js");
 require('dotenv').config();
 
 function StartCacher() {
@@ -10,7 +11,8 @@ function StartCacher() {
 module.exports = StartCacher;
 
 const Cachers = [
-    { cacher: usersCacher, interval: '0 */1 * * *', data: [], onStart: true, runParallel: true }, //every 1 hour
+    { cacher: usersCacher, interval: '0 */1 * * *', data: [], onStart: true }, //every 1 hour
+    { cacher: clansCacher, interval: '*/20 * * * *', data: [], onStart: true }, //every 20 minutes
 ]
 
 const jobQueue = [];
@@ -21,12 +23,10 @@ async function QueueProcessor() {
             const job = jobQueue.shift();
             try {
                 console.log(`[CACHER] Running ${job.cacher.name} ...`);
-                if (job.cacher.runParallel) {
-                    job.cacher.func(job.data);
-                } else {
-                    await job.cacher.func(job.data);
-                }
+                await job.cacher.func(job.data);
             } catch (e) {
+                console.error(`[CACHER] Error running ${job.cacher.name}`);
+                console.error(e);
                 // handle error
             }
         }
