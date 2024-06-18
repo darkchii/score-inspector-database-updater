@@ -83,8 +83,6 @@ async function Loop() {
                 const users = await InspectorOsuUser.findAll({
                     where: {
                         playtime: { [Op.gt]: 0, },
-                        pp: { [Op.gt]: 0, },
-                        global_rank: { [Op.gt]: 0, },
                         playcount: { [Op.gt]: 0, },
                     },
                     //randomize the order so we don't always update the same users first (like when the server restarts)
