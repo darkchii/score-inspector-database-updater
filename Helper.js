@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const { InspectorOsuUser, AltScore, InspectorClanMember, InspectorClanStats } = require("./db");
 
 module.exports.UpdateUser = UpdateUser;
@@ -12,14 +13,21 @@ async function UpdateUser(user_id) {
     const scores_B = await AltScore.count({ where: { user_id: user_id, rank: 'B' } });
     const scores_C = await AltScore.count({ where: { user_id: user_id, rank: 'C' } });
     const scores_D = await AltScore.count({ where: { user_id: user_id, rank: 'D' } });
-    const total_pp = await AltScore.sum('pp', { where: { user_id: user_id } });
+    const total_pp = await AltScore.sum('pp', { where: { 
+        user_id: user_id,
+        pp: {
+            [Op.ne]: null,
+            [Op.gt]: 0,
+            [Op.not]: 'NaN'
+        }
+    } });
 
     //set b_count to either scores_B, keep b_count or 0
     user_obj.b_count = scores_B ?? user_obj.b_count ?? 0;
     user_obj.c_count = scores_C ?? user_obj.c_count ?? 0;
     user_obj.d_count = scores_D ?? user_obj.d_count ?? 0;
     user_obj.total_pp = total_pp ?? user_obj.total_pp ?? 0;
-
+    
     //save
     await user_obj.save();
 
