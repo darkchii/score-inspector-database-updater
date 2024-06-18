@@ -237,6 +237,10 @@ module.exports.score_columns = score_columns;
 module.exports.beatmap_columns = beatmap_columns;
 module.exports.score_columns_full = score_columns_full;
 
+module.exports.sleep = function (ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 module.exports.ACHIEVEMENT_INTERVALS = [
     {
         name: 'Total SS',
