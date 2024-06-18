@@ -120,4 +120,3 @@ async function UpdateScoreRanks(mode = 'osu') {
 
     console.log(`[SCORE RANKS] Updated database.`);
 }
-UpdateScoreRanks();
