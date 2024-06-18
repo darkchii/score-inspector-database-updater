@@ -10,7 +10,7 @@ function StartCacher() {
 module.exports = StartCacher;
 
 const Cachers = [
-    { cacher: usersCacher, interval: '0 */12 * * *', data: [], onStart: true, runParallel: true }, //every 12 hours
+    { cacher: usersCacher, interval: '0 */1 * * *', data: [], onStart: true, runParallel: true }, //every 1 hour
 ]
 
 const jobQueue = [];
