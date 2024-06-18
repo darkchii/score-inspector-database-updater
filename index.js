@@ -3,6 +3,7 @@
 const schedule = require('node-schedule');
 const usersCacher = require("./Jobs/JobUsers.js");
 const clansCacher = require("./Jobs/JobClans.js");
+const performanceDistributionCacher = require("./Jobs/JobPerformanceDistribution.js");
 require('dotenv').config();
 
 function StartCacher() {
@@ -13,6 +14,7 @@ module.exports = StartCacher;
 const Cachers = [
     { cacher: usersCacher, interval: '0 */1 * * *', data: [], onStart: true }, //every 1 hour
     { cacher: clansCacher, interval: '*/20 * * * *', data: [], onStart: true }, //every 20 minutes
+    { cacher: performanceDistributionCacher, interval: '0 */1 * * *', data: [], onStart: true }, //every 1 hour
 ]
 
 const jobQueue = [];

@@ -6,6 +6,7 @@ const { AltUserModel } = require("./Models/AltUserModel");
 const { InspectorClanModel } = require("./Models/InspectorClanModel");
 const { InspectorClanMemberModel } = require("./Models/InspectorClanMemberModel");
 const { InspectorClanStatsModel } = require("./Models/InspectorClanStatsModel");
+const { InspectorScoreStatModel } = require("./Models/InspectorScoreStatModel");
 require('dotenv').config();
 
 let databases = {
@@ -19,6 +20,7 @@ const InspectorUserMilestone = InspectorUserMilestoneModel(databases.inspector);
 const InspectorClan = InspectorClanModel(databases.inspector);
 const InspectorClanMember = InspectorClanMemberModel(databases.inspector);
 const InspectorClanStats = InspectorClanStatsModel(databases.inspector);
+const InspectorScoreStat = InspectorScoreStatModel(databases.inspector);
 
 const AltScore = ScoreModel(databases.osuAlt);
 const AltUser = AltUserModel(databases.osuAlt);
@@ -35,3 +37,4 @@ module.exports.InspectorClan = InspectorClan;
 module.exports.InspectorClanMember = InspectorClanMember;
 module.exports.InspectorClanStats = InspectorClanStats;
 module.exports.InspectorUserMilestone = InspectorUserMilestone;
+module.exports.InspectorScoreStat = InspectorScoreStat;
