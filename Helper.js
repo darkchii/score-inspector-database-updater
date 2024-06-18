@@ -132,6 +132,110 @@ async function UpdateClan(id) {
     await stats.save();
 }
 
+const db_now = "timezone('utc', now())";
+module.exports.db_now = db_now;
+
+const beatmap_columns = `
+    beatmaps.approved, 
+    beatmaps.submit_date, 
+    beatmaps.approved_date, 
+    beatmaps.last_update,
+    beatmaps.artist,
+    beatmaps.set_id,
+    beatmaps.bpm,
+    beatmaps.creator,
+    beatmaps.creator_id,
+    beatmaps.stars,
+    beatmaps.diff_aim,
+    beatmaps.diff_speed,
+    beatmaps.cs,
+    beatmaps.od,
+    beatmaps.ar,
+    beatmaps.hp,
+    beatmaps.drain,
+    beatmaps.source,
+    beatmaps.genre,
+    beatmaps.language,
+    beatmaps.title,
+    beatmaps.length,
+    beatmaps.diffname,
+    beatmaps.file_md5,
+    beatmaps.mode,
+    beatmaps.tags,
+    beatmaps.favorites,
+    beatmaps.rating,
+    beatmaps.playcount,
+    beatmaps.passcount,
+    beatmaps.maxcombo,
+    beatmaps.circles,
+    beatmaps.sliders,
+    beatmaps.spinners,
+    beatmaps.storyboard,
+    beatmaps.video,
+    beatmaps.download_unavailable,
+    beatmaps.audio_unavailable,
+    beatmaps.beatmap_id
+`;
+
+const score_columns = `
+    scores.user_id, 
+    scores.beatmap_id, 
+    scores.score, 
+    scores.count300, 
+    scores.count100, 
+    scores.count50, 
+    scores.countmiss, 
+    scores.combo, 
+    scores.perfect, 
+    scores.enabled_mods, 
+    scores.date_played, 
+    scores.rank, 
+    scores.pp, 
+    scores.accuracy, 
+    ${beatmap_columns},
+    moddedsr.star_rating,
+    moddedsr.aim_diff,
+    moddedsr.speed_diff,
+    moddedsr.fl_diff,
+    moddedsr.slider_factor,
+    moddedsr.speed_note_count,
+    moddedsr.modded_od,
+    moddedsr.modded_ar,
+    moddedsr.modded_cs,
+    moddedsr.modded_hp
+`;
+
+const score_columns_full = `
+    scores.user_id, 
+    scores.beatmap_id, 
+    scores.score, 
+    scores.count300, 
+    scores.count100, 
+    scores.count50, 
+    scores.countmiss, 
+    scores.combo, 
+    scores.perfect, 
+    scores.enabled_mods, 
+    scores.date_played, 
+    scores.rank, 
+    scores.pp, 
+    scores.accuracy, 
+    ${beatmap_columns},
+    moddedsr.star_rating,
+    moddedsr.aim_diff,
+    moddedsr.speed_diff,
+    moddedsr.fl_diff,
+    moddedsr.slider_factor,
+    moddedsr.speed_note_count,
+    moddedsr.modded_od,
+    moddedsr.modded_ar,
+    moddedsr.modded_cs,
+    moddedsr.modded_hp,
+    pack_id
+    `;
+module.exports.score_columns = score_columns;
+module.exports.beatmap_columns = beatmap_columns;
+module.exports.score_columns_full = score_columns_full;
 
 module.exports.ACHIEVEMENT_INTERVALS = [
     {
