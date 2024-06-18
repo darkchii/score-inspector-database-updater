@@ -8,6 +8,7 @@ const { InspectorClanMemberModel } = require("./Models/InspectorClanMemberModel"
 const { InspectorClanStatsModel } = require("./Models/InspectorClanStatsModel");
 const { InspectorScoreStatModel } = require("./Models/InspectorScoreStatModel");
 const { InspectorHistoricalScoreRankModel } = require("./Models/InspectorHistoricalScoreRankMode");
+const { InspectorCountryStatModel } = require("./Models/InspectorCountryStatModel");
 require('dotenv').config();
 
 let databases = {
@@ -26,6 +27,7 @@ const InspectorHistoricalScoreRankOsu = InspectorHistoricalScoreRankModel(databa
 const InspectorHistoricalScoreRankTaiko = InspectorHistoricalScoreRankModel(databases.inspector, 'taiko');
 const InspectorHistoricalScoreRankMania = InspectorHistoricalScoreRankModel(databases.inspector, 'mania');
 const InspectorHistoricalScoreRankFruits = InspectorHistoricalScoreRankModel(databases.inspector, 'fruits');
+const InspectorCountryStat = InspectorCountryStatModel(databases.inspector);
 
 
 const AltScore = ScoreModel(databases.osuAlt);
@@ -48,6 +50,7 @@ module.exports.InspectorHistoricalScoreRankOsu = InspectorHistoricalScoreRankOsu
 module.exports.InspectorHistoricalScoreRankTaiko = InspectorHistoricalScoreRankTaiko;
 module.exports.InspectorHistoricalScoreRankMania = InspectorHistoricalScoreRankMania;
 module.exports.InspectorHistoricalScoreRankFruits = InspectorHistoricalScoreRankFruits;
+module.exports.InspectorCountryStat = InspectorCountryStat;
 
 module.exports.GetHistoricalScoreRankModel = (mode) => {
     switch (mode) {
