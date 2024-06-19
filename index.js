@@ -7,6 +7,8 @@ const performanceDistributionCacher = require("./Jobs/JobPerformanceDistribution
 const scoreStatCacher = require("./Jobs/JobScoreStatistics.js");
 const scoreRankCacher = require("./Jobs/JobScoreRank.js");
 const populationStatsCacher = require("./Jobs/JobPopulation.js");
+const systemStatsCacher = require("./Jobs/JobSystemStats.js");
+
 require('dotenv').config();
 
 function StartCacher() {
@@ -25,6 +27,7 @@ const Cachers = [
     { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'fruits' },
     { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'mania' },
     { cacher: populationStatsCacher, interval: '0 */2 * * *', data: [] }, //every 2 hours
+    { cacher: systemStatsCacher, interval: '*/15 * * * *', data: [] }
 ]
 
 const jobQueue = [];

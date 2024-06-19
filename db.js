@@ -9,6 +9,7 @@ const { InspectorClanStatsModel } = require("./Models/InspectorClanStatsModel");
 const { InspectorScoreStatModel } = require("./Models/InspectorScoreStatModel");
 const { InspectorHistoricalScoreRankModel } = require("./Models/InspectorHistoricalScoreRankMode");
 const { InspectorCountryStatModel } = require("./Models/InspectorCountryStatModel");
+const { AltPriorityUserModel } = require("./Models/AltPriorityUserModel");
 require('dotenv').config();
 
 let databases = {
@@ -32,6 +33,7 @@ const InspectorCountryStat = InspectorCountryStatModel(databases.inspector);
 
 const AltScore = ScoreModel(databases.osuAlt);
 const AltUser = AltUserModel(databases.osuAlt);
+const AltPriorityUser = AltPriorityUserModel(databases.osuAlt);
 
 InspectorClanStats.belongsTo(InspectorClan, { as: 'clan', foreignKey: 'clan_id', targetKey: 'id' });
 InspectorClan.hasOne(InspectorClanStats, { as: 'clan_stats', foreignKey: 'clan_id', sourceKey: 'id' });
@@ -40,6 +42,7 @@ InspectorClan.hasMany(InspectorClanMember, { as: 'clan_members', foreignKey: 'cl
 
 module.exports.AltScore = AltScore;
 module.exports.AltUser = AltUser;
+module.exports.AltPriorityUser = AltPriorityUser;
 module.exports.InspectorOsuUser = InspectorOsuUser;
 module.exports.InspectorClan = InspectorClan;
 module.exports.InspectorClanMember = InspectorClanMember;
