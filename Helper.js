@@ -69,7 +69,7 @@ async function UpdateClan(id) {
     });
 
     if (members.length === 0) {
-        console.warn(`Clan ${id} has no members`);
+        console.log(`Clan ${id} has no members`);
         return;
     }
 
@@ -103,7 +103,6 @@ async function UpdateClan(id) {
         temp_sum_acc += u.hit_accuracy ?? 0;
     });
 
-    // data.average_pp = temp_sum_pp / members.length;
     data.accuracy = temp_sum_acc / local_users.length;
     if (data.accuracy === NaN || data.accuracy === Infinity || data.accuracy === -Infinity || data.accuracy === undefined || data.accuracy === null || data.accuracy === NaN || data.accuracy === 0
         || isNaN(data.accuracy) || data.accuracy === "NaN" || data.accuracy === "Infinity" || data.accuracy === "-Infinity" || data.accuracy === "undefined" || data.accuracy === "null" || data.accuracy === "NaN" || data.accuracy === "0"
@@ -111,9 +110,7 @@ async function UpdateClan(id) {
         data.accuracy = 0;
     }
 
-    //sort
     local_users.sort((a, b) => b.pp - a.pp);
-    //weighted clan pp, based on user profile pp
     let total_pp = 0;
     const weight = 0.5;
 
@@ -124,7 +121,6 @@ async function UpdateClan(id) {
 
     data.average_pp = total_pp;
 
-    //update stats
     let stats = await InspectorClanStats.findOne({
         where: {
             clan_id: id
@@ -132,7 +128,7 @@ async function UpdateClan(id) {
     });
 
     for (const key in data) {
-        stats[key] = data[key];
+        stats.set(key, data[key]);
     }
 
     console.log(`Updated clan ${id}`);
