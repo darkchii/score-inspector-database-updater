@@ -11,11 +11,14 @@ module.exports = cacher;
 
 async function UpdateUsers() {
     const columns = Object.keys(InspectorOsuUser.rawAttributes);
-    const exclude = ['b_count', 'c_count', 'd_count', 'total_pp', 'country_ss_rank', 'global_ss_rank']
+    const exclude = ['b_count', 'c_count', 'd_count', 'total_pp'];
+    const exclude_remote = ['global_ss_rank', 'country_ss_rank']
     const actual_columns = columns.filter(x => !exclude.includes(x));
 
     const remote_users = await AltUser.findAll({
-        attributes: actual_columns,
+        // attributes: actual_columns,
+        //with exclude_remote aswell
+        attributes: actual_columns.filter(x => !exclude_remote.includes(x)),
         raw: true
     });
     const local_users = await InspectorOsuUser.findAll({
@@ -69,12 +72,15 @@ async function UpdateUsers() {
         }
     }
 
+    console.log(`[CACHER] Calculating global SS ranks ...`);
     //get global ss rank
     //order remote_users by ss_count, then find the index of the user in the array
     remote_users.sort((a, b) => (b.ssh_count + b.ss_count) - (a.ssh_count + a.ss_count));
     for await (const [index, user] of remote_users.entries()) {
         user.global_ss_rank = index + 1;
     }
+
+    console.log(`[CACHER] Calculating country SS ranks ...`);
 
     //next, get all UNIQUE country codes from remote_users
     const country_codes = [...new Set(remote_users.map(x => x.country_code))];
@@ -85,8 +91,10 @@ async function UpdateUsers() {
         for await (const [index, user] of users.entries()) {
             user.country_ss_rank = index + 1;
         }
+        console.log(`[CACHER] Calculated country SS ranks for ${country_code} ...`);
     }
 
+    console.log(`[CACHER] Inserting or updating users ...`);
     // //insert or update all users in InspectorOsuUser
     await InspectorOsuUser.bulkCreate(remote_users, {
         updateOnDuplicate: actual_columns
