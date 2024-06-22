@@ -39,6 +39,7 @@ async function QueueProcessor() {
             try {
                 console.log(`[CACHER] Running ${job.cacher.name} ...`);
                 await job.cacher.func(job.data);
+                console.log(`[CACHER] Finished ${job.cacher.name}`);
             } catch (e) {
                 console.error(`[CACHER] Error running ${job.cacher.name}`);
                 console.error(e);
