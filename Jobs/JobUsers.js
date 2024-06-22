@@ -12,7 +12,7 @@ module.exports = cacher;
 async function UpdateUsers() {
     const columns = Object.keys(InspectorOsuUser.rawAttributes);
     const exclude = ['b_count', 'c_count', 'd_count', 'total_pp'];
-    const exclude_remote = ['global_ss_rank', 'country_ss_rank']
+    const exclude_remote = ['global_ss_rank', 'country_ss_rank', 'global_ss_rank_highest', 'global_ss_rank_highest_date', 'country_ss_rank_highest', 'country_ss_rank_highest_date'];
     const actual_columns = columns.filter(x => !exclude.includes(x));
 
     const remote_users = await AltUser.findAll({
@@ -26,7 +26,7 @@ async function UpdateUsers() {
         raw: true
     });
 
-    //check if any stat went over a threshold for achievement
+    // //check if any stat went over a threshold for achievement
     for await (const user of remote_users) {
         const local_user = local_users.find(x => x.user_id === user.user_id);
         if (!local_user) continue;
@@ -78,6 +78,15 @@ async function UpdateUsers() {
     remote_users.sort((a, b) => (b.ssh_count + b.ss_count) - (a.ssh_count + a.ss_count));
     for await (const [index, user] of remote_users.entries()) {
         user.global_ss_rank = index + 1;
+
+        //check local user to see if we need to update the highest rank
+        const local_user = local_users.find(x => x.user_id === user.user_id);
+        if (!local_user) continue;
+
+        if (!local_user.global_ss_rank_highest || local_user.global_ss_rank_highest > user.global_ss_rank) {
+            user.global_ss_rank_highest = user.global_ss_rank;
+            user.global_ss_rank_highest_date = new Date();
+        }
     }
 
     console.log(`[CACHER] Calculating country SS ranks ...`);
@@ -90,6 +99,15 @@ async function UpdateUsers() {
         users.sort((a, b) => (b.ssh_count + b.ss_count) - (a.ssh_count + a.ss_count));
         for await (const [index, user] of users.entries()) {
             user.country_ss_rank = index + 1;
+
+            //check local user to see if we need to update the highest rank
+            const local_user = local_users.find(x => x.user_id === user.user_id);
+            if (!local_user) continue;
+
+            if (!local_user.country_ss_rank_highest || local_user.country_ss_rank_highest > user.country_ss_rank) {
+                user.country_ss_rank_highest = user.country_ss_rank;
+                user.country_ss_rank_highest_date = new Date();
+            }
         }
         console.log(`[CACHER] Calculated country SS ranks for ${country_code} ...`);
     }
