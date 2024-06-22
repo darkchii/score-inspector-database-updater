@@ -11,7 +11,7 @@ module.exports = cacher;
 
 async function UpdateUsers() {
     const columns = Object.keys(InspectorOsuUser.rawAttributes);
-    const exclude = ['b_count', 'c_count', 'd_count', 'total_pp']
+    const exclude = ['b_count', 'c_count', 'd_count', 'total_pp', 'country_ss_rank', 'global_ss_rank']
     const actual_columns = columns.filter(x => !exclude.includes(x));
 
     const remote_users = await AltUser.findAll({
@@ -66,6 +66,24 @@ async function UpdateUsers() {
                 time: new Date()
             });
             console.log(`[MILESTONE] ${user.username} reached ${reached_milestone * interval} (${achievement.name})`)
+        }
+    }
+
+    //get global ss rank
+    //order remote_users by ss_count, then find the index of the user in the array
+    remote_users.sort((a, b) => (b.ssh_count + b.ss_count) - (a.ssh_count + a.ss_count));
+    for await (const [index, user] of remote_users.entries()) {
+        user.global_ss_rank = index + 1;
+    }
+
+    //next, get all UNIQUE country codes from remote_users
+    const country_codes = [...new Set(remote_users.map(x => x.country_code))];
+    //for each country code, get all users with that country code, order them by ss_count, then find the index of the user in the array
+    for await (const country_code of country_codes) {
+        const users = remote_users.filter(x => x.country_code === country_code);
+        users.sort((a, b) => (b.ssh_count + b.ss_count) - (a.ssh_count + a.ss_count));
+        for await (const [index, user] of users.entries()) {
+            user.country_ss_rank = index + 1;
         }
     }
 
