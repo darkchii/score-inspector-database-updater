@@ -27,7 +27,7 @@ const Cachers = [
     { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'fruits' },
     { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'mania' },
     { cacher: populationStatsCacher, interval: '0 */2 * * *', data: [] }, //every 2 hours
-    { cacher: systemStatsCacher, interval: '*/15 * * * *', data: [] }
+    { cacher: systemStatsCacher, interval: '*/15 * * * *', data: [], timeout: 20 } //needs timeout, for some reason it keeps running forever on very rare occasions
 ]
 
 const jobQueue = [];
@@ -38,7 +38,18 @@ async function QueueProcessor() {
             const job = jobQueue.shift();
             try {
                 console.log(`[CACHER] Running ${job.cacher.name} ...`);
-                await job.cacher.func(job.data);
+                if(job.timeout){
+                    await Promise.race([
+                        job.cacher.func(job.data),
+                        new Promise((resolve, reject) => {
+                            setTimeout(() => {
+                                reject(new Error('Function exceeded maximum run time'));
+                            }, job.timeout * 60 * 1000);
+                        })
+                    ]);
+                }else{
+                    await job.cacher.func(job.data);
+                }
                 console.log(`[CACHER] Finished ${job.cacher.name}`);
             } catch (e) {
                 console.error(`[CACHER] Error running ${job.cacher.name}`);
