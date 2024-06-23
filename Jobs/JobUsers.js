@@ -136,15 +136,21 @@ async function Loop() {
                 if(!user) continue;
 
                 //update user
-                await UpdateUser(user);
-
-                console.log(`[CACHER] Updated ${user.username} ...`);
+                // await UpdateUser(user);
+                await Promise.race([
+                    UpdateUser(user),
+                    new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                            reject(new Error('User update took longer than 10 seconds, skipping to next user'));
+                        }, 10 * 1000); //1 minute
+                    })
+                ]);
             } catch (err) {
                 console.error(err);
             }
         }
     })();
 }
-Loop();
 if (process.env.NODE_ENV === 'production') {
+    Loop();
 }
