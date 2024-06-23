@@ -10,23 +10,44 @@ async function UpdateUser(user_id) {
         return null;
     }
 
-    const scores_B = await AltScore.count({ where: { user_id: user_id, rank: 'B' } });
-    const scores_C = await AltScore.count({ where: { user_id: user_id, rank: 'C' } });
-    const scores_D = await AltScore.count({ where: { user_id: user_id, rank: 'D' } });
-    const total_pp = await AltScore.sum('pp', { where: { 
-        user_id: user_id,
-        pp: {
-            [Op.ne]: null,
-            [Op.gt]: 0,
-            [Op.not]: 'NaN'
-        }
-    } });
+    const data = await AltScore.findOne({
+        where: {
+            user_id: user_id
+        },
+        attributes: [
+            [AltScore.sequelize.fn('SUM', AltScore.sequelize.col('pp')), 'total_pp'],
+            [AltScore.sequelize.fn('COUNT', AltScore.sequelize.literal('CASE WHEN rank = \'XH\' THEN 1 END')), 'xh_count'],
+            [AltScore.sequelize.fn('COUNT', AltScore.sequelize.literal('CASE WHEN rank = \'X\' THEN 1 END')), 'x_count'],
+            [AltScore.sequelize.fn('COUNT', AltScore.sequelize.literal('CASE WHEN rank = \'SH\' THEN 1 END')), 'sh_count'],
+            [AltScore.sequelize.fn('COUNT', AltScore.sequelize.literal('CASE WHEN rank = \'S\' THEN 1 END')), 's_count'],
+            [AltScore.sequelize.fn('COUNT', AltScore.sequelize.literal('CASE WHEN rank = \'A\' THEN 1 END')), 'a_count'],
+            [AltScore.sequelize.fn('COUNT', AltScore.sequelize.literal('CASE WHEN rank = \'B\' THEN 1 END')), 'b_count'],
+            [AltScore.sequelize.fn('COUNT', AltScore.sequelize.literal('CASE WHEN rank = \'C\' THEN 1 END')), 'c_count'],
+            [AltScore.sequelize.fn('COUNT', AltScore.sequelize.literal('CASE WHEN rank = \'D\' THEN 1 END')), 'd_count']
+        ],
+        group: ['user_id'],
+        raw: true
+    });
 
-    //set b_count to either scores_B, keep b_count or 0
+    const scores_XH = parseInt(data?.xh_count ?? 0);
+    const scores_X = parseInt(data?.x_count ?? 0);
+    const scores_SH = parseInt(data?.sh_count ?? 0);
+    const scores_S = parseInt(data?.s_count ?? 0);
+    const scores_A = parseInt(data?.a_count ?? 0);
+    const scores_B = parseInt(data?.b_count ?? 0);
+    const scores_C = parseInt(data?.c_count ?? 0);
+    const scores_D = parseInt(data?.d_count ?? 0);
+    const total_pp = parseFloat(data?.total_pp ?? 0);
+
     user_obj.b_count = scores_B ?? user_obj.b_count ?? 0;
     user_obj.c_count = scores_C ?? user_obj.c_count ?? 0;
     user_obj.d_count = scores_D ?? user_obj.d_count ?? 0;
     user_obj.total_pp = total_pp ?? user_obj.total_pp ?? 0;
+    user_obj.alt_ssh_count = scores_XH ?? user_obj.alt_ssh_count ?? 0;
+    user_obj.alt_ss_count = scores_SH ?? user_obj.alt_ss_count ?? 0;
+    user_obj.alt_s_count = scores_S ?? user_obj.alt_s_count ?? 0;
+    user_obj.alt_sh_count = scores_X ?? user_obj.alt_sh_count ?? 0;
+    user_obj.alt_a_count = scores_A ?? user_obj.alt_a_count ?? 0;
     
     //save
     await user_obj.save();
