@@ -42,9 +42,9 @@ async function UpdateUser(user_obj) {
     user_obj.d_count = scores_D ?? user_obj.d_count ?? 0;
     user_obj.total_pp = total_pp ?? user_obj.total_pp ?? 0;
     user_obj.alt_ssh_count = scores_XH ?? user_obj.alt_ssh_count ?? 0;
-    user_obj.alt_ss_count = scores_SH ?? user_obj.alt_ss_count ?? 0;
+    user_obj.alt_ss_count = scores_X ?? user_obj.alt_ss_count ?? 0;
     user_obj.alt_s_count = scores_S ?? user_obj.alt_s_count ?? 0;
-    user_obj.alt_sh_count = scores_X ?? user_obj.alt_sh_count ?? 0;
+    user_obj.alt_sh_count = scores_SH ?? user_obj.alt_sh_count ?? 0;
     user_obj.alt_a_count = scores_A ?? user_obj.alt_a_count ?? 0;
 
     //save
