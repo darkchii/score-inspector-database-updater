@@ -2,17 +2,15 @@ const { Op } = require("sequelize");
 const { InspectorOsuUser, AltScore, InspectorClanMember, InspectorClanStats } = require("./db");
 
 module.exports.UpdateUser = UpdateUser;
-async function UpdateUser(user_id) {
+async function UpdateUser(user_obj) {
     //check if user is a sequelize object or an id
-    const user_obj = await InspectorOsuUser.findOne({ where: { user_id } });
-
     if (!user_obj) {
         return null;
     }
 
     const data = await AltScore.findOne({
         where: {
-            user_id: user_id
+            user_id: user_obj.user_id
         },
         attributes: [
             [AltScore.sequelize.fn('SUM', AltScore.sequelize.col('pp')), 'total_pp'],
@@ -48,7 +46,7 @@ async function UpdateUser(user_id) {
     user_obj.alt_s_count = scores_S ?? user_obj.alt_s_count ?? 0;
     user_obj.alt_sh_count = scores_X ?? user_obj.alt_sh_count ?? 0;
     user_obj.alt_a_count = scores_A ?? user_obj.alt_a_count ?? 0;
-    
+
     //save
     await user_obj.save();
 

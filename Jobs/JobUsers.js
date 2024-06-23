@@ -1,4 +1,4 @@
-const { Op } = require("sequelize");
+const { Op, Sequelize } = require("sequelize");
 const { InspectorOsuUser, AltUser, InspectorUserMilestone } = require("../db");
 const { UpdateUser, ACHIEVEMENT_INTERVALS } = require("../Helper");
 
@@ -131,34 +131,20 @@ async function Loop() {
     (async () => {
         while (true) {
             try {
-                const users = await InspectorOsuUser.findAll({
-                    where: {
-                        playtime: { [Op.gt]: 0, },
-                        playcount: { [Op.gt]: 0, },
-                    },
-                    //randomize the order so we don't always update the same users first (like when the server restarts)
-                    order: [
-                        [InspectorOsuUser.sequelize.fn('RAND')],
-                    ],
-                });
-                console.log(`[CACHER] Found ${users.length} users ...`);
+                //get a random user
+                const user = await InspectorOsuUser.findOne({ order: [ Sequelize.fn('RAND') ] });
+                if(!user) continue;
 
-                //show how many hours it will likely take to update all users (750ms per user)
-                console.log(`[CACHER] Estimated time to update all users: ${users.length * 0.75 / 60 / 60} hours ...`);
+                //update user
+                await UpdateUser(user);
 
-                for await (const user of users) {
-                    await UpdateUser(user.user_id);
-                }
-
-                console.log(`[CACHER] Updated ${users.length} users ...`);
+                console.log(`[CACHER] Updated ${user.username} ...`);
             } catch (err) {
                 console.error(err);
             }
-
-            await new Promise(r => setTimeout(r, 1000 * 60)); //wait 1 minute
         }
     })();
 }
+Loop();
 if (process.env.NODE_ENV === 'production') {
-    Loop();
 }
