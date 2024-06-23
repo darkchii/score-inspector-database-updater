@@ -155,7 +155,7 @@ async function Loop() {
                 console.error(err);
             }
 
-            await new Promise(r => setTimeout(r, 1000 * 60 * 60)); //every 1 hour
+            await new Promise(r => setTimeout(r, 1000 * 60)); //wait 1 minute
         }
     })();
 }
