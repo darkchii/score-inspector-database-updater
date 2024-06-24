@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const { InspectorOsuUser, AltScore, InspectorClanMember, InspectorClanStats } = require("./db");
+const { InspectorOsuUser, AltScore, InspectorClanMember, InspectorClanStats, AltUser } = require("./db");
 
 module.exports.UpdateUser = UpdateUser;
 async function UpdateUser(user_obj) {
@@ -92,10 +92,14 @@ async function UpdateClan(id) {
         return;
     }
 
-    const ids = members.map(m => m.osu_id);
+    let ids = members.map(m => m.osu_id);
+    //remove undefined ids
+    ids = ids.filter(x => x);
 
-    //we only use local data, not osu api, too many requests
-    const local_users = await InspectorOsuUser.findAll({
+
+    //we use alt user because we want to get the stats of the user in the clan
+    //alt is also more up to date with restrictions
+    const local_users = await AltUser.findAll({
         where: {
             user_id: ids
         }
@@ -150,7 +154,7 @@ async function UpdateClan(id) {
         stats.set(key, data[key]);
     }
 
-    console.log(`Updated clan ${id}`);
+    console.log(`Checked clan ${id}`);
 
     await stats.save();
 }
