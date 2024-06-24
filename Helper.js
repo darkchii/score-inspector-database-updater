@@ -141,14 +141,36 @@ async function UpdateClan(id) {
         data.accuracy = 0;
     }
 
-    filtered_local_users.sort((a, b) => b.pp - a.pp);
-    let total_pp = 0;
-    const weight = 0.5;
+    // filtered_local_users.sort((a, b) => b.pp - a.pp);
+    // let total_pp = 0;
+    // const weight = 0.5;
 
-    filtered_local_users.forEach((u, index) => {
-        const _weight = Math.pow(weight, index);
-        total_pp += u.pp * _weight;
+    // filtered_local_users.forEach((u, index) => {
+    //     const _weight = Math.pow(weight, index);
+    //     total_pp += u.pp * _weight;
+    // });
+
+    const top_plays = await AltScore.findAll({
+        where: {
+            user_id: ids,
+            pp: {
+                [Op.gt]: 0
+            }
+        },
+        order: [
+            ['pp', 'DESC']
+        ],
+        limit: 100
     });
+
+    let total_pp = 0;
+
+    if(top_plays && top_plays.length > 0){
+        top_plays.forEach((play, index) => {
+            const _weight = Math.pow(0.95, index);
+            total_pp += play.pp * _weight;
+        });
+    }
 
     data.average_pp = total_pp;
 
