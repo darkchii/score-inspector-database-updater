@@ -18,16 +18,16 @@ module.exports = StartCacher;
 
 const Cachers = [
     { cacher: usersCacher, interval: '0 */1 * * *', data: [], onStart: true }, //every 1 hour
-    { cacher: clansCacher, interval: '*/20 * * * *', data: [], onStart: true }, //every 20 minutes
-    { cacher: performanceDistributionCacher, interval: '0 */1 * * *', data: [], onStart: true }, //every 1 hour
+    { cacher: clansCacher, interval: '0 */1 * * *', data: [], onStart: true }, //every 1 hour
+    { cacher: performanceDistributionCacher, interval: '0 */4 * * *', data: [], onStart: true }, //every 4 hours
     { cacher: scoreStatCacher, interval: '0 * * * *', data: ['24h', '7d', 'all'], onStart: true },
     { cacher: scoreStatCacher, interval: '*/30 * * * *', data: ['30min'], onStart: true },
     { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'osu' },
     { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'taiko' },
     { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'fruits' },
     { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'mania' },
-    { cacher: populationStatsCacher, interval: '0 */2 * * *', data: [] }, //every 2 hours
-    { cacher: systemStatsCacher, interval: '*/15 * * * *', data: [], timeout: 20 } //needs timeout, for some reason it keeps running forever on very rare occasions
+    { cacher: populationStatsCacher, interval: '0 */4 * * *', data: [] }, //every 4 hours
+    { cacher: systemStatsCacher, interval: '*/30 * * * *', data: [], timeout: 20 } //needs timeout, for some reason it keeps running forever on very rare occasions
 ]
 
 const jobQueue = [];
