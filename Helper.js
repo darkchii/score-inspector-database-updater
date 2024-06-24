@@ -99,13 +99,21 @@ async function UpdateClan(id) {
 
     //we use alt user because we want to get the stats of the user in the clan
     //alt is also more up to date with restrictions
-    const local_users = await AltUser.findAll({
+    const local_users = await InspectorOsuUser.findAll({
         where: {
             user_id: ids
         }
     });
 
-    local_users.forEach(u => {
+    const remote_users = await AltUser.findAll({
+        where: {
+            user_id: ids
+        },
+    });
+
+    const filtered_local_users = local_users.filter(u => remote_users.find(ru => ru.user_id === u.user_id));
+
+    filtered_local_users.forEach(u => {
         data.total_ss += u.ss_count;
         data.total_ssh += u.ssh_count;
         data.total_s += u.s_count;
@@ -126,18 +134,18 @@ async function UpdateClan(id) {
         temp_sum_acc += u.hit_accuracy ?? 0;
     });
 
-    data.accuracy = temp_sum_acc / local_users.length;
+    data.accuracy = temp_sum_acc / filtered_local_users.length;
     if (data.accuracy === NaN || data.accuracy === Infinity || data.accuracy === -Infinity || data.accuracy === undefined || data.accuracy === null || data.accuracy === NaN || data.accuracy === 0
         || isNaN(data.accuracy) || data.accuracy === "NaN" || data.accuracy === "Infinity" || data.accuracy === "-Infinity" || data.accuracy === "undefined" || data.accuracy === "null" || data.accuracy === "NaN" || data.accuracy === "0"
     ) {
         data.accuracy = 0;
     }
 
-    local_users.sort((a, b) => b.pp - a.pp);
+    filtered_local_users.sort((a, b) => b.pp - a.pp);
     let total_pp = 0;
     const weight = 0.5;
 
-    local_users.forEach((u, index) => {
+    filtered_local_users.forEach((u, index) => {
         const _weight = Math.pow(weight, index);
         total_pp += u.pp * _weight;
     });
@@ -154,7 +162,7 @@ async function UpdateClan(id) {
         stats.set(key, data[key]);
     }
 
-    console.log(`Checked clan ${id}`);
+    console.log(`Updated clan ${id}`);
 
     await stats.save();
 }
