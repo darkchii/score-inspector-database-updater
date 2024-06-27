@@ -1,6 +1,6 @@
 const { Op, Sequelize } = require("sequelize");
 const { InspectorOsuUser, AltUser, InspectorUserMilestone } = require("../db");
-const { UpdateUser, ACHIEVEMENT_INTERVALS } = require("../Helper");
+const { UpdateUser, ACHIEVEMENT_INTERVALS, BatchUpdateUser } = require("../Helper");
 
 const cacher = {
     func: UpdateUsers,
@@ -13,11 +13,11 @@ async function UpdateUsers() {
     const columns = Object.keys(InspectorOsuUser.rawAttributes);
     const exclude = ['b_count', 'c_count', 'd_count', 'total_pp', 'alt_ssh_count', 'alt_ss_count', 'alt_s_count', 'alt_sh_count', 'alt_a_count'];
     const exclude_remote = [
-        'global_ss_rank', 
-        'country_ss_rank', 
-        'global_ss_rank_highest', 
-        'global_ss_rank_highest_date', 
-        'country_ss_rank_highest', 
+        'global_ss_rank',
+        'country_ss_rank',
+        'global_ss_rank_highest',
+        'global_ss_rank_highest_date',
+        'country_ss_rank_highest',
         'country_ss_rank_highest_date'
     ];
     const actual_columns = columns.filter(x => !exclude.includes(x));
@@ -115,7 +115,7 @@ async function UpdateUsers() {
 
             //check local user to see if we need to update the highest rank
             const local_user = local_users.find(x => x.user_id === user.user_id);
-            if (!local_user){
+            if (!local_user) {
                 console.log(`[CACHER] User ${user.username} not found in local database ...`);
                 continue;
             }
@@ -140,30 +140,36 @@ async function UpdateUsers() {
 }
 
 //seperate function to constantly update users (because it's a long process, and we don't care for it to happen at the same time as the other cachers)
+const BATCH_FETCH = 1000;
 async function Loop() {
     (async () => {
+        let page = 0;
         while (true) {
             try {
-                //get a random user
-                const user = await InspectorOsuUser.findOne({ order: [ Sequelize.fn('RAND') ] });
-                if(!user) continue;
-
-                //update user
-                // await UpdateUser(user);
+                const users = await InspectorOsuUser.findAll({ limit: BATCH_FETCH, offset: page * BATCH_FETCH});
+                if (users.length === 0) {
+                    console.log(`[CACHER] Finished updating all users ...`);
+                    page = 0;
+                    //wait 5 minutes before fetching again
+                    await new Promise((resolve, reject) => { setTimeout(() => { resolve(); }, 10 * 60 * 1000); });
+                    break;
+                }
                 await Promise.race([
-                    UpdateUser(user),
+                    BatchUpdateUser(users),
                     new Promise((resolve, reject) => {
                         setTimeout(() => {
                             reject(new Error('User update took longer than 10 seconds, skipping to next user'));
                         }, 10 * 1000); //1 minute
                     })
                 ]);
+                console.log(`[CACHER] Updated ${users.length} users ... done with page ${page} ... (total users: ${page * BATCH_FETCH + users.length})`)
+                page++;
             } catch (err) {
                 console.error(err);
             }
         }
     })();
 }
+Loop();
 if (process.env.NODE_ENV === 'production') {
-    Loop();
 }

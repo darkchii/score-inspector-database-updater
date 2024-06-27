@@ -1,18 +1,18 @@
 const { Op } = require("sequelize");
 const { InspectorOsuUser, AltScore, InspectorClanMember, InspectorClanStats, AltUser } = require("./db");
 
-module.exports.UpdateUser = UpdateUser;
-async function UpdateUser(user_obj) {
-    //check if user is a sequelize object or an id
-    if (!user_obj) {
-        return null;
+module.exports.BatchUpdateUser = BatchUpdateUser;
+async function BatchUpdateUser(users) {
+    if(users.length === 0){
+        return users;
     }
 
-    const data = await AltScore.findOne({
+    const data = await AltScore.findAll({
         where: {
-            user_id: user_obj.user_id
+            user_id: users.map(u => u.user_id)
         },
         attributes: [
+            'user_id',
             [AltScore.sequelize.fn('SUM', AltScore.sequelize.col('pp')), 'total_pp'],
             [AltScore.sequelize.fn('COUNT', AltScore.sequelize.literal('CASE WHEN rank = \'XH\' THEN 1 END')), 'xh_count'],
             [AltScore.sequelize.fn('COUNT', AltScore.sequelize.literal('CASE WHEN rank = \'X\' THEN 1 END')), 'x_count'],
@@ -27,30 +27,35 @@ async function UpdateUser(user_obj) {
         raw: true
     });
 
-    const scores_XH = parseInt(data?.xh_count ?? 0);
-    const scores_X = parseInt(data?.x_count ?? 0);
-    const scores_SH = parseInt(data?.sh_count ?? 0);
-    const scores_S = parseInt(data?.s_count ?? 0);
-    const scores_A = parseInt(data?.a_count ?? 0);
-    const scores_B = parseInt(data?.b_count ?? 0);
-    const scores_C = parseInt(data?.c_count ?? 0);
-    const scores_D = parseInt(data?.d_count ?? 0);
-    const total_pp = parseFloat(data?.total_pp ?? 0);
+    for await (const user of users) {
+        const user_data = data.find(x => x.user_id === user.user_id);
+        if (!user_data) continue;
 
-    user_obj.b_count = scores_B ?? user_obj.b_count ?? 0;
-    user_obj.c_count = scores_C ?? user_obj.c_count ?? 0;
-    user_obj.d_count = scores_D ?? user_obj.d_count ?? 0;
-    user_obj.total_pp = total_pp ?? user_obj.total_pp ?? 0;
-    user_obj.alt_ssh_count = scores_XH ?? user_obj.alt_ssh_count ?? 0;
-    user_obj.alt_ss_count = scores_X ?? user_obj.alt_ss_count ?? 0;
-    user_obj.alt_s_count = scores_S ?? user_obj.alt_s_count ?? 0;
-    user_obj.alt_sh_count = scores_SH ?? user_obj.alt_sh_count ?? 0;
-    user_obj.alt_a_count = scores_A ?? user_obj.alt_a_count ?? 0;
+        const scores_XH = parseInt(user_data?.xh_count ?? 0);
+        const scores_X = parseInt(user_data?.x_count ?? 0);
+        const scores_SH = parseInt(user_data?.sh_count ?? 0);
+        const scores_S = parseInt(user_data?.s_count ?? 0);
+        const scores_A = parseInt(user_data?.a_count ?? 0);
+        const scores_B = parseInt(user_data?.b_count ?? 0);
+        const scores_C = parseInt(user_data?.c_count ?? 0);
+        const scores_D = parseInt(user_data?.d_count ?? 0);
+        const total_pp = parseFloat(user_data?.total_pp ?? 0);
 
-    //save
-    await user_obj.save();
+        user.b_count = scores_B ?? user.b_count ?? 0;
+        user.c_count = scores_C ?? user.c_count ?? 0;
+        user.d_count = scores_D ?? user.d_count ?? 0;
+        user.total_pp = total_pp ?? user.total_pp ?? 0;
+        user.alt_ssh_count = scores_XH ?? user.alt_ssh_count ?? 0;
+        user.alt_ss_count = scores_X ?? user.alt_ss_count ?? 0;
+        user.alt_s_count = scores_S ?? user.alt_s_count ?? 0;
+        user.alt_sh_count = scores_SH ?? user.alt_sh_count ?? 0;
+        user.alt_a_count = scores_A ?? user.alt_a_count ?? 0;
 
-    return user_obj;
+        //save
+        await user.save();
+    }
+
+    return users;
 }
 
 module.exports.UpdateClan = UpdateClan;
