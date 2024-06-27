@@ -3,17 +3,17 @@ const { InspectorOsuUser, AltScore, InspectorClanMember, InspectorClanStats, Alt
 
 module.exports.BatchUpdateUser = BatchUpdateUser;
 async function BatchUpdateUser(users) {
-    if(users.length === 0){
+    if (users.length === 0) {
         return users;
     }
 
     const data = await AltScore.findAll({
         where: {
-            user_id: users.map(u => u.user_id)
+            user_id: users.map(u => u.user_id),
         },
         attributes: [
             'user_id',
-            [AltScore.sequelize.fn('SUM', AltScore.sequelize.col('pp')), 'total_pp'],
+            [AltScore.sequelize.fn('SUM', AltScore.sequelize.literal("COALESCE(NULLIF(pp, 'NaN'), 0)")), 'total_pp'],
             [AltScore.sequelize.fn('COUNT', AltScore.sequelize.literal('CASE WHEN rank = \'XH\' THEN 1 END')), 'xh_count'],
             [AltScore.sequelize.fn('COUNT', AltScore.sequelize.literal('CASE WHEN rank = \'X\' THEN 1 END')), 'x_count'],
             [AltScore.sequelize.fn('COUNT', AltScore.sequelize.literal('CASE WHEN rank = \'SH\' THEN 1 END')), 'sh_count'],
@@ -21,7 +21,7 @@ async function BatchUpdateUser(users) {
             [AltScore.sequelize.fn('COUNT', AltScore.sequelize.literal('CASE WHEN rank = \'A\' THEN 1 END')), 'a_count'],
             [AltScore.sequelize.fn('COUNT', AltScore.sequelize.literal('CASE WHEN rank = \'B\' THEN 1 END')), 'b_count'],
             [AltScore.sequelize.fn('COUNT', AltScore.sequelize.literal('CASE WHEN rank = \'C\' THEN 1 END')), 'c_count'],
-            [AltScore.sequelize.fn('COUNT', AltScore.sequelize.literal('CASE WHEN rank = \'D\' THEN 1 END')), 'd_count']
+            [AltScore.sequelize.fn('COUNT', AltScore.sequelize.literal('CASE WHEN rank = \'D\' THEN 1 END')), 'd_count'],
         ],
         group: ['user_id'],
         raw: true
@@ -151,14 +151,14 @@ async function UpdateClan(id) {
             user_id: ids,
             pp: { [Op.gt]: 0 }
         },
-        order: [ ['pp', 'DESC'] ],
+        order: [['pp', 'DESC']],
         limit: 200
     });
 
     let total_pp = 0;
 
     //Total pp = p * 0.95^(n-1)
-    if(top_plays && top_plays.length > 0){
+    if (top_plays && top_plays.length > 0) {
         top_plays.forEach((play, index) => {
             const _weight = Math.pow(0.96, index);
             total_pp += play.pp * _weight;
