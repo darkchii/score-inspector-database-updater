@@ -170,6 +170,6 @@ async function Loop() {
         }
     })();
 }
-Loop();
 if (process.env.NODE_ENV === 'production') {
+    Loop();
 }
