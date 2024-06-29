@@ -142,33 +142,33 @@ async function UpdateUsers() {
 //seperate function to constantly update users (because it's a long process, and we don't care for it to happen at the same time as the other cachers)
 const BATCH_FETCH = 1000;
 async function Loop() {
-    (async () => {
-        let page = 0;
-        while (true) {
-            try {
-                const users = await InspectorOsuUser.findAll({ limit: BATCH_FETCH, offset: page * BATCH_FETCH});
-                if (users.length === 0) {
-                    console.log(`[CACHER] Finished updating all users ...`);
-                    page = 0;
-                    //wait 5 minutes before fetching again
-                    await new Promise((resolve, reject) => { setTimeout(() => { resolve(); }, 10 * 60 * 1000); });
-                    break;
-                }
-                await Promise.race([
-                    BatchUpdateUser(users),
-                    new Promise((resolve, reject) => {
-                        setTimeout(() => {
-                            reject(new Error('User update took longer than 10 seconds, skipping to next user'));
-                        }, 10 * 1000); //1 minute
-                    })
-                ]);
-                console.log(`[CACHER] Updated ${users.length} users ... done with page ${page} ... (total users: ${page * BATCH_FETCH + users.length})`)
-                page++;
-            } catch (err) {
-                console.error(err);
+    let page = 0;
+    while (true) {
+        try {
+            const users = await InspectorOsuUser.findAll({ limit: BATCH_FETCH, offset: page * BATCH_FETCH });
+            if (users.length === 0) {
+                console.log(`[CACHER] Finished updating all users ...`);
+                page = 0;
+                //wait 5 minutes before fetching again
+                await new Promise((resolve, reject) => { setTimeout(() => { resolve(); }, 10 * 60 * 1000); });
+                break;
             }
+            await Promise.race([
+                BatchUpdateUser(users),
+                new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        reject(new Error('User update took longer than 10 seconds, skipping to next user'));
+                    }, 10 * 1000); //1 minute
+                })
+            ]);
+            console.log(`[CACHER] Updated ${users.length} users ... done with page ${page} ... (total users: ${page * BATCH_FETCH + users.length})`)
+            page++;
+        } catch (err) {
+            console.error(err);
+            await new Promise((resolve, reject) => { setTimeout(() => { resolve(); }, 10 * 1000); });
+            continue;
         }
-    })();
+    }
 }
 if (process.env.NODE_ENV === 'production') {
     Loop();
