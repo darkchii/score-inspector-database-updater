@@ -150,15 +150,16 @@ async function Loop() {
                 console.log(`[CACHER] Finished updating all users ...`);
                 page = 0;
                 //wait 5 minutes before fetching again
+                console.log(`[CACHER] Waiting 10 minute before fetching again ...`);
                 await new Promise((resolve, reject) => { setTimeout(() => { resolve(); }, 10 * 60 * 1000); });
-                break;
+                continue;
             }
             await Promise.race([
                 BatchUpdateUser(users),
                 new Promise((resolve, reject) => {
                     setTimeout(() => {
                         reject(new Error('User update took longer than 10 seconds, skipping to next user'));
-                    }, 10 * 1000); //1 minute
+                    }, 20 * 1000); //20 seconds
                 })
             ]);
             console.log(`[CACHER] Updated ${users.length} users ... done with page ${page} ... (total users: ${page * BATCH_FETCH + users.length})`)
