@@ -20,6 +20,7 @@ const InspectorClanStatsModel = (db) => db.define('InspectorClanStats', {
     total_pp: { type: Sequelize.FLOAT, allowNull: true, },
     accuracy: { type: Sequelize.FLOAT, allowNull: true, },
     clears: { type: Sequelize.INTEGER, allowNull: true, },
+    members: { type: Sequelize.INTEGER, allowNull: true, },
 }, {
     tableName: 'inspector_clan_stats',
     timestamps: false
