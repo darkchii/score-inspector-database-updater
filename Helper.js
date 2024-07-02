@@ -63,8 +63,10 @@ async function UpdateClan(id) {
     const data = {
         total_ss: 0,
         total_ssh: 0,
+        total_ss_both: 0,
         total_s: 0,
         total_sh: 0,
+        total_s_both: 0,
         total_a: 0,
         total_b: 0,
         total_c: 0,
