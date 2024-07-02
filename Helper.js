@@ -121,8 +121,10 @@ async function UpdateClan(id) {
     filtered_local_users.forEach(u => {
         data.total_ss += u.ss_count;
         data.total_ssh += u.ssh_count;
+        data.total_ss_both += u.ss_count + u.ssh_count;
         data.total_s += u.s_count;
         data.total_sh += u.sh_count;
+        data.total_s_both += u.s_count + u.sh_count;
         data.total_a += u.a_count;
         data.total_b += (u.b_count ?? 0);
         data.total_c += (u.c_count ?? 0);
