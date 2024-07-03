@@ -52,7 +52,7 @@ async function BatchUpdateUser(users) {
         user.alt_a_count = scores_A ?? user.alt_a_count ?? 0;
 
         //save
-        // await user.save();
+        await user.save();
     }
 
     return users;
