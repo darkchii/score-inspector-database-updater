@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const { InspectorOsuUser, AltScore, InspectorClanMember, InspectorClanStats, AltUser } = require("./db");
+const { InspectorOsuUser, AltScore, InspectorClanMember, InspectorClanStats, AltUser, AltUserAchievement, AltUserBadge } = require("./db");
 
 module.exports.BatchUpdateUser = BatchUpdateUser;
 async function BatchUpdateUser(users) {
@@ -80,7 +80,9 @@ async function UpdateClan(id) {
         average_pp: 0,
         total_pp: 0,
         accuracy: 0,
-        clears: 0
+        clears: 0,
+        medals: 0,
+        badges: 0,
     };
 
     let temp_sum_pp = 0;
@@ -150,6 +152,28 @@ async function UpdateClan(id) {
     ) {
         data.accuracy = 0;
     }
+
+    const medal_count = await AltUserAchievement.count({
+        where: {
+            user_id: ids,
+            achievement_id: { [Op.gt]: 0 }
+        }
+    });
+
+    const badge_count = await AltUserBadge.count({
+        where: {
+            user_id: ids
+        }
+    });
+
+    if(medal_count){
+        data.medals = medal_count;
+    }
+
+    if(badge_count){
+        data.badges = badge_count;
+    }
+
 
     const top_plays = await AltScore.findAll({
         where: {
