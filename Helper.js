@@ -101,10 +101,11 @@ async function UpdateClan(id) {
         return;
     }
 
+    data.members = members.length;
+
     let ids = members.map(m => m.osu_id);
     //remove undefined ids
     ids = ids.filter(x => x);
-
 
     //we use alt user because we want to get the stats of the user in the clan
     //alt is also more up to date with restrictions
@@ -141,7 +142,6 @@ async function UpdateClan(id) {
         data.replays_watched += u.replays_watched;
         data.total_hits += u.total_hits;
         data.clears += u.ss_count + u.s_count + u.sh_count + u.ssh_count + u.a_count + (u.b_count ?? 0) + (u.c_count ?? 0) + (u.d_count ?? 0);
-        data.members = members.length;
         temp_sum_pp += u.pp;
         temp_sum_acc += u.hit_accuracy ?? 0;
     });
