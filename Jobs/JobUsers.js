@@ -11,7 +11,18 @@ module.exports = cacher;
 
 async function UpdateUsers() {
     const columns = Object.keys(InspectorOsuUser.rawAttributes);
-    const exclude = ['b_count', 'c_count', 'd_count', 'total_pp', 'alt_ssh_count', 'alt_ss_count', 'alt_s_count', 'alt_sh_count', 'alt_a_count'];
+    const exclude = [
+        'b_count', 
+        'c_count', 
+        'd_count', 
+        'total_pp', 
+        'alt_ssh_count', 
+        'alt_ss_count', 
+        'alt_s_count', 
+        'alt_sh_count', 
+        'alt_a_count',
+        'medals',
+        'badges'];
     const exclude_remote = [
         'global_ss_rank',
         'country_ss_rank',

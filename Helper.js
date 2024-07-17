@@ -27,6 +27,25 @@ async function BatchUpdateUser(users) {
         raw: true
     });
 
+    const medal_data = await AltUserAchievement.findAll({
+        where: {
+            user_id: users.map(u => u.user_id),
+            achievement_id: { [Op.gt]: 0 }
+        },
+        group: ['user_id'],
+        attributes: ['user_id', [AltUserAchievement.sequelize.fn('COUNT', AltUserAchievement.sequelize.literal('achievement_id')), 'medals']],
+        raw: true
+    });
+
+    const badge_data = await AltUserBadge.findAll({
+        where: {
+            user_id: users.map(u => u.user_id),
+        },
+        group: ['user_id'],
+        attributes: ['user_id', [AltUserBadge.sequelize.fn('COUNT', AltUserBadge.sequelize.literal('user_id')), 'badges']],
+        raw: true
+    });
+
     for await (const user of users) {
         const user_data = data.find(x => x.user_id === user.user_id);
         if (!user_data) continue;
@@ -40,6 +59,8 @@ async function BatchUpdateUser(users) {
         const scores_C = parseInt(user_data?.c_count ?? 0);
         const scores_D = parseInt(user_data?.d_count ?? 0);
         const total_pp = parseFloat(user_data?.total_pp ?? 0);
+        const medals = parseInt(medal_data.find(x => x.user_id === user.user_id)?.medals ?? 0);
+        const badges = parseInt(badge_data.find(x => x.user_id === user.user_id)?.badges ?? 0);
 
         user.b_count = scores_B ?? user.b_count ?? 0;
         user.c_count = scores_C ?? user.c_count ?? 0;
@@ -50,6 +71,8 @@ async function BatchUpdateUser(users) {
         user.alt_s_count = scores_S ?? user.alt_s_count ?? 0;
         user.alt_sh_count = scores_SH ?? user.alt_sh_count ?? 0;
         user.alt_a_count = scores_A ?? user.alt_a_count ?? 0;
+        user.medals = medals ?? user.medals ?? 0;
+        user.badges = badges ?? user.badges ?? 0;
 
         //save
         await user.save();

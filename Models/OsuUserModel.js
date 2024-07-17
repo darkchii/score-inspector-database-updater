@@ -38,6 +38,8 @@ const OsuUserModel = (db) => db.define('OsuUser', {
     alt_s_count: { type: Sequelize.INTEGER, allowNull: false, },
     alt_sh_count: { type: Sequelize.INTEGER, allowNull: false, },
     alt_a_count: { type: Sequelize.INTEGER, allowNull: false, },
+    medals: { type: Sequelize.JSON, allowNull: false, },
+    badges: { type: Sequelize.JSON, allowNull: false, },
 }, {
     tableName: 'osu_users',
     timestamps: false
