@@ -1,4 +1,5 @@
-const { InspectorScoreStat, AltScore, AltUser, AltPriorityUser } = require("../db");
+const { Op } = require("sequelize");
+const { InspectorScoreStat, AltScore, AltUser, AltPriorityUser, AltBeatmap } = require("../db");
 
 const cacher = {
     func: UpdateSystemInfo,
@@ -11,6 +12,15 @@ async function UpdateSystemInfo(){
     const score_count = await AltScore.count();
     const user_count = await AltUser.count();
     const priority_user_count = await AltPriorityUser.count();
+    const beatmap_count = await AltBeatmap.count({
+        //approved in 1,2,4 and mode 0
+        where: {
+            approved: {
+                [Op.or]: [1, 2, 4]
+            },
+            mode: 0
+        }
+    });
 
     const exists = await InspectorScoreStat.findOne({
         where: {
@@ -19,12 +29,18 @@ async function UpdateSystemInfo(){
         }
     });
 
+    console.log(`Score count: ${score_count}`);
+    console.log(`User count: ${user_count}`);
+    console.log(`Priority user count: ${priority_user_count}`);
+    console.log(`Beatmap count: ${beatmap_count}`);
+
     if(exists){
         await InspectorScoreStat.update({
             value: JSON.stringify({
                 score_count,
                 user_count,
-                priority_user_count
+                priority_user_count,
+                beatmap_count
             })
         }, {
             where: {
@@ -39,7 +55,8 @@ async function UpdateSystemInfo(){
             value: JSON.stringify({
                 score_count,
                 user_count,
-                priority_user_count
+                priority_user_count,
+                beatmap_count
             })
         });
     }

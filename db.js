@@ -12,6 +12,7 @@ const { InspectorCountryStatModel } = require("./Models/InspectorCountryStatMode
 const { AltPriorityUserModel } = require("./Models/AltPriorityUserModel");
 const { AltUserAchievementModel } = require("./Models/AltUserAchievementModel");
 const { AltUserBadgeModel } = require("./Models/AltUserBadgeModel");
+const { AltBeatmapModel } = require("./Models/AltBeatmapModel");
 require('dotenv').config();
 
 let databases = {
@@ -38,6 +39,7 @@ const AltUser = AltUserModel(databases.osuAlt);
 const AltPriorityUser = AltPriorityUserModel(databases.osuAlt);
 const AltUserAchievement = AltUserAchievementModel(databases.osuAlt);
 const AltUserBadge = AltUserBadgeModel(databases.osuAlt);
+const AltBeatmap = AltBeatmapModel(databases.osuAlt);
 
 InspectorClanStats.belongsTo(InspectorClan, { as: 'clan', foreignKey: 'clan_id', targetKey: 'id' });
 InspectorClan.hasOne(InspectorClanStats, { as: 'clan_stats', foreignKey: 'clan_id', sourceKey: 'id' });
@@ -58,6 +60,7 @@ module.exports.AltUser = AltUser;
 module.exports.AltPriorityUser = AltPriorityUser;
 module.exports.AltUserAchievement = AltUserAchievement;
 module.exports.AltUserBadge = AltUserBadge;
+module.exports.AltBeatmap = AltBeatmap;
 module.exports.InspectorOsuUser = InspectorOsuUser;
 module.exports.InspectorClan = InspectorClan;
 module.exports.InspectorClanMember = InspectorClanMember;
