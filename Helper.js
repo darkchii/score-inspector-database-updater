@@ -197,28 +197,21 @@ async function UpdateClan(id) {
         data.badges = badge_count;
     }
 
-
-    const top_plays = await AltScore.findAll({
-        where: {
-            user_id: ids,
-            pp: { [Op.gt]: 0 }
-        },
-        order: [['pp', 'DESC']],
-        limit: 200
-    });
+    //new pp calc. the old one was too slow. this one is not perfect but it's good enough for now
 
     let total_pp = 0;
 
-    //Total pp = p * 0.95^(n-1)
-    if (top_plays && top_plays.length > 0) {
-        top_plays.forEach((play, index) => {
-            const _weight = Math.pow(0.96, index);
-            total_pp += play.pp * _weight;
-        });
-    }
+    let users_with_pp = filtered_local_users.filter(u => u.pp > 0);
+    users_with_pp.sort((a, b) => b.pp - a.pp);
+    //get top 10 only
+    users_with_pp = users_with_pp.slice(0, 10);
+    users_with_pp.forEach((u, index) => {
+        const _weight = Math.pow(0.6, index + 1);
+        total_pp += u.pp * _weight;
+    });
 
     data.average_pp = total_pp;
-
+    
     let stats = await InspectorClanStats.findOne({
         where: {
             clan_id: id

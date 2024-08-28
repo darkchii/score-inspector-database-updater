@@ -38,7 +38,7 @@ async function QueueProcessor() {
             const job = jobQueue.shift();
             try {
                 console.log(`[CACHER] Running ${job.cacher.name} ...`);
-                if(job.timeout){
+                if (job.timeout) {
                     await Promise.race([
                         job.cacher.func(job.data),
                         new Promise((resolve, reject) => {
@@ -47,7 +47,7 @@ async function QueueProcessor() {
                             }, job.timeout * 60 * 1000);
                         })
                     ]);
-                }else{
+                } else {
                     await job.cacher.func(job.data);
                 }
                 console.log(`[CACHER] Finished ${job.cacher.name}`);
@@ -60,7 +60,6 @@ async function QueueProcessor() {
         await new Promise(r => setTimeout(r, 1000));
     }
 }
-QueueProcessor();
 
 async function Loop() {
     for await (const cacher of Cachers) {
@@ -75,5 +74,6 @@ async function Loop() {
     }
 }
 if (process.env.NODE_ENV === 'production') {
+    QueueProcessor();
     Loop();
 }
