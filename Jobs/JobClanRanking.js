@@ -27,8 +27,8 @@ async function UpdateClanRankings() {
             where: { 
                 //user_id array and date_played
                 date_played: {
-                    [Op.gte]: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-                    [Op.lt]: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1)
+                    [Op.gte]: new Date(new Date().getUTCFullYear(), new Date().getUTCMonth(), 1),
+                    [Op.lt]: new Date(new Date().getUTCFullYear(), new Date().getUTCMonth() + 1, 1)
                 },
                 user_id: all_user_ids.map(u => u.osu_id)
             },
