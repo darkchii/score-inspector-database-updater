@@ -13,6 +13,7 @@ const { AltPriorityUserModel } = require("./Models/AltPriorityUserModel");
 const { AltUserAchievementModel } = require("./Models/AltUserAchievementModel");
 const { AltUserBadgeModel } = require("./Models/AltUserBadgeModel");
 const { AltBeatmapModel } = require("./Models/AltBeatmapModel");
+const { InspectorClanRankingModel } = require("./Models/InspectorClanRankingModel");
 require('dotenv').config();
 
 let databases = {
@@ -32,6 +33,7 @@ const InspectorHistoricalScoreRankTaiko = InspectorHistoricalScoreRankModel(data
 const InspectorHistoricalScoreRankMania = InspectorHistoricalScoreRankModel(databases.inspector, 'mania');
 const InspectorHistoricalScoreRankFruits = InspectorHistoricalScoreRankModel(databases.inspector, 'fruits');
 const InspectorCountryStat = InspectorCountryStatModel(databases.inspector);
+const InspectorClanRanking = InspectorClanRankingModel(databases.inspector);
 
 
 const AltScore = ScoreModel(databases.osuAlt);
@@ -49,6 +51,9 @@ InspectorClan.hasMany(InspectorClanMember, { as: 'clan_members', foreignKey: 'cl
 AltUser.hasMany(AltScore, { as: 'scores', foreignKey: 'user_id' });
 AltScore.belongsTo(AltUser, { as: 'user', foreignKey: 'user_id' });
 
+AltBeatmap.hasMany(AltScore, { as: 'scores', foreignKey: 'beatmap_id' });
+AltScore.belongsTo(AltBeatmap, { as: 'beatmap', foreignKey: 'beatmap_id' });
+
 AltUser.hasMany(AltUserAchievement, { as: 'achievements', foreignKey: 'user_id' });
 AltUserAchievement.belongsTo(AltUser, { as: 'user', foreignKey: 'user_id' });
 
@@ -65,6 +70,7 @@ module.exports.InspectorOsuUser = InspectorOsuUser;
 module.exports.InspectorClan = InspectorClan;
 module.exports.InspectorClanMember = InspectorClanMember;
 module.exports.InspectorClanStats = InspectorClanStats;
+module.exports.InspectorClanRanking = InspectorClanRanking;
 module.exports.InspectorUserMilestone = InspectorUserMilestone;
 module.exports.InspectorScoreStat = InspectorScoreStat;
 module.exports.InspectorHistoricalScoreRankOsu = InspectorHistoricalScoreRankOsu;
