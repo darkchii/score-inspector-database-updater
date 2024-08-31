@@ -8,6 +8,7 @@ const cacher = {
 
 module.exports = cacher;
 
+const CLAN_AMOUNT = 10;
 async function UpdateClanRankings() {
     //get all clans
     try{
@@ -108,31 +109,31 @@ async function UpdateClanRankings() {
 
         // total_scores
         _cloned_clans.sort((a, b) => b.ranking_prepared.total_scores - a.ranking_prepared.total_scores);
-        top_clans.total_scores = _cloned_clans.slice(0, 5);
+        top_clans.total_scores = _cloned_clans.slice(0, CLAN_AMOUNT);
 
         // total_pp
         _cloned_clans.sort((a, b) => b.ranking_prepared.total_pp - a.ranking_prepared.total_pp);
-        top_clans.total_pp = _cloned_clans.slice(0, 5);
+        top_clans.total_pp = _cloned_clans.slice(0, CLAN_AMOUNT);
 
         // weighted_pp
         _cloned_clans.sort((a, b) => b.ranking_prepared.weighted_pp - a.ranking_prepared.weighted_pp);
-        top_clans.weighted_pp = _cloned_clans.slice(0, 5);
+        top_clans.weighted_pp = _cloned_clans.slice(0, CLAN_AMOUNT);
 
         // top_score
         _cloned_clans.sort((a, b) => b.ranking_prepared.top_score?.score - a.ranking_prepared.top_score?.score);
-        top_clans.top_score = _cloned_clans.slice(0, 5);
+        top_clans.top_score = _cloned_clans.slice(0, CLAN_AMOUNT);
 
         // top_play
         _cloned_clans.sort((a, b) => b.ranking_prepared.top_play?.pp - a.ranking_prepared.top_play?.pp);
-        top_clans.top_play = _cloned_clans.slice(0, 5);
+        top_clans.top_play = _cloned_clans.slice(0, CLAN_AMOUNT);
 
         // total_score
         _cloned_clans.sort((a, b) => b.ranking_prepared.total_score - a.ranking_prepared.total_score);
-        top_clans.total_score = _cloned_clans.slice(0, 5);
+        top_clans.total_score = _cloned_clans.slice(0, CLAN_AMOUNT);
 
         // total_ss_score
         _cloned_clans.sort((a, b) => b.ranking_prepared.total_ss_score - a.ranking_prepared.total_ss_score);
-        top_clans.total_ss_score = _cloned_clans.slice(0, 5);
+        top_clans.total_ss_score = _cloned_clans.slice(0, CLAN_AMOUNT);
 
         //set update_date to UTC now
         top_clans.update_date = date;
