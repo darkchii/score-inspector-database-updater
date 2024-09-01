@@ -19,6 +19,9 @@ function StartCacher() {
 module.exports = StartCacher;
 
 const Cachers = [
+    //run every 4 hours, parallel to everything else so it doesn't interfere with the other jobs
+    //(this is a very heavy job)
+    { cacher: monthlyRankingsCacher, interval: '0 */4 * * *', data: [], parallel: true, onStart: true },
     { cacher: usersCacher, interval: '0 */1 * * *', data: [], onStart: true }, //every 1 hour
     { cacher: clansCacher, interval: '0 */1 * * *', data: [], onStart: true }, //every 1 hour
     { cacher: performanceDistributionCacher, interval: '0 */4 * * *', data: [], onStart: true }, //every 4 hours
@@ -32,9 +35,6 @@ const Cachers = [
     { cacher: systemStatsCacher, interval: '*/30 * * * *', data: [], timeout: 20 }, //needs timeout, for some reason it keeps running forever on very rare occasions
     //always run this at hh:59
     { cacher: clanRankingsCacher, interval: '59 * * * *', data: [] },
-    //run every 4 hours, parallel to everything else so it doesn't interfere with the other jobs
-    //(this is a very heavy job)
-    { cacher: monthlyRankingsCacher, interval: '0 */4 * * *', data: [], parallel: true, onStart: true },
 ]
 
 const jobQueue = [];
