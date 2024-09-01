@@ -149,8 +149,6 @@ async function UpdateMonthlyRankings() {
                         });
                     }
                     console.log(`[CACHER] Updated top ${_DATA_TYPE.name} farmer for ${data.period} ...`);
-                    //wait 10 seconds before next iteration (reduces stress on the database, gives breathing room)
-                    await new Promise(r => setTimeout(r, 10000));
                 }
             }
         }
