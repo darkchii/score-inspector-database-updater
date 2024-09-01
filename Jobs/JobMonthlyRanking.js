@@ -61,7 +61,17 @@ async function UpdateMonthlyRankings() {
 
                 while (date.isBefore(current_date)) {
                     const _start = date.format('YYYY-MM-DD');
-                    const _end = date.add(1, DATA_PERIOD).format('YYYY-MM-DD');
+                    date.add(1, DATA_PERIOD);
+                    //round date down to the year/month (depending on the period)
+                    switch(DATA_PERIOD){
+                        case 'year':
+                            date.startOf('year');
+                            break;
+                        case 'month':
+                            date.startOf('month');
+                            break;
+                    }
+                    const _end = date.format('YYYY-MM-DD');
 
                     const _beatmaps = beatmaps.filter(b => b.approved_date >= _start && b.approved_date < _end);
                     const query = `
