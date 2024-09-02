@@ -63,7 +63,7 @@ async function UpdateMonthlyRankings() {
                     const _start = date.format('YYYY-MM-DD');
                     date.add(1, DATA_PERIOD);
                     //round date down to the year/month (depending on the period)
-                    switch(DATA_PERIOD){
+                    switch (DATA_PERIOD) {
                         case 'year':
                             date.startOf('year');
                             break;
@@ -75,12 +75,12 @@ async function UpdateMonthlyRankings() {
 
                     const _beatmaps = beatmaps.filter(b => b.approved_date >= _start && b.approved_date < _end);
                     const query = `
-                    SELECT scores.user_id, users2.username, ${DATA_TYPES.score.query} as score, ${DATA_TYPES.pp.query} as pp, ${DATA_TYPES.ss.query} as ss
-                    FROM scores
-                    inner join users2 on users2.user_id = scores.user_id
-                    WHERE scores.beatmap_id IN (${_beatmaps.map(b => b.beatmap_id).join(',')})
-                    GROUP BY scores.user_id, users2.username
-                `
+                        SELECT scores.user_id, users2.username, ${DATA_TYPES.score.query} as score, ${DATA_TYPES.pp.query} as pp, ${DATA_TYPES.ss.query} as ss
+                        FROM scores
+                        inner join users2 on users2.user_id = scores.user_id
+                        WHERE scores.beatmap_id IN (${_beatmaps.map(b => b.beatmap_id).join(',')})
+                        GROUP BY scores.user_id, users2.username
+                    `
 
                     const response = await Databases.osuAlt.query(query, { type: Databases.osuAlt.QueryTypes.SELECT });
 
@@ -102,6 +102,7 @@ async function UpdateMonthlyRankings() {
                                 period: data.period
                             }
                         });
+                        console.log(`[CACHER] Existing for ${_DATA_TYPE.name} farmer for ${data.period}: ${existing ? 'yes' : 'no'}`);
 
                         const string_data = JSON.stringify(data);
 
@@ -153,10 +154,11 @@ async function UpdateMonthlyRankings() {
                                 }
                             });
                         } else {
+                            console.log(`[CACHER] Creating top ${_DATA_TYPE.name} farmer for ${data.period} ...`);
                             await InspectorScoreStat.create({
                                 key: `monthly_${_DATA_TYPE.name}_farmers`,
                                 period: data.period,
-                                data: string_data
+                                value: string_data
                             });
                         }
                         console.log(`[CACHER] Updated top ${_DATA_TYPE.name} farmer for ${data.period} ...`);
