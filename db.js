@@ -14,6 +14,7 @@ const { AltUserAchievementModel } = require("./Models/AltUserAchievementModel");
 const { AltUserBadgeModel } = require("./Models/AltUserBadgeModel");
 const { AltBeatmapModel } = require("./Models/AltBeatmapModel");
 const { InspectorClanRankingModel } = require("./Models/InspectorClanRankingModel");
+const { AltScoreModsModel } = require("./Models/AltScoreModsModel");
 require('dotenv').config();
 
 let databases = {
@@ -37,6 +38,7 @@ const InspectorClanRanking = InspectorClanRankingModel(databases.inspector);
 
 
 const AltScore = ScoreModel(databases.osuAlt);
+const AltScoreMods = AltScoreModsModel(databases.osuAlt);
 const AltUser = AltUserModel(databases.osuAlt);
 const AltPriorityUser = AltPriorityUserModel(databases.osuAlt);
 const AltUserAchievement = AltUserAchievementModel(databases.osuAlt);
@@ -59,6 +61,9 @@ AltUserAchievement.belongsTo(AltUser, { as: 'user', foreignKey: 'user_id' });
 
 AltUser.hasMany(AltUserBadge, { as: 'badges', foreignKey: 'user_id' });
 AltUserBadge.belongsTo(AltUser, { as: 'user', foreignKey: 'user_id' });
+
+AltScore.hasOne(AltScoreMods, { as: 'modern_mods', foreignKey: 'beatmap_id' });
+AltScoreMods.belongsTo(AltScore, { as: 'modern_mods', foreignKey: 'beatmap_id' });
 
 module.exports.AltScore = AltScore;
 module.exports.AltUser = AltUser;

@@ -10,6 +10,7 @@ const populationStatsCacher = require("./Jobs/JobPopulation.js");
 const systemStatsCacher = require("./Jobs/JobSystemStats.js");
 const clanRankingsCacher = require("./Jobs/JobClanRanking.js");
 const monthlyRankingsCacher = require("./Jobs/JobMonthlyRanking.js");
+const { BulkProcessStars } = require('./Jobs/JobProcessModdedStarratings.js');
 
 require('dotenv').config();
 
@@ -83,7 +84,20 @@ async function Loop() {
         console.log(`[CACHER] Scheduled ${cacher.cacher.name} to run every ${cacher.interval}`);
     }
 }
+
+async function ContinuousFunc() {
+    while(true){
+        try{
+            await BulkProcessStars();
+        }catch(err){
+            console.error(err);
+            //sleep for 1 minute
+            await new Promise(r => setTimeout(r, 60000));
+        }
+    }
+}
 if (process.env.NODE_ENV === 'production') {
     QueueProcessor();
     Loop();
+    ContinuousFunc();
 }
