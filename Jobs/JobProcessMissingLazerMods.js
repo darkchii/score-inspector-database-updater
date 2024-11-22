@@ -4,17 +4,24 @@ const { GetUserBeatmapScores } = require("../Osu");
 async function BulkProcessMissingLazerMods(amount = 100){
     //select scores that arent in scoresmods table, or where scores.date_played doesnt match scoresmods.date_attributes
     //check by user_id, beatmap_id
+    const columns = `
+        s.user_id,
+        s.beatmap_id,
+        s.date_played,
+        s.enabled_mods,
+        sm.user_id as sm_user_id,
+        sm.beatmap_id as sm_beatmap_id,
+        sm.date_played as sm_date_played,
+        sm.mods as sm_mods
+    `
     const query = `
         SELECT 
-            s.user_id,
-            s.beatmap_id,
-            s.date_played,
-            s.enabled_mods,
-            sm.user_id as sm_user_id,
-            sm.beatmap_id as sm_beatmap_id,
-            sm.date_played as sm_date_played,
-            sm.mods as sm_mods
+            ${columns}
         FROM scores s
+        INNER JOIN beatmaps b
+        ON s.beatmap_id = b.beatmap_id
+        INNER JOIN users2 u
+        ON s.user_id = u.user_id
         LEFT JOIN scoresmods sm
         ON s.user_id = sm.user_id
         AND s.beatmap_id = sm.beatmap_id
@@ -25,10 +32,33 @@ async function BulkProcessMissingLazerMods(amount = 100){
         LIMIT ${amount}
     `;
 
-    const scores = await Databases.osuAlt.query(query);
+    const query_count = `
+        SELECT 
+            COUNT(*) as count
+        FROM scores s
+        INNER JOIN beatmaps b
+        ON s.beatmap_id = b.beatmap_id
+        INNER JOIN users2 u
+        ON s.user_id = u.user_id
+        LEFT JOIN scoresmods sm
+        ON s.user_id = sm.user_id
+        AND s.beatmap_id = sm.beatmap_id
+        WHERE (sm.user_id IS NULL
+        OR s.date_played != sm.date_played)
+    `;
 
+    const scores = await Databases.osuAlt.query(query);
+    const count = await Databases.osuAlt.query(query_count);
+
+    let parsed = 0;
     if(scores[0].length > 0){
         for await(const score of scores[0]){
+            parsed++;
+            // let pretty_remaining = count[0][0].count - parsed;
+            let pretty_remaining = Number(count[0][0].count) - parsed;
+            //add commas etc
+            pretty_remaining = pretty_remaining.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
             const remote_score = await GetUserBeatmapScores(score.user_id, score.beatmap_id);
             let picked_score = null;
             for await(const s of remote_score.scores){
@@ -47,7 +77,7 @@ async function BulkProcessMissingLazerMods(amount = 100){
             }
             
             if(picked_score === null){
-                console.log(`[BULK PROCESS MISSING LAZER MODS] Unable to find score for user ${score.user_id} on beatmap ${score.beatmap_id}`);
+                console.log(`[BULK PROCESS MISSING LAZER MODS] Unable to find score for user ${score.user_id} on beatmap ${score.beatmap_id} (${pretty_remaining} remaining)`);
                 continue;
             }
 
@@ -84,9 +114,9 @@ async function BulkProcessMissingLazerMods(amount = 100){
                     });
                 }
                 
-                console.log(`[BULK PROCESS MISSING LAZER MODS] Created modded score for user ${score.user_id} on beatmap ${score.beatmap_id}`);
+                console.log(`[BULK PROCESS MISSING LAZER MODS] Created modded score for user ${score.user_id} on beatmap ${score.beatmap_id} (${pretty_remaining} remaining)`);
             }catch(err){
-                console.log(`[BULK PROCESS MISSING LAZER MODS] Unable to create modded score for user ${score.user_id} on beatmap ${score.beatmap_id}`);
+                console.log(`[BULK PROCESS MISSING LAZER MODS] Unable to create modded score for user ${score.user_id} on beatmap ${score.beatmap_id} (${pretty_remaining} remaining)`);
             }
 
         }
