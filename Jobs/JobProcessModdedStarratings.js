@@ -46,7 +46,7 @@ async function BulkProcessStars(amount = 200){
 
     if(fetched_ratings.length > 0){
         for await(const rating of fetched_ratings){
-            const {user_id, beatmap_id, star_rating, aim_difficulty, speed_difficulty, speed_note_count, flashlight_difficulty, aim_difficult_strain_count, speed_difficult_strain_count, approach_rate, overall_difficulty, drain_rate, max_combo} = rating;
+            const {user_id, beatmap_id, star_rating, aim_difficulty, speed_difficulty, speed_note_count, flashlight_difficulty, aim_difficult_strain_count, speed_difficult_strain_count, approach_rate, overall_difficulty, drain_rate, max_combo, slider_factor} = rating;
 
             //set to null if not found
             const query = `
@@ -62,6 +62,7 @@ async function BulkProcessStars(amount = 200){
                 overall_difficulty = ${overall_difficulty ?? null},
                 drain_rate = ${drain_rate ?? null},
                 max_combo = ${max_combo},
+                slider_factor = ${slider_factor},
                 date_attributes = date_played
                 WHERE user_id = ${user_id}
                 AND beatmap_id = ${beatmap_id}
