@@ -8,6 +8,11 @@ async function BulkProcessStars(amount = 200){
         LIMIT ${amount}
         `);
 
+    if(scores[0].length === 0){
+        await new Promise(r => setTimeout(r, 10000));
+        return;
+    }
+
     // console.log(`[BULK PROCESS STARS] Processing ${unparsed[0].length} scores ...`);
     
     let api_url = 'http://localhost:5001/attributes';
@@ -72,9 +77,6 @@ async function BulkProcessStars(amount = 200){
             console.log(`[BULK PROCESS STARS] Updated star rating for user ${user_id} on beatmap ${beatmap_id}`);
         }
     }
-
-    //sleep for 10 seconds
-    await new Promise(r => setTimeout(r, 10000));
 }
 
 module.exports = {
