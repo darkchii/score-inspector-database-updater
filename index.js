@@ -11,6 +11,7 @@ const systemStatsCacher = require("./Jobs/JobSystemStats.js");
 const clanRankingsCacher = require("./Jobs/JobClanRanking.js");
 const monthlyRankingsCacher = require("./Jobs/JobMonthlyRanking.js");
 const { BulkProcessStars } = require('./Jobs/JobProcessModdedStarratings.js');
+const { BulkProcessMissingLazerMods } = require('./Jobs/JobProcessMissingLazerMods.js');
 
 require('dotenv').config();
 
@@ -85,10 +86,22 @@ async function Loop() {
     }
 }
 
-async function ContinuousFunc() {
+async function ProcessStars() {
+    while (true) {
+        try {
+            await BulkProcessStars();
+        } catch (err) {
+            console.error(err);
+            //sleep for 1 minute
+            await new Promise(r => setTimeout(r, 60000));
+        }
+    }
+}
+
+async function ProcessMissingLazerMods() {
     while(true){
         try{
-            await BulkProcessStars();
+            await BulkProcessMissingLazerMods();
         }catch(err){
             console.error(err);
             //sleep for 1 minute
@@ -99,5 +112,6 @@ async function ContinuousFunc() {
 if (process.env.NODE_ENV === 'production') {
     QueueProcessor();
     Loop();
-    ContinuousFunc();
+    ProcessStars();
+    ProcessMissingLazerMods();
 }

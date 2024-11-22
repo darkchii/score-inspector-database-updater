@@ -107,6 +107,16 @@ async function GetBeatmapScores(beatmap_id, mode = 'osu', mods = null, timeout =
     }
 }
 
+module.exports.GetUserBeatmapScores = GetUserBeatmapScores;
+async function GetUserBeatmapScores(user_id, beatmap_id, mode = 'osu', mods = null, timeout = 10000) {
+    const res = await AuthorizedApiCall(`https://osu.ppy.sh/api/v2/beatmaps/${beatmap_id}/scores/users/${user_id}/all?ruleset=${mode}`, 'get', null, timeout);
+    try {
+        return res.data;
+    } catch (err) {
+        throw new Error('Unable to get user beatmaps: ' + err.message);
+    }
+}
+
 module.exports.GetOsuUsers = GetOsuUsers;
 async function GetOsuUsers(id_array, timeout = 5000) {
     let users = [];
@@ -178,118 +188,4 @@ async function GetCountryLeaderboard() {
     }catch(err){
         return null;
     }
-
-    // let countries = [];
-    // //5 pages to get
-    // for (let i = 1; i <= 5; i++) {
-    //     let pageString = `cursor[page]=${i}`
-    //     try {
-    //         const url = `https://osu.ppy.sh/api/v2/rankings/osu/country?${pageString}`;
-    //         const res = await AuthorizedApiCall(url, 'get', null, timeout);
-    //         countries = [...countries, ...res.data.ranking]
-    //     } catch (err) {
-    //         throw new Error('Unable to get data: ' + err.message);
-    //     }
-    // }
-
-    // //get data from AltUser
-    // if (countries !== null) {
-    //     try {
-    //         const rows = await AltUser.findAll({
-    //             attributes: [
-    //                 'country_code',
-    //                 'country_name',
-    //                 [Sequelize.fn('COUNT', Sequelize.col('country_code')), 'alt_players'],
-    //                 [Sequelize.fn('SUM', Sequelize.col('total_score')), 'total_score'],
-    //                 [Sequelize.fn('SUM', Sequelize.col('playcount')), 'playcount'],
-    //                 [Sequelize.fn('SUM', Sequelize.col('playtime')), 'playtime'],
-    //                 [Sequelize.fn('SUM', Sequelize.col('total_hits')), 'total_hits'],
-    //                 [Sequelize.fn('SUM', Sequelize.col('replays_watched')), 'replays_watched'],
-    //             ],
-    //             group: ['country_code', 'country_name']
-    //         });
-    //         let _data = rows;
-    //         countries.forEach((country) => {
-    //             let row = _data.find(row => row.country_code == country.country.code);
-    //             //convert everything to number
-    //             if (row) {
-    //                 country.alt_players = Number(row.dataValues.alt_players);
-    //                 country.total_score = Number(row.dataValues.total_score) ?? 0;
-    //                 country.playcount = Number(row.dataValues.playcount) ?? 0;
-    //                 country.playtime = Number(row.dataValues.playtime) ?? 0;
-    //                 country.total_hits = Number(row.dataValues.total_hits) ?? 0;
-    //                 country.replays_watched = Number(row.dataValues.replays_watched) ?? 0;
-    //                 country.perc_on_alt = (country.alt_players / country.active_users) * 100;
-    //             }
-    //         });
-    //     } catch (err) {
-    //         throw new Error('Unable to get data: ' + err.message);
-    //     }
-    // }
-
-    // //get data from AltScore
-    // if (countries !== null) {
-    //     try {
-    //         //raw query
-    //         const _data = await Raw(`
-    //         WITH MaxScores AS (
-    //             SELECT
-    //                 country_code,
-    //                 beatmap_id,
-    //                 MAX(score) AS max_score
-    //             FROM
-    //                 scores
-    //             INNER JOIN users2 ON scores.user_id = users2.user_id
-    //             GROUP BY
-    //                 users2.country_code,
-    //                 beatmap_id
-    //         )
-            
-    //         SELECT 
-    //             count(*) as alt_scores, 
-    //             sum(case when scores.rank LIKE 'XH' then 1 else 0 end) as ssh_count,
-    //             sum(case when scores.rank LIKE 'X' then 1 else 0 end) as ss_count,
-    //             sum(case when scores.rank LIKE 'SH' then 1 else 0 end) as sh_count,
-    //             sum(case when scores.rank LIKE 'S' then 1 else 0 end) as s_count,
-    //             sum(case when scores.rank LIKE 'A' then 1 else 0 end) as a_count,
-    //             sum(case when scores.rank LIKE 'B' then 1 else 0 end) as b_count,
-    //             sum(case when scores.rank LIKE 'C' then 1 else 0 end) as c_count,
-    //             sum(case when scores.rank LIKE 'D' then 1 else 0 end) as d_count,
-    //             avg(scores.accuracy) as avg_acc,
-    //             avg(scores.pp) as avg_pp,
-    //             users2.country_code,
-    //             COALESCE(max_scores.max_score, 0) AS national_score
-    //         FROM scores
-    //         INNER JOIN users2 ON scores.user_id = users2.user_id
-    //         LEFT JOIN MaxScores max_scores ON users2.country_code = max_scores.country_code AND scores.beatmap_id = max_scores.beatmap_id
-    //         GROUP BY users2.country_code;
-            
-    //         `, 'osuAlt');
-    //         console.log(_data);
-    //         countries.forEach((country) => {
-    //             let row = _data[0].find(row => row.country_code == country.country.code);
-    //             //convert everything to number
-    //             if (row) {
-    //                 country.alt_scores = Number(row.alt_scores);
-    //                 country.ss_total_count = Number(row.ssh_count) + Number(row.ss_count);
-    //                 country.s_total_count = Number(row.sh_count) + Number(row.s_count);
-    //                 country.ssh_count = Number(row.ssh_count) ?? 0;
-    //                 country.ss_count = Number(row.ss_count) ?? 0;
-    //                 country.sh_count = Number(row.sh_count) ?? 0;
-    //                 country.s_count = Number(row.s_count) ?? 0;
-    //                 country.a_count = Number(row.a_count) ?? 0;
-    //                 country.b_count = Number(row.b_count) ?? 0;
-    //                 country.c_count = Number(row.c_count) ?? 0;
-    //                 country.d_count = Number(row.d_count) ?? 0;
-    //                 country.avg_acc = Number(row.avg_acc) ?? 0;
-    //                 country.avg_pp = Number(row.avg_pp) ?? 0;
-    //                 country.national_score = Number(row.national_score) ?? 0;
-    //             }
-    //         });
-    //     }
-    //     catch (err) {
-    //         throw new Error('Unable to get data: ' + err.message);
-    //     }
-    // }
-    // return countries;
 }

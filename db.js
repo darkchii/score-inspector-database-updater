@@ -66,6 +66,7 @@ AltScore.hasOne(AltScoreMods, { as: 'modern_mods', foreignKey: 'beatmap_id' });
 AltScoreMods.belongsTo(AltScore, { as: 'modern_mods', foreignKey: 'beatmap_id' });
 
 module.exports.AltScore = AltScore;
+module.exports.AltScoreMods = AltScoreMods;
 module.exports.AltUser = AltUser;
 module.exports.AltPriorityUser = AltPriorityUser;
 module.exports.AltUserAchievement = AltUserAchievement;
