@@ -24,6 +24,7 @@ const AltScoreModsModel = (db) => db.define('ScoreMods', {
     approach_rate: { type: Sequelize.FLOAT },
     overall_difficulty: { type: Sequelize.FLOAT },
     drain_rate: { type: Sequelize.FLOAT },
+    slider_factor: { type: Sequelize.FLOAT },
     max_combo: { type: Sequelize.INTEGER },
     date_attributes: { type: Sequelize.DATE },
 }, {
