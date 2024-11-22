@@ -113,5 +113,5 @@ if (process.env.NODE_ENV === 'production') {
     QueueProcessor();
     Loop();
     ProcessStars();
+    ProcessMissingLazerMods();
 }
-ProcessMissingLazerMods();
