@@ -15,9 +15,9 @@ async function BulkProcessStars(amount = 200){
 
     // console.log(`[BULK PROCESS STARS] Processing ${unparsed[0].length} scores ...`);
     
-    let api_url = 'http://localhost:5001/attributes';
+    let api_url = 'http://localhost:5001';
     if(process.env.NODE_ENV === 'development'){
-        api_url = 'http://192.168.178.23:5001/attributes';
+        api_url = 'http://192.168.178.23:5001';
     }
 
     const fetched_ratings = [];
@@ -31,7 +31,7 @@ async function BulkProcessStars(amount = 200){
 
             const api_body = JSON.stringify({beatmap_id, ruleset, mods});
 
-            const response = await fetch(api_url, {
+            const response = await fetch(`${api_url}/attributes`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -40,12 +40,25 @@ async function BulkProcessStars(amount = 200){
             });
 
             const json = await response.json();
-            json.user_id = user_id;
-            json.beatmap_id = beatmap_id;
 
-            console.log(`[BULK PROCESS STARS] Fetched star rating for user ${user_id} on beatmap ${beatmap_id}`);
+            if(json?.star_rating >= 0){
+                json.user_id = user_id;
+                json.beatmap_id = beatmap_id;
+    
+                console.log(`[BULK PROCESS STARS] Fetched star rating for user ${user_id} on beatmap ${beatmap_id}`);
+    
+                fetched_ratings.push(json);
+            }else{
+                console.log(`[BULK PROCESS STARS] Failed to fetch star rating for user ${user_id} on beatmap ${beatmap_id}`);
 
-            fetched_ratings.push(json);
+                await fetch(`${api_url}/cache?beatmap_id=${beatmap_id}`, {
+                    method: 'DELETE',
+                }); 
+                //if the cacher fails, it still keeps the "failed" data
+                //which is star_rating = -1 and max_combo = 0, the rest is null
+                //this usually happens because the osu beatmap file didn't download for whatever reason
+                //its typically a one-off thing, so we can just delete the cache and try again later
+            }
         }
     }
 
