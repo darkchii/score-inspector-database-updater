@@ -112,6 +112,6 @@ async function ProcessMissingLazerMods() {
 if (process.env.NODE_ENV === 'production') {
     QueueProcessor();
     Loop();
-    // ProcessStars();
+    ProcessStars();
 }
 // ProcessMissingLazerMods();
