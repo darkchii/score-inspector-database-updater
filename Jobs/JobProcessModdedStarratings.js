@@ -63,7 +63,8 @@ async function BulkProcessStars(amount = 200){
     }
 
     if(fetched_ratings.length > 0){
-        for await(const rating of fetched_ratings){
+        const query_promises = [];
+        for(const rating of fetched_ratings){
             const {user_id, beatmap_id, star_rating, aim_difficulty, speed_difficulty, speed_note_count, flashlight_difficulty, aim_difficult_strain_count, speed_difficult_strain_count, approach_rate, overall_difficulty, drain_rate, max_combo, slider_factor} = rating;
 
             //set to null if not found
@@ -86,9 +87,22 @@ async function BulkProcessStars(amount = 200){
                 AND beatmap_id = ${beatmap_id}
             `;
 
-            await Databases.osuAlt.query(query);
-            console.log(`[BULK PROCESS STARS] Updated star rating for user ${user_id} on beatmap ${beatmap_id}`);
+            // await Databases.osuAlt.query(query);
+            // console.log(`[BULK PROCESS STARS] Updated star rating for user ${user_id} on beatmap ${beatmap_id}`);
+
+            query_promises.push(new Promise((resolve, reject) => {
+                Databases.osuAlt.query(query).then(() => {
+                    console.log(`[BULK PROCESS STARS] Updated star rating for user ${user_id} on beatmap ${beatmap_id}`);
+                    resolve();
+                }).catch((err) => {
+                    console.log(`[BULK PROCESS STARS] Failed to update star rating for user ${user_id} on beatmap ${beatmap_id}`);
+                    console.log(err);
+                    resolve();
+                });
+            }));
         }
+
+        await Promise.all(query_promises);
     }
 }
 
