@@ -189,3 +189,25 @@ async function GetCountryLeaderboard() {
         return null;
     }
 }
+
+const XP_POINTS_DISTRIBUTION = {
+    SS: 200,
+    S: 100,
+    A: 50,
+    RANKED_SCORE_BILLION: 0.000008,
+    TOTAL_SCORE_BILLION: 0.000004,
+    MEDAL: 20000,
+    PLAYTIME_HOUR: 300
+}
+module.exports.CalculateXP = function (total_ss, total_s, total_a, ranked_score, total_score, medals, playtime){
+    let xp = 0;
+    xp += total_ss * XP_POINTS_DISTRIBUTION.SS;
+    xp += total_s * XP_POINTS_DISTRIBUTION.S;
+    xp += total_a * XP_POINTS_DISTRIBUTION.A;
+    xp += (ranked_score / 1000000000) * XP_POINTS_DISTRIBUTION.RANKED_SCORE_BILLION;
+    xp += (total_score / 1000000000) * XP_POINTS_DISTRIBUTION.TOTAL_SCORE_BILLION;
+    xp += medals * XP_POINTS_DISTRIBUTION.MEDAL;
+    xp += (playtime / 3600) * XP_POINTS_DISTRIBUTION.PLAYTIME_HOUR;
+
+    return xp;
+}

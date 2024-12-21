@@ -1,5 +1,6 @@
 const { Op } = require("sequelize");
 const { InspectorOsuUser, AltScore, InspectorClanMember, InspectorClanStats, AltUser, AltUserAchievement, AltUserBadge } = require("./db");
+const { CalculateXP } = require("./Osu");
 
 module.exports.BatchUpdateUser = BatchUpdateUser;
 async function BatchUpdateUser(users) {
@@ -106,6 +107,7 @@ async function UpdateClan(id) {
         clears: 0,
         medals: 0,
         badges: 0,
+        xp: 0,
     };
 
     let temp_sum_pp = 0;
@@ -169,6 +171,7 @@ async function UpdateClan(id) {
         temp_sum_acc += u.hit_accuracy ?? 0;
     });
 
+
     data.accuracy = temp_sum_acc / filtered_local_users.length;
     if (data.accuracy === NaN || data.accuracy === Infinity || data.accuracy === -Infinity || data.accuracy === undefined || data.accuracy === null || data.accuracy === NaN || data.accuracy === 0
         || isNaN(data.accuracy) || data.accuracy === "NaN" || data.accuracy === "Infinity" || data.accuracy === "-Infinity" || data.accuracy === "undefined" || data.accuracy === "null" || data.accuracy === "NaN" || data.accuracy === "0"
@@ -183,17 +186,19 @@ async function UpdateClan(id) {
         }
     });
 
+    data.xp = CalculateXP(data.total_ss_both, data.total_s_both, data.total_a, data.ranked_score, data.total_score, data.medals, data.playtime);
+
     const badge_count = await AltUserBadge.count({
         where: {
             user_id: ids
         }
     });
 
-    if(medal_count){
+    if (medal_count) {
         data.medals = medal_count;
     }
 
-    if(badge_count){
+    if (badge_count) {
         data.badges = badge_count;
     }
 
@@ -211,7 +216,7 @@ async function UpdateClan(id) {
     });
 
     data.average_pp = total_pp;
-    
+
     let stats = await InspectorClanStats.findOne({
         where: {
             clan_id: id
