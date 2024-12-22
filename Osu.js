@@ -204,8 +204,8 @@ module.exports.CalculateXP = function (total_ss, total_s, total_a, ranked_score,
     xp += total_ss * XP_POINTS_DISTRIBUTION.SS;
     xp += total_s * XP_POINTS_DISTRIBUTION.S;
     xp += total_a * XP_POINTS_DISTRIBUTION.A;
-    xp += (ranked_score / 1000000000) * XP_POINTS_DISTRIBUTION.RANKED_SCORE_BILLION;
-    xp += (total_score / 1000000000) * XP_POINTS_DISTRIBUTION.TOTAL_SCORE_BILLION;
+    xp += ranked_score * XP_POINTS_DISTRIBUTION.RANKED_SCORE_BILLION;
+    xp += total_score * XP_POINTS_DISTRIBUTION.TOTAL_SCORE_BILLION;
     xp += medals * XP_POINTS_DISTRIBUTION.MEDAL;
     xp += (playtime / 3600) * XP_POINTS_DISTRIBUTION.PLAYTIME_HOUR;
 
