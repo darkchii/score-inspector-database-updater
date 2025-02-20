@@ -2,13 +2,11 @@
 //mainly to circumvent extremely slow sql queries that don't need to be live
 const schedule = require('node-schedule');
 const usersCacher = require("./Jobs/JobUsers.js");
-const clansCacher = require("./Jobs/JobClans.js");
 const performanceDistributionCacher = require("./Jobs/JobPerformanceDistribution.js");
 const scoreStatCacher = require("./Jobs/JobScoreStatistics.js");
 const scoreRankCacher = require("./Jobs/JobScoreRank.js");
 const populationStatsCacher = require("./Jobs/JobPopulation.js");
 const systemStatsCacher = require("./Jobs/JobSystemStats.js");
-const clanRankingsCacher = require("./Jobs/JobClanRanking.js");
 const monthlyRankingsCacher = require("./Jobs/JobMonthlyRanking.js");
 const { BulkProcessStars } = require('./Jobs/JobProcessModdedStarratings.js');
 const { BulkProcessMissingLazerMods } = require('./Jobs/JobProcessMissingLazerMods.js');

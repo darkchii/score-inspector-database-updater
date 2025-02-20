@@ -22,7 +22,9 @@ async function UpdateUsers() {
         'alt_sh_count', 
         'alt_a_count',
         'medals',
-        'badges'];
+        'badges',
+        'team_id'
+    ];
     const exclude_remote = [
         'global_ss_rank',
         'country_ss_rank',
