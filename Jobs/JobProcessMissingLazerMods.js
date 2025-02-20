@@ -2,7 +2,7 @@ const { Databases, AltScore, AltScoreMods } = require("../db");
 const { GetUserBeatmapScores } = require("../Osu");
 
 let offset = 0;
-async function BulkProcessMissingLazerMods(amount = 100){
+async function BulkProcessMissingLazerMods(amount = 5){
     //select scores that arent in scoresmods table, or where scores.date_played doesnt match scoresmods.date_attributes
     //check by user_id, beatmap_id
     const columns = `
@@ -46,6 +46,10 @@ async function BulkProcessMissingLazerMods(amount = 100){
             remote_scores[`${score.user_id}_${score.beatmap_id}`] = remote_score;
         }
 
+        if(Object.keys(remote_scores).length>0){
+            console.log(remote_scores[Object.keys(remote_scores)[0]]);
+            await new Promise(r => setTimeout(r, 1000000));
+        }
 
         for await(const score of scores[0]){
             const remote_score = remote_scores[`${score.user_id}_${score.beatmap_id}`];

@@ -3,9 +3,6 @@ const { ScoreModel } = require("./Models/ScoreModel");
 const { InspectorUserMilestoneModel } = require("./Models/InspectorUserMilestoneModel");
 const { OsuUserModel } = require("./Models/OsuUserModel");
 const { AltUserModel } = require("./Models/AltUserModel");
-const { InspectorClanModel } = require("./Models/InspectorClanModel");
-const { InspectorClanMemberModel } = require("./Models/InspectorClanMemberModel");
-const { InspectorClanStatsModel } = require("./Models/InspectorClanStatsModel");
 const { InspectorScoreStatModel } = require("./Models/InspectorScoreStatModel");
 const { InspectorHistoricalScoreRankModel } = require("./Models/InspectorHistoricalScoreRankMode");
 const { InspectorCountryStatModel } = require("./Models/InspectorCountryStatModel");
@@ -15,6 +12,7 @@ const { AltUserBadgeModel } = require("./Models/AltUserBadgeModel");
 const { AltBeatmapModel } = require("./Models/AltBeatmapModel");
 const { InspectorClanRankingModel } = require("./Models/InspectorClanRankingModel");
 const { AltScoreModsModel } = require("./Models/AltScoreModsModel");
+const { OsuTeamModel } = require("./Models/OsuTeamModel");
 require('dotenv').config();
 
 let databases = {
@@ -24,18 +22,14 @@ let databases = {
 module.exports.Databases = databases;
 
 const InspectorOsuUser = OsuUserModel(databases.inspector);
+const InspectorTeam = OsuTeamModel(databases.inspector);
 const InspectorUserMilestone = InspectorUserMilestoneModel(databases.inspector);
-const InspectorClan = InspectorClanModel(databases.inspector);
-const InspectorClanMember = InspectorClanMemberModel(databases.inspector);
-const InspectorClanStats = InspectorClanStatsModel(databases.inspector);
 const InspectorScoreStat = InspectorScoreStatModel(databases.inspector);
 const InspectorHistoricalScoreRankOsu = InspectorHistoricalScoreRankModel(databases.inspector, 'osu');
 const InspectorHistoricalScoreRankTaiko = InspectorHistoricalScoreRankModel(databases.inspector, 'taiko');
 const InspectorHistoricalScoreRankMania = InspectorHistoricalScoreRankModel(databases.inspector, 'mania');
 const InspectorHistoricalScoreRankFruits = InspectorHistoricalScoreRankModel(databases.inspector, 'fruits');
 const InspectorCountryStat = InspectorCountryStatModel(databases.inspector);
-const InspectorClanRanking = InspectorClanRankingModel(databases.inspector);
-
 
 const AltScore = ScoreModel(databases.osuAlt);
 const AltScoreMods = AltScoreModsModel(databases.osuAlt);
@@ -45,10 +39,8 @@ const AltUserAchievement = AltUserAchievementModel(databases.osuAlt);
 const AltUserBadge = AltUserBadgeModel(databases.osuAlt);
 const AltBeatmap = AltBeatmapModel(databases.osuAlt);
 
-InspectorClanStats.belongsTo(InspectorClan, { as: 'clan', foreignKey: 'clan_id', targetKey: 'id' });
-InspectorClan.hasOne(InspectorClanStats, { as: 'clan_stats', foreignKey: 'clan_id', sourceKey: 'id' });
-InspectorClanMember.hasOne(InspectorClan, { as: 'clan', foreignKey: 'id', sourceKey: 'clan_id' });
-InspectorClan.hasMany(InspectorClanMember, { as: 'clan_members', foreignKey: 'clan_id' });
+//InspectorOsuUser has team_id, InspectorTeam has id
+InspectorOsuUser.hasOne(InspectorTeam, { as: 'team', foreignKey: 'id' });
 
 AltUser.hasMany(AltScore, { as: 'scores', foreignKey: 'user_id' });
 AltScore.belongsTo(AltUser, { as: 'user', foreignKey: 'user_id' });
@@ -73,10 +65,7 @@ module.exports.AltUserAchievement = AltUserAchievement;
 module.exports.AltUserBadge = AltUserBadge;
 module.exports.AltBeatmap = AltBeatmap;
 module.exports.InspectorOsuUser = InspectorOsuUser;
-module.exports.InspectorClan = InspectorClan;
-module.exports.InspectorClanMember = InspectorClanMember;
-module.exports.InspectorClanStats = InspectorClanStats;
-module.exports.InspectorClanRanking = InspectorClanRanking;
+module.exports.InspectorTeam = InspectorTeam;
 module.exports.InspectorUserMilestone = InspectorUserMilestone;
 module.exports.InspectorScoreStat = InspectorScoreStat;
 module.exports.InspectorHistoricalScoreRankOsu = InspectorHistoricalScoreRankOsu;

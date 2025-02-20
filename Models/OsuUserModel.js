@@ -2,6 +2,7 @@ const { Sequelize } = require("sequelize");
 
 const OsuUserModel = (db) => db.define('OsuUser', {
     user_id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true, },
+    team_id: { type: Sequelize.INTEGER, allowNull: false, },
     username: { type: Sequelize.STRING, allowNull: false, },
     post_count: { type: Sequelize.INTEGER, allowNull: false, },
     comments_count: { type: Sequelize.INTEGER, allowNull: false, },

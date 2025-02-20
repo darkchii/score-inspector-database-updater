@@ -8,6 +8,7 @@ const scoreRankCacher = require("./Jobs/JobScoreRank.js");
 const populationStatsCacher = require("./Jobs/JobPopulation.js");
 const systemStatsCacher = require("./Jobs/JobSystemStats.js");
 const monthlyRankingsCacher = require("./Jobs/JobMonthlyRanking.js");
+const teamCacher = require("./Jobs/JobTeams.js");
 const { BulkProcessStars } = require('./Jobs/JobProcessModdedStarratings.js');
 const { BulkProcessMissingLazerMods } = require('./Jobs/JobProcessMissingLazerMods.js');
 
@@ -23,7 +24,6 @@ const Cachers = [
     //(this is a very heavy job)
     { cacher: monthlyRankingsCacher, interval: '0 */4 * * *', data: [], parallel: true, onStart: true },
     { cacher: usersCacher, interval: '0 */1 * * *', data: [], onStart: true }, //every 1 hour
-    // { cacher: clansCacher, interval: '0 */1 * * *', data: [], onStart: true }, //every 1 hour
     { cacher: performanceDistributionCacher, interval: '0 */4 * * *', data: [], onStart: true }, //every 4 hours
     { cacher: scoreStatCacher, interval: '0 * * * *', data: ['24h', '7d', 'all'], onStart: true },
     { cacher: scoreStatCacher, interval: '*/30 * * * *', data: ['30min'], onStart: true },
@@ -33,8 +33,12 @@ const Cachers = [
     { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'mania' },
     { cacher: populationStatsCacher, interval: '0 */4 * * *', data: [] }, //every 4 hours
     { cacher: systemStatsCacher, interval: '*/30 * * * *', data: [], timeout: 20 }, //needs timeout, for some reason it keeps running forever on very rare occasions
-    //always run this at hh:59
-    // { cacher: clanRankingsCacher, interval: '59 * * * *', data: [] },
+]
+
+//these just run again when finished, not relying on a schedule
+//useful with slow jobs that are unpredictable in time
+const ConstantCachers = [
+    { cacher: teamCacher, interval: '0 */1 * * *', data: [], wait: 60000 }
 ]
 
 const jobQueue = [];
@@ -84,6 +88,28 @@ async function Loop() {
     }
 }
 
+function ConstantLoop() {
+    //constantcachers dont need to store in jobqueue
+    //just re-run the function when it's done, but always independent and async from each other
+    for (const cacher of ConstantCachers) {
+        (async () => {
+            while (true) {
+                try{
+                    console.log(`[CACHER] Running ${cacher.cacher.name} ...`);
+                    await cacher.cacher.func(cacher.data);
+                    console.log(`[CACHER] Finished ${cacher.cacher.name}`);
+                    //artificial delay to prevent spamming (like debug mode)
+                }catch(e){
+                    console.error(`[CACHER] Error running ${cacher.cacher.name}`);
+                    console.error(e);
+                    //artificial delay to prevent spamming (like debug mode)
+                }
+                await new Promise(r => setTimeout(r, cacher.wait || 1000));
+            }
+        })();
+    }
+}
+
 async function ProcessStars() {
     while (true) {
         try {
@@ -97,10 +123,10 @@ async function ProcessStars() {
 }
 
 async function ProcessMissingLazerMods() {
-    while(true){
-        try{
+    while (true) {
+        try {
             await BulkProcessMissingLazerMods();
-        }catch(err){
+        } catch (err) {
             console.error(err);
             //sleep for 1 minute
             await new Promise(r => setTimeout(r, 60000));
@@ -109,7 +135,13 @@ async function ProcessMissingLazerMods() {
 }
 if (process.env.NODE_ENV === 'production') {
     QueueProcessor();
+    ConstantLoop()
     Loop();
     ProcessStars();
+} else {
+    console.log('Not in production mode, not starting cacher');
+
+    //test
+    // ConstantLoop()
 }
 // ProcessMissingLazerMods();
