@@ -19,7 +19,6 @@ const AltScoreModsModel = (db) => db.define('ScoreMods', {
     speed_difficulty: { type: Sequelize.FLOAT },
     speed_note_count: { type: Sequelize.FLOAT },
     flashlight_difficulty: { type: Sequelize.FLOAT },
-    aim_difficult_slider_count: { type: Sequelize.FLOAT },
     aim_difficult_strain_count: { type: Sequelize.FLOAT },
     speed_difficult_strain_count: { type: Sequelize.FLOAT },
     approach_rate: { type: Sequelize.FLOAT },
