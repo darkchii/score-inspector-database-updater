@@ -39,18 +39,11 @@ async function UpdateSystemInfo(){
         }
     });
 
-    const modded_sr_recalc = await AltScoreMods.count({
-        where: {
-            recalc: true
-        }
-    });
-
     console.log(`Score count: ${score_count}`);
     console.log(`Lazerified score count: ${lazerified_score_count}`);
     console.log(`User count: ${user_count}`);
     console.log(`Priority user count: ${priority_user_count}`);
     console.log(`Beatmap count: ${beatmap_count}`);
-    console.log(`Modded star rating recalc count: ${modded_sr_recalc}`);
 
     if(exists){
         await InspectorScoreStat.update({
@@ -59,8 +52,7 @@ async function UpdateSystemInfo(){
                 lazerified_score_count,
                 user_count,
                 priority_user_count,
-                beatmap_count,
-                modded_sr_recalc
+                beatmap_count
             })
         }, {
             where: {
@@ -77,8 +69,7 @@ async function UpdateSystemInfo(){
                 lazerified_score_count,
                 user_count,
                 priority_user_count,
-                beatmap_count,
-                modded_sr_recalc
+                beatmap_count
             })
         });
     }
