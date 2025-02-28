@@ -30,6 +30,7 @@ const AltScoreModsModel = (db) => db.define('ScoreMods', {
     date_attributes: { type: Sequelize.DATE },
     statistics: { type: Sequelize.JSONB },
     maximum_statistics: { type: Sequelize.JSONB },
+    recalc: { type: Sequelize.BOOLEAN, defaultValue: false },
 }, {
     tableName: 'scoresmods',
     timestamps: false,

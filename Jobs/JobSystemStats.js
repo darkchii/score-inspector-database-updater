@@ -31,6 +31,11 @@ async function UpdateSystemInfo(){
             mode: 0
         }
     });
+    const modded_sr_recalc_count = await AltScoreMods.count({
+        where: {
+            recalc: true
+        }
+    });
 
     const exists = await InspectorScoreStat.findOne({
         where: {
@@ -44,16 +49,20 @@ async function UpdateSystemInfo(){
     console.log(`User count: ${user_count}`);
     console.log(`Priority user count: ${priority_user_count}`);
     console.log(`Beatmap count: ${beatmap_count}`);
+    console.log(`Modded star rating recalc count: ${modded_sr_recalc_count}`);
+
+    let values = {
+        score_count,
+        lazerified_score_count,
+        user_count,
+        priority_user_count,
+        beatmap_count,
+        modded_sr_recalc_count
+    };
 
     if(exists){
         await InspectorScoreStat.update({
-            value: JSON.stringify({
-                score_count,
-                lazerified_score_count,
-                user_count,
-                priority_user_count,
-                beatmap_count
-            })
+            value: JSON.stringify(values)
         }, {
             where: {
                 key: 'system_info',
@@ -64,13 +73,7 @@ async function UpdateSystemInfo(){
         await InspectorScoreStat.create({
             key: 'system_info',
             period: 'any',
-            value: JSON.stringify({
-                score_count,
-                lazerified_score_count,
-                user_count,
-                priority_user_count,
-                beatmap_count
-            })
+            value: JSON.stringify(values)
         });
     }
 }
