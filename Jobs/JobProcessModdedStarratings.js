@@ -6,7 +6,8 @@ async function BulkProcessStars(amount = 200) {
         WHERE 
         star_rating IS NULL OR 
         date_played != date_attributes OR 
-        recalc = 1
+        recalc = TRUE
+        ORDER BY date_played DESC
         LIMIT ${amount}
         `);
 
@@ -100,7 +101,8 @@ async function BulkProcessStars(amount = 200) {
                 drain_rate = ${drain_rate ?? null},
                 max_combo = ${max_combo},
                 slider_factor = ${slider_factor},
-                date_attributes = date_played
+                date_attributes = date_played,
+                recalc = FALSE
                 WHERE user_id = ${user_id}
                 AND beatmap_id = ${beatmap_id}
             `;
