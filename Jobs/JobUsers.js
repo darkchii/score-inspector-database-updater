@@ -1,6 +1,6 @@
 const { Op, Sequelize } = require("sequelize");
 const { InspectorOsuUser, AltUser, InspectorUserMilestone } = require("../db");
-const { UpdateUser, ACHIEVEMENT_INTERVALS, BatchUpdateUser } = require("../Helper");
+const { UpdateUser, ACHIEVEMENT_INTERVALS, BatchUpdateUserAltData } = require("../Helper");
 
 const cacher = {
     func: UpdateUsers,
@@ -168,7 +168,7 @@ async function Loop() {
                 continue;
             }
             await Promise.race([
-                BatchUpdateUser(users),
+                BatchUpdateUserAltData(users),
                 new Promise((resolve, reject) => {
                     setTimeout(() => {
                         reject(new Error('User update took longer than 10 seconds, skipping to next user'));
