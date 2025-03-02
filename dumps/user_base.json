@@ -1,0 +1,155 @@
+[
+    {
+        "avatar_url": "https://a.ppy.sh/10153735?1740059729.jpeg",
+        "country_code": "NL",
+        "default_group": "default",
+        "id": 10153735,
+        "is_active": true,
+        "is_bot": false,
+        "is_deleted": false,
+        "is_online": false,
+        "is_supporter": true,
+        "last_visit": null,
+        "pm_friends_only": false,
+        "profile_colour": null,
+        "username": "Alya Kujou",
+        "country": {
+            "code": "NL",
+            "name": "Netherlands"
+        },
+        "cover": {
+            "custom_url": "https://assets.ppy.sh/user-profile-covers/10153735/a06fec0ce0e07b54fa03d7f50932f3e1656eacee7c1bd7a89dbfdf4ac1e0efc4.png",
+            "url": "https://assets.ppy.sh/user-profile-covers/10153735/a06fec0ce0e07b54fa03d7f50932f3e1656eacee7c1bd7a89dbfdf4ac1e0efc4.png",
+            "id": null
+        },
+        "groups": [],
+        "statistics_rulesets": {
+            "osu": {
+                "count_100": 565992,
+                "count_300": 12039381,
+                "count_50": 48850,
+                "count_miss": 164002,
+                "level": {
+                    "current": 100,
+                    "progress": 83
+                },
+                "global_rank": 183675,
+                "global_rank_exp": null,
+                "pp": 3679.86,
+                "pp_exp": 0,
+                "ranked_score": 72469550087,
+                "hit_accuracy": 98.8745,
+                "play_count": 90899,
+                "play_time": 5273804,
+                "total_score": 110726527927,
+                "total_hits": 12654223,
+                "maximum_combo": 5186,
+                "replays_watched_by_others": 197,
+                "is_ranked": true,
+                "grade_counts": {
+                    "ss": 22073,
+                    "ssh": 1000,
+                    "s": 4119,
+                    "sh": 474,
+                    "a": 1135
+                }
+            },
+            "taiko": {
+                "count_100": 731,
+                "count_300": 3725,
+                "count_50": 0,
+                "count_miss": 280,
+                "level": {
+                    "current": 7,
+                    "progress": 98
+                },
+                "global_rank": null,
+                "global_rank_exp": null,
+                "pp": 0,
+                "pp_exp": 0,
+                "ranked_score": 1354838,
+                "hit_accuracy": 92.572,
+                "play_count": 75,
+                "play_time": 2982,
+                "total_score": 3067199,
+                "total_hits": 4456,
+                "maximum_combo": 133,
+                "replays_watched_by_others": 0,
+                "is_ranked": false,
+                "grade_counts": {
+                    "ss": 0,
+                    "ssh": 0,
+                    "s": 6,
+                    "sh": 0,
+                    "a": 13
+                }
+            },
+            "fruits": {
+                "count_100": 15867,
+                "count_300": 271187,
+                "count_50": 263327,
+                "count_miss": 9772,
+                "level": {
+                    "current": 55,
+                    "progress": 59
+                },
+                "global_rank": 14134,
+                "global_rank_exp": null,
+                "pp": 1232.63,
+                "pp_exp": 0,
+                "ranked_score": 703647271,
+                "hit_accuracy": 99.6783,
+                "play_count": 1595,
+                "play_time": 74838,
+                "total_score": 1130095084,
+                "total_hits": 550381,
+                "maximum_combo": 1201,
+                "replays_watched_by_others": 2,
+                "is_ranked": true,
+                "grade_counts": {
+                    "ss": 79,
+                    "ssh": 0,
+                    "s": 266,
+                    "sh": 0,
+                    "a": 84
+                }
+            },
+            "mania": {
+                "count_100": 9370,
+                "count_300": 48052,
+                "count_50": 1232,
+                "count_miss": 1334,
+                "level": {
+                    "current": 32,
+                    "progress": 87
+                },
+                "global_rank": 335321,
+                "global_rank_exp": null,
+                "pp": 423.542,
+                "pp_exp": 0,
+                "ranked_score": 136284735,
+                "hit_accuracy": 96.988,
+                "play_count": 499,
+                "play_time": 31483,
+                "total_score": 231567018,
+                "total_hits": 58654,
+                "maximum_combo": 1659,
+                "replays_watched_by_others": 0,
+                "is_ranked": true,
+                "grade_counts": {
+                    "ss": 3,
+                    "ssh": 0,
+                    "s": 86,
+                    "sh": 0,
+                    "a": 39
+                }
+            }
+        },
+        "team": {
+            "flag_url": "https://assets.ppy.sh/teams/flag/439/30dd2e3d2768deed4f21c7953804819f9a4731159ae12256767b4e48988af409.png",
+            "id": 439,
+            "name": "SS",
+            "short_name": "SS"
+        }
+    }
+]

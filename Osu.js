@@ -51,7 +51,7 @@ async function AuthorizedApiCall(url, type = 'get', api_version = null, timeout 
         Accept: 'application/json',
         Authorization: `Bearer ${stored_token}`,
         "Accept-Encoding": "gzip,deflate,compress", //axios fix (https://github.com/axios/axios/issues/5346)
-        'x-api-version': 20240130
+        'x-api-version': 20240529
     };
     if (api_version != null) {
         headers['x-api-version'] = api_version;
@@ -141,54 +141,6 @@ async function GetOsuUsers(id_array, timeout = 5000) {
     }
 
     return users;
-}
-
-module.exports.GetDailyUser = GetDailyUser;
-async function GetDailyUser(user_id, mode = 0, key = 'id', timeout = 1000) {
-    try {
-        const res = await axios.get(`https://osudaily.net/api/user.php?k=${process.env.OSUDAILY_API}&u=${user_id}&m=${mode}&min=0`, { timeout });
-        return res.data;
-    } catch (err) {
-        return null;
-    }
-}
-
-module.exports.GetCountryLeaderboard = GetCountryLeaderboard;
-async function GetCountryLeaderboard() {
-    try{
-        const data = await InspectorCountryStat.findAll();
-
-        //merge by country code
-        let merged = [];
-        data.forEach((row) => {
-            let country = merged.find(c => c.country_code == row.country_code);
-            if(country){
-                country[row.stat] = row.value;
-            }else{
-                merged.push({
-                    country_code: row.country_code,
-                    [row.stat]: row.value
-                });
-            }
-        });
-
-        let regionNames = new Intl.DisplayNames(['en'], {type: 'region'});
-        //add country name to each row
-        merged.forEach((row) => {
-            row.country = {
-                code: row.country_code,
-                name: regionNames.of(row.country_code)
-            }
-
-            row.ss_total_count = row.ssh_count + row.ss_count;
-            row.s_total_count = row.sh_count + row.s_count;
-            row.code = row.country_code;
-        });
-
-        return merged;
-    }catch(err){
-        return null;
-    }
 }
 
 const XP_POINTS_DISTRIBUTION = {

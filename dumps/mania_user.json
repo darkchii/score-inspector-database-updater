@@ -1,0 +1,1407 @@
+{
+    "avatar_url": "https://a.ppy.sh/10153735?1740059729.jpeg",
+    "country_code": "NL",
+    "default_group": "default",
+    "id": 10153735,
+    "is_active": true,
+    "is_bot": false,
+    "is_deleted": false,
+    "is_online": false,
+    "is_supporter": true,
+    "last_visit": null,
+    "pm_friends_only": false,
+    "profile_colour": null,
+    "username": "Alya Kujou",
+    "cover_url": "https://assets.ppy.sh/user-profile-covers/10153735/a06fec0ce0e07b54fa03d7f50932f3e1656eacee7c1bd7a89dbfdf4ac1e0efc4.png",
+    "discord": null,
+    "has_supported": true,
+    "interests": null,
+    "join_date": "2017-05-04T21:05:02+00:00",
+    "location": "Veendam",
+    "max_blocks": 200,
+    "max_friends": 1000,
+    "occupation": null,
+    "playmode": "osu",
+    "playstyle": null,
+    "post_count": 0,
+    "profile_hue": 330,
+    "profile_order": [
+        "me",
+        "recent_activity",
+        "historical",
+        "top_ranks",
+        "medals",
+        "beatmaps",
+        "kudosu"
+    ],
+    "title": null,
+    "title_url": null,
+    "twitter": "id2amayakase",
+    "website": "https://score.kirino.sh",
+    "country": {
+        "code": "NL",
+        "name": "Netherlands"
+    },
+    "cover": {
+        "custom_url": "https://assets.ppy.sh/user-profile-covers/10153735/a06fec0ce0e07b54fa03d7f50932f3e1656eacee7c1bd7a89dbfdf4ac1e0efc4.png",
+        "url": "https://assets.ppy.sh/user-profile-covers/10153735/a06fec0ce0e07b54fa03d7f50932f3e1656eacee7c1bd7a89dbfdf4ac1e0efc4.png",
+        "id": null
+    },
+    "kudosu": {
+        "available": 0,
+        "total": 0
+    },
+    "account_history": [],
+    "active_tournament_banner": null,
+    "active_tournament_banners": [],
+    "badges": [],
+    "beatmap_playcounts_count": 37213,
+    "comments_count": 4,
+    "daily_challenge_user_stats": {
+        "daily_streak_best": 3,
+        "daily_streak_current": 0,
+        "last_update": "2025-02-05T00:00:00+00:00",
+        "last_weekly_streak": "2025-01-30T00:00:00+00:00",
+        "playcount": 15,
+        "top_10p_placements": 0,
+        "top_50p_placements": 8,
+        "user_id": 10153735,
+        "weekly_streak_best": 5,
+        "weekly_streak_current": 0
+    },
+    "favourite_beatmapset_count": 6,
+    "follower_count": 404,
+    "graveyard_beatmapset_count": 16,
+    "groups": [],
+    "guest_beatmapset_count": 0,
+    "loved_beatmapset_count": 0,
+    "mapping_follower_count": 3,
+    "monthly_playcounts": [
+        {
+            "start_date": "2017-05-01",
+            "count": 1284
+        },
+        {
+            "start_date": "2017-06-01",
+            "count": 1393
+        },
+        {
+            "start_date": "2017-07-01",
+            "count": 1918
+        },
+        {
+            "start_date": "2017-08-01",
+            "count": 370
+        },
+        {
+            "start_date": "2017-09-01",
+            "count": 81
+        },
+        {
+            "start_date": "2017-10-01",
+            "count": 99
+        },
+        {
+            "start_date": "2017-11-01",
+            "count": 119
+        },
+        {
+            "start_date": "2017-12-01",
+            "count": 1186
+        },
+        {
+            "start_date": "2018-01-01",
+            "count": 1782
+        },
+        {
+            "start_date": "2018-02-01",
+            "count": 1817
+        },
+        {
+            "start_date": "2018-03-01",
+            "count": 1375
+        },
+        {
+            "start_date": "2018-04-01",
+            "count": 1491
+        },
+        {
+            "start_date": "2018-05-01",
+            "count": 1150
+        },
+        {
+            "start_date": "2018-06-01",
+            "count": 1414
+        },
+        {
+            "start_date": "2018-07-01",
+            "count": 683
+        },
+        {
+            "start_date": "2019-02-01",
+            "count": 279
+        },
+        {
+            "start_date": "2019-03-01",
+            "count": 1376
+        },
+        {
+            "start_date": "2019-04-01",
+            "count": 629
+        },
+        {
+            "start_date": "2019-05-01",
+            "count": 700
+        },
+        {
+            "start_date": "2019-06-01",
+            "count": 331
+        },
+        {
+            "start_date": "2019-07-01",
+            "count": 741
+        },
+        {
+            "start_date": "2019-08-01",
+            "count": 1117
+        },
+        {
+            "start_date": "2019-09-01",
+            "count": 138
+        },
+        {
+            "start_date": "2019-10-01",
+            "count": 2016
+        },
+        {
+            "start_date": "2019-11-01",
+            "count": 1372
+        },
+        {
+            "start_date": "2019-12-01",
+            "count": 1748
+        },
+        {
+            "start_date": "2020-02-01",
+            "count": 448
+        },
+        {
+            "start_date": "2020-03-01",
+            "count": 161
+        },
+        {
+            "start_date": "2020-04-01",
+            "count": 342
+        },
+        {
+            "start_date": "2020-05-01",
+            "count": 1319
+        },
+        {
+            "start_date": "2020-06-01",
+            "count": 1844
+        },
+        {
+            "start_date": "2020-07-01",
+            "count": 1640
+        },
+        {
+            "start_date": "2020-08-01",
+            "count": 243
+        },
+        {
+            "start_date": "2020-12-01",
+            "count": 865
+        },
+        {
+            "start_date": "2021-01-01",
+            "count": 1407
+        },
+        {
+            "start_date": "2021-02-01",
+            "count": 951
+        },
+        {
+            "start_date": "2021-03-01",
+            "count": 3817
+        },
+        {
+            "start_date": "2021-04-01",
+            "count": 4385
+        },
+        {
+            "start_date": "2021-05-01",
+            "count": 1412
+        },
+        {
+            "start_date": "2021-06-01",
+            "count": 1385
+        },
+        {
+            "start_date": "2021-07-01",
+            "count": 2978
+        },
+        {
+            "start_date": "2021-08-01",
+            "count": 774
+        },
+        {
+            "start_date": "2021-09-01",
+            "count": 1512
+        },
+        {
+            "start_date": "2021-10-01",
+            "count": 1075
+        },
+        {
+            "start_date": "2021-11-01",
+            "count": 1349
+        },
+        {
+            "start_date": "2021-12-01",
+            "count": 1876
+        },
+        {
+            "start_date": "2022-01-01",
+            "count": 3723
+        },
+        {
+            "start_date": "2022-02-01",
+            "count": 367
+        },
+        {
+            "start_date": "2022-03-01",
+            "count": 20
+        },
+        {
+            "start_date": "2022-04-01",
+            "count": 2140
+        },
+        {
+            "start_date": "2022-05-01",
+            "count": 371
+        },
+        {
+            "start_date": "2022-07-01",
+            "count": 190
+        },
+        {
+            "start_date": "2022-08-01",
+            "count": 1854
+        },
+        {
+            "start_date": "2022-09-01",
+            "count": 2558
+        },
+        {
+            "start_date": "2022-10-01",
+            "count": 1158
+        },
+        {
+            "start_date": "2022-11-01",
+            "count": 562
+        },
+        {
+            "start_date": "2022-12-01",
+            "count": 200
+        },
+        {
+            "start_date": "2023-01-01",
+            "count": 1674
+        },
+        {
+            "start_date": "2023-02-01",
+            "count": 343
+        },
+        {
+            "start_date": "2023-03-01",
+            "count": 288
+        },
+        {
+            "start_date": "2023-04-01",
+            "count": 636
+        },
+        {
+            "start_date": "2023-05-01",
+            "count": 470
+        },
+        {
+            "start_date": "2023-06-01",
+            "count": 542
+        },
+        {
+            "start_date": "2023-07-01",
+            "count": 711
+        },
+        {
+            "start_date": "2023-08-01",
+            "count": 722
+        },
+        {
+            "start_date": "2023-09-01",
+            "count": 73
+        },
+        {
+            "start_date": "2023-10-01",
+            "count": 601
+        },
+        {
+            "start_date": "2023-11-01",
+            "count": 3206
+        },
+        {
+            "start_date": "2023-12-01",
+            "count": 2924
+        },
+        {
+            "start_date": "2024-01-01",
+            "count": 1303
+        },
+        {
+            "start_date": "2024-04-01",
+            "count": 1402
+        },
+        {
+            "start_date": "2024-05-01",
+            "count": 2096
+        },
+        {
+            "start_date": "2024-06-01",
+            "count": 851
+        },
+        {
+            "start_date": "2024-07-01",
+            "count": 842
+        },
+        {
+            "start_date": "2024-08-01",
+            "count": 141
+        },
+        {
+            "start_date": "2024-09-01",
+            "count": 121
+        },
+        {
+            "start_date": "2024-10-01",
+            "count": 1079
+        },
+        {
+            "start_date": "2024-11-01",
+            "count": 1214
+        },
+        {
+            "start_date": "2024-12-01",
+            "count": 810
+        },
+        {
+            "start_date": "2025-01-01",
+            "count": 808
+        },
+        {
+            "start_date": "2025-02-01",
+            "count": 653
+        }
+    ],
+    "nominated_beatmapset_count": 0,
+    "page": {
+        "html": "<div class='bbcode bbcode--profile-page'><div class=\"well\"><strong>🌸 Links</strong><br /><a rel=\"nofollow\" href=\"https://score.kirino.sh\">osu! scores inspector</a> &lt;--- my site, if you need anything, ask me on osu!alt discord.<br /><a rel=\"nofollow\" href=\"https://github.com/darkchii/score-inspector-extension\">osu! scores inspector extension</a> Browser extension to add osu!alt and osu! scores inspector stats to osu! website (B,C,D ranks, etc.)<br /><a rel=\"nofollow\" href=\"https://discord.gg/VZWRZZXcW4\">osu!alternative Discord</a><br /><br />0-2* completion: 83.807% - 15,314/18,273<br /><em>(17/02/2025)</em><br /><br />2025 Goals:<br />- 30.000 Total SS (extreme difficulty goal, likely not gonna happen)<br />- Remain #1 NL SS<br />- Complete all under 2* maps<br />- Reach 100.000 playcount<br />- Reach 80 Billion ranked score<br />- Reach 120 Billion total score (very mayhaps level 101)</div><div class=\"js-spoilerbox bbcode-spoilerbox\"><a class=\"js-spoilerbox__link bbcode-spoilerbox__link\" href=\"#\"><span class=\"bbcode-spoilerbox__link-icon\"></span>🌸 Goals</a><div class=\"js-spoilerbox__body bbcode-spoilerbox__body\"><div class=\"well\"><strong>24.000 SS</strong> • n/a<br /><strong>23.000 SS</strong> • 17/02/2025<br /><strong>22.000 SS</strong> • 11/09/2024<br /><strong>21.000 SS</strong> • 10/12/2024<br /><strong>20.000 SS</strong> • 05/13/2024<br /><strong>19.000 SS</strong> • 04/29/2024<br /><strong>18.000 SS</strong> • 12/27/2023<br /><strong>17.000 SS</strong> • 12/18/2023<br /><strong>16.000 SS</strong> • 11/27/2023<br /><strong>15.000 SS</strong> • 11/14/2023<br /><strong>14.000 SS</strong> • 08/15/2023<br /><strong>13.000 SS</strong> • 01/31/2023<br /><strong>12.000 SS</strong> • 11/06/2022<br /><strong>11.000 SS</strong> • 09/12/2022<br /><strong>10.000 SS</strong> • 08/11/2022<br /><strong>9.000 SS</strong> • 04/21/2022<br /><strong>8.000 SS</strong> • 01/27/2022<br /><strong>7.000 SS</strong> • 01/21/2022<br /><strong>6.000 SS</strong> • 12/17/2021<br /><strong>5.000 SS</strong> • 07/21/2021<br /><strong>4.000 SS</strong> • 07/05/2021<br /><strong>3.000 SS</strong> • 05/04/2021<br /><strong>2.000 SS</strong> • 04/16/2021<br /><strong>1.000 SS</strong> • 10/12/2019</div></div></div><div class=\"js-spoilerbox bbcode-spoilerbox\"><a class=\"js-spoilerbox__link bbcode-spoilerbox__link\" href=\"#\"><span class=\"bbcode-spoilerbox__link-icon\"></span>🌸 Collabs</a><div class=\"js-spoilerbox__body bbcode-spoilerbox__body\"><div class=\"well\"><div class=\"imagemap\"><img class=\"imagemap__image\" loading=\"lazy\" src=\"https://i.ppy.sh/4c62fe26c924c686207d9fcab0e2025d5f122d80/68747470733a2f2f7473756d696b692e732d756c2e65752f323268626a676672\" width=\"1080\" height=\"1077\" alt=\"68747470733a2f2f7473756d696b692e732d756c2e65752f323268626a676672\" /><a class=\"imagemap__link\" href=\"https://osu.ppy.sh/users/15434024\" style=\"left:0%;top:0%;width:50%;height:100%;\" title=\"Errxr\"></a><a class=\"imagemap__link\" href=\"https://osu.ppy.sh/users/10153735\" style=\"left:50%;top:0%;width:50%;height:100%;\" title=\"Amayakase\"></a></div></div><div class=\"well\"><center><br /><strong>12/15/2023</strong><br /><a rel=\"nofollow\" href=\"https://osu.ppy.sh/users/3819901\"><img alt=\"\" src=\"https://i.ppy.sh/0f383054b1aafc7797d0248ee7ccf2588b6801b2/68747470733a2f2f692e6b6972696e6f2e73682f692f65326132666133312d306564312d343364312d383635392d6432326262386665333934372e706e67\" loading=\"lazy\" /></a><a rel=\"nofollow\" href=\"https://osu.ppy.sh/users/10153735\"><img alt=\"\" src=\"https://i.ppy.sh/29993da7e199c3e4458b4299cd3bc08a06422bbe/68747470733a2f2f692e6b6972696e6f2e73682f692f39643233313266312d393963352d343332332d393936372d3235633565636439346137332e706e67\" loading=\"lazy\" /></a></center></div><div class=\"well\">Collab with <a class=\"user-name js-usercard\" data-user-id=\"12200180\" href=\"https://osu.ppy.sh/users/12200180\">cozyin</a><br /><div class=\"imagemap\"><img class=\"imagemap__image\" loading=\"lazy\" src=\"https://i.ppy.sh/7a8ec5eadc4d78edfa95f1de37e21ffe287ad2db/68747470733a2f2f63646e2e646973636f72646170702e636f6d2f6174746163686d656e74732f313235343135303231303834363835313130352f313235343135333035313434333239383430352f636f7a79696e5f616d6179616b6173655f636f6c6c61625f706e672e706e673f65783d36363738373438632669733d363637373233306326686d3d3762316265366536313539343730653866336164646338656163656337613539323632313137626339666538623363643734306166636564323064623237623026\" alt=\"68747470733a2f2f63646e2e646973636f72646170702e636f6d2f6174746163686d656e74732f313235343135303231303834363835313130352f313235343135333035313434333239383430352f636f7a79696e5f616d6179616b6173655f636f6c6c61625f706e672e706e673f65783d36363738373438632669733d363637373233306326686d3d3762316265366536313539343730653866336164646338656163656337613539323632313137626339666538623363643734306166636564323064623237623026\" /><a class=\"imagemap__link\" href=\"https://osu.ppy.sh/users/12200180\" style=\"left:0.27%;top:6.96%;width:49.56%;height:35.51%;\" title=\"cozyin\"></a><a class=\"imagemap__link\" href=\"https://osu.ppy.sh/users/10153735\" style=\"left:49.69%;top:6.67%;width:50.24%;height:36%;\" title=\"Amayakase\"></a></div><br /><strong>7/26/2022</strong><br /><a rel=\"nofollow\" href=\"https://osu.ppy.sh/users/8175874\"><img alt=\"\" src=\"https://i.ppy.sh/ab8a15b6709486fc78cda3aad759ae942e994adf/687474703a2f2f736d636d61782e636f6d2f732f66756d6f2d636f6c6c6162312e706e67\" loading=\"lazy\" style=\"aspect-ratio: 0.698; width: 178px;\" class=\"js-gallery\" data-width=\"178\" data-height=\"255\" data-index=\"0\" data-gallery-id=\"1873604398\" data-src=\"https://i.ppy.sh/ab8a15b6709486fc78cda3aad759ae942e994adf/687474703a2f2f736d636d61782e636f6d2f732f66756d6f2d636f6c6c6162312e706e67\" /></a><a rel=\"nofollow\" href=\"https://osu.ppy.sh/users/7635621\"><img alt=\"\" src=\"https://i.ppy.sh/4d96b6fe5cba15450e44fd15b6d25b47e98758d0/687474703a2f2f736d636d61782e636f6d2f732f66756d6f2d636f6c6c6162322e706e67\" loading=\"lazy\" style=\"aspect-ratio: 0.698; width: 178px;\" class=\"js-gallery\" data-width=\"178\" data-height=\"255\" data-index=\"1\" data-gallery-id=\"1873604398\" data-src=\"https://i.ppy.sh/4d96b6fe5cba15450e44fd15b6d25b47e98758d0/687474703a2f2f736d636d61782e636f6d2f732f66756d6f2d636f6c6c6162322e706e67\" /></a><a rel=\"nofollow\" href=\"https://osu.ppy.sh/users/8967040\"><img alt=\"\" src=\"https://i.ppy.sh/1999c21d274c37c51ddf35d9ad56bbe36c98bf59/687474703a2f2f736d636d61782e636f6d2f732f66756d6f2d636f6c6c6162332e706e67\" loading=\"lazy\" style=\"aspect-ratio: 0.6196; width: 158px;\" class=\"js-gallery\" data-width=\"158\" data-height=\"255\" data-index=\"2\" data-gallery-id=\"1873604398\" data-src=\"https://i.ppy.sh/1999c21d274c37c51ddf35d9ad56bbe36c98bf59/687474703a2f2f736d636d61782e636f6d2f732f66756d6f2d636f6c6c6162332e706e67\" /></a><a rel=\"nofollow\" href=\"https://osu.ppy.sh/users/10153735\"><img alt=\"\" src=\"https://i.ppy.sh/fa3eba4cebf5461604d74670b67bb8b46cf9a2db/687474703a2f2f736d636d61782e636f6d2f732f66756d6f2d636f6c6c6162342e706e67\" loading=\"lazy\" style=\"aspect-ratio: 0.6039; width: 154px;\" class=\"js-gallery\" data-width=\"154\" data-height=\"255\" data-index=\"3\" data-gallery-id=\"1873604398\" data-src=\"https://i.ppy.sh/fa3eba4cebf5461604d74670b67bb8b46cf9a2db/687474703a2f2f736d636d61782e636f6d2f732f66756d6f2d636f6c6c6162342e706e67\" /></a><a rel=\"nofollow\" href=\"https://osu.ppy.sh/users/15413621\"><img alt=\"\" src=\"https://i.ppy.sh/ae719d2bfc3118f7048ba332dc1712b7c864513c/687474703a2f2f736d636d61782e636f6d2f732f66756d6f2d636f6c6c6162352e706e67\" loading=\"lazy\" style=\"aspect-ratio: 0.6039; width: 154px;\" class=\"js-gallery\" data-width=\"154\" data-height=\"255\" data-index=\"4\" data-gallery-id=\"1873604398\" data-src=\"https://i.ppy.sh/ae719d2bfc3118f7048ba332dc1712b7c864513c/687474703a2f2f736d636d61782e636f6d2f732f66756d6f2d636f6c6c6162352e706e67\" /></a><a rel=\"nofollow\" href=\"https://osu.ppy.sh/users/7802400\"><img alt=\"\" src=\"https://i.ppy.sh/14441bcd5b2369785489bf07d885da5e26020baf/687474703a2f2f736d636d61782e636f6d2f732f66756d6f2d636f6c6c6162362e706e67\" loading=\"lazy\" style=\"aspect-ratio: 0.7662; width: 213px;\" class=\"js-gallery\" data-width=\"213\" data-height=\"278\" data-index=\"5\" data-gallery-id=\"1873604398\" data-src=\"https://i.ppy.sh/14441bcd5b2369785489bf07d885da5e26020baf/687474703a2f2f736d636d61782e636f6d2f732f66756d6f2d636f6c6c6162362e706e67\" /></a><a rel=\"nofollow\" href=\"https://osu.ppy.sh/users/14220975\"><img alt=\"\" src=\"https://i.ppy.sh/96c377f69ad0933e3c51c4d0e8d346b2ea6f550c/687474703a2f2f736d636d61782e636f6d2f732f66756d6f2d636f6c6c6162372e706e67\" loading=\"lazy\" style=\"aspect-ratio: 0.6331; width: 176px;\" class=\"js-gallery\" data-width=\"176\" data-height=\"278\" data-index=\"6\" data-gallery-id=\"1873604398\" data-src=\"https://i.ppy.sh/96c377f69ad0933e3c51c4d0e8d346b2ea6f550c/687474703a2f2f736d636d61782e636f6d2f732f66756d6f2d636f6c6c6162372e706e67\" /></a><a rel=\"nofollow\" href=\"https://osu.ppy.sh/users/16533448\"><img alt=\"\" src=\"https://i.ppy.sh/e504a8ac971443fdd15dc427b7dd50fc7f4bf3dd/687474703a2f2f736d636d61782e636f6d2f732f66756d6f2d636f6c6c6162382e706e67\" loading=\"lazy\" style=\"aspect-ratio: 0.5432; width: 151px;\" class=\"js-gallery\" data-width=\"151\" data-height=\"278\" data-index=\"7\" data-gallery-id=\"1873604398\" data-src=\"https://i.ppy.sh/e504a8ac971443fdd15dc427b7dd50fc7f4bf3dd/687474703a2f2f736d636d61782e636f6d2f732f66756d6f2d636f6c6c6162382e706e67\" /></a><a rel=\"nofollow\" href=\"https://osu.ppy.sh/users/4886116\"><img alt=\"\" src=\"https://i.ppy.sh/a214a226d6325b473fca8478e0f736d5f2d1ffed/687474703a2f2f736d636d61782e636f6d2f732f66756d6f2d636f6c6c6162392e706e67\" loading=\"lazy\" style=\"aspect-ratio: 0.5791; width: 161px;\" class=\"js-gallery\" data-width=\"161\" data-height=\"278\" data-index=\"8\" data-gallery-id=\"1873604398\" data-src=\"https://i.ppy.sh/a214a226d6325b473fca8478e0f736d5f2d1ffed/687474703a2f2f736d636d61782e636f6d2f732f66756d6f2d636f6c6c6162392e706e67\" /></a><a rel=\"nofollow\" href=\"https://osu.ppy.sh/users/8876153\"><img alt=\"\" src=\"https://i.ppy.sh/b5a3a18f97e1b333e3bc1fbfd41aa86223fd8c6f/687474703a2f2f736d636d61782e636f6d2f732f66756d6f2d636f6c6c616231302e706e67\" loading=\"lazy\" style=\"aspect-ratio: 0.4353; width: 121px;\" class=\"js-gallery\" data-width=\"121\" data-height=\"278\" data-index=\"9\" data-gallery-id=\"1873604398\" data-src=\"https://i.ppy.sh/b5a3a18f97e1b333e3bc1fbfd41aa86223fd8c6f/687474703a2f2f736d636d61782e636f6d2f732f66756d6f2d636f6c6c616231302e706e67\" /></a><a rel=\"nofollow\" href=\"https://osu.ppy.sh/users/17568288\"><img alt=\"\" src=\"https://i.ppy.sh/de6f43c77126717efce85f76e68df6cc972c8ef0/687474703a2f2f736d636d61782e636f6d2f732f66756d6f2d636f6c6c616231312e706e67\" loading=\"lazy\" style=\"aspect-ratio: 0.7148; width: 213px;\" class=\"js-gallery\" data-width=\"213\" data-height=\"298\" data-index=\"10\" data-gallery-id=\"1873604398\" data-src=\"https://i.ppy.sh/de6f43c77126717efce85f76e68df6cc972c8ef0/687474703a2f2f736d636d61782e636f6d2f732f66756d6f2d636f6c6c616231312e706e67\" /></a><a rel=\"nofollow\" href=\"https://osu.ppy.sh/users/6245906\"><img alt=\"\" src=\"https://i.ppy.sh/7118a14a4d4e81bb156cc1d0a82d946ae5ed8c17/687474703a2f2f736d636d61782e636f6d2f732f66756d6f2d636f6c6c616231322e706e67\" loading=\"lazy\" style=\"aspect-ratio: 0.4664; width: 139px;\" class=\"js-gallery\" data-width=\"139\" data-height=\"298\" data-index=\"11\" data-gallery-id=\"1873604398\" data-src=\"https://i.ppy.sh/7118a14a4d4e81bb156cc1d0a82d946ae5ed8c17/687474703a2f2f736d636d61782e636f6d2f732f66756d6f2d636f6c6c616231322e706e67\" /></a><a rel=\"nofollow\" href=\"https://osu.ppy.sh/users/10660738\"><img alt=\"\" src=\"https://i.ppy.sh/4296671ece539166bf3e3c8e18a1520aae5087ec/687474703a2f2f736d636d61782e636f6d2f732f66756d6f2d636f6c6c616231332e706e67\" loading=\"lazy\" style=\"aspect-ratio: 0.5638; width: 168px;\" class=\"js-gallery\" data-width=\"168\" data-height=\"298\" data-index=\"12\" data-gallery-id=\"1873604398\" data-src=\"https://i.ppy.sh/4296671ece539166bf3e3c8e18a1520aae5087ec/687474703a2f2f736d636d61782e636f6d2f732f66756d6f2d636f6c6c616231332e706e67\" /></a><a rel=\"nofollow\" href=\"https://osu.ppy.sh/users/1023489\"><img alt=\"\" src=\"https://i.ppy.sh/2654faca0baa5de63f1c63a4178a4488de47a5f9/687474703a2f2f736d636d61782e636f6d2f732f66756d6f2d636f6c6c616231342e706e67\" loading=\"lazy\" style=\"aspect-ratio: 0.5134; width: 153px;\" class=\"js-gallery\" data-width=\"153\" data-height=\"298\" data-index=\"13\" data-gallery-id=\"1873604398\" data-src=\"https://i.ppy.sh/2654faca0baa5de63f1c63a4178a4488de47a5f9/687474703a2f2f736d636d61782e636f6d2f732f66756d6f2d636f6c6c616231342e706e67\" /></a><a rel=\"nofollow\" href=\"https://osu.ppy.sh/users/4281350\"><img alt=\"\" src=\"https://i.ppy.sh/e317e7fccd2b5ca22ea3c737503f661bfae87ac5/687474703a2f2f736d636d61782e636f6d2f732f66756d6f2d636f6c6c616231352e706e67\" loading=\"lazy\" style=\"aspect-ratio: 0.5; width: 149px;\" class=\"js-gallery\" data-width=\"149\" data-height=\"298\" data-index=\"14\" data-gallery-id=\"1873604398\" data-src=\"https://i.ppy.sh/e317e7fccd2b5ca22ea3c737503f661bfae87ac5/687474703a2f2f736d636d61782e636f6d2f732f66756d6f2d636f6c6c616231352e706e67\" /></a></div><div class=\"well\"><strong>2018</strong><br /><a rel=\"nofollow\" href=\"https://osu.ppy.sh/users/5034957\"><img alt=\"\" src=\"https://i.ppy.sh/d6d8300ad290f4418cd7a3ab34fdb3c7aa7b0e8e/68747470733a2f2f696d6775722d617263686976652e7070792e73682f6d586479727a452e706e67\" loading=\"lazy\" style=\"aspect-ratio: 3.4857; width: 610px;\" class=\"js-gallery\" data-width=\"610\" data-height=\"175\" data-index=\"15\" data-gallery-id=\"1873604398\" data-src=\"https://i.ppy.sh/d6d8300ad290f4418cd7a3ab34fdb3c7aa7b0e8e/68747470733a2f2f696d6775722d617263686976652e7070792e73682f6d586479727a452e706e67\" /></a><br /><a rel=\"nofollow\" href=\"https://osu.ppy.sh/users/8085312\"><img alt=\"\" src=\"https://i.ppy.sh/0e5fd36f8deae13122dd097917720a198f577799/68747470733a2f2f696d6775722d617263686976652e7070792e73682f687a4c6662437a2e706e67\" loading=\"lazy\" style=\"aspect-ratio: 4.1497; width: 610px;\" class=\"js-gallery\" data-width=\"610\" data-height=\"147\" data-index=\"16\" data-gallery-id=\"1873604398\" data-src=\"https://i.ppy.sh/0e5fd36f8deae13122dd097917720a198f577799/68747470733a2f2f696d6775722d617263686976652e7070792e73682f687a4c6662437a2e706e67\" /></a><br /><a rel=\"nofollow\" href=\"https://osu.ppy.sh/users/10153735\"><img alt=\"\" src=\"https://i.ppy.sh/9f2fe8d6c5edc95474f5489aba62d08371af7fb3/68747470733a2f2f696d6775722d617263686976652e7070792e73682f324647354c4c302e706e67\" loading=\"lazy\" style=\"aspect-ratio: 4.5185; width: 610px;\" class=\"js-gallery\" data-width=\"610\" data-height=\"135\" data-index=\"17\" data-gallery-id=\"1873604398\" data-src=\"https://i.ppy.sh/9f2fe8d6c5edc95474f5489aba62d08371af7fb3/68747470733a2f2f696d6775722d617263686976652e7070792e73682f324647354c4c302e706e67\" /></a><br /><a rel=\"nofollow\" href=\"https://osu.ppy.sh/users/5899751\"><img alt=\"\" src=\"https://i.ppy.sh/b3835c80ba4136eede785969dbb0234c1e2a6135/68747470733a2f2f696d6775722d617263686976652e7070792e73682f636d35593639612e706e67\" loading=\"lazy\" style=\"aspect-ratio: 4.5185; width: 610px;\" class=\"js-gallery\" data-width=\"610\" data-height=\"135\" data-index=\"18\" data-gallery-id=\"1873604398\" data-src=\"https://i.ppy.sh/b3835c80ba4136eede785969dbb0234c1e2a6135/68747470733a2f2f696d6775722d617263686976652e7070792e73682f636d35593639612e706e67\" /></a><br /><a rel=\"nofollow\" href=\"https://osu.ppy.sh/users/7201945\"><img alt=\"\" src=\"https://i.ppy.sh/f992ddfdc8333e99fba2abbca9a7ea7f039c13ff/68747470733a2f2f696d6775722d617263686976652e7070792e73682f4c61396b774f6e2e706e67\" loading=\"lazy\" style=\"aspect-ratio: 4.094; width: 610px;\" class=\"js-gallery\" data-width=\"610\" data-height=\"149\" data-index=\"19\" data-gallery-id=\"1873604398\" data-src=\"https://i.ppy.sh/f992ddfdc8333e99fba2abbca9a7ea7f039c13ff/68747470733a2f2f696d6775722d617263686976652e7070792e73682f4c61396b774f6e2e706e67\" /></a><br /><a rel=\"nofollow\" href=\"https://osu.ppy.sh/users/11618548\"><img alt=\"\" src=\"https://i.ppy.sh/897043e8fe36d6373d8c63228065bbbc75410c1a/68747470733a2f2f696d6775722d617263686976652e7070792e73682f474138657133772e706e67\" loading=\"lazy\" style=\"aspect-ratio: 4.2657; width: 610px;\" class=\"js-gallery\" data-width=\"610\" data-height=\"143\" data-index=\"20\" data-gallery-id=\"1873604398\" data-src=\"https://i.ppy.sh/897043e8fe36d6373d8c63228065bbbc75410c1a/68747470733a2f2f696d6775722d617263686976652e7070792e73682f474138657133772e706e67\" /></a><br /><a rel=\"nofollow\" href=\"https://osu.ppy.sh/users/5400349\"><img alt=\"\" src=\"https://i.ppy.sh/a40ae54ac6b81c6e58c7e044641f51cac66d83f9/68747470733a2f2f696d6775722d617263686976652e7070792e73682f486a3536327a532e706e67\" loading=\"lazy\" style=\"aspect-ratio: 2.3462; width: 610px;\" class=\"js-gallery\" data-width=\"610\" data-height=\"260\" data-index=\"21\" data-gallery-id=\"1873604398\" data-src=\"https://i.ppy.sh/a40ae54ac6b81c6e58c7e044641f51cac66d83f9/68747470733a2f2f696d6775722d617263686976652e7070792e73682f486a3536327a532e706e67\" /></a></div></div></div><div class=\"js-spoilerbox bbcode-spoilerbox\"><a class=\"js-spoilerbox__link bbcode-spoilerbox__link\" href=\"#\"><span class=\"bbcode-spoilerbox__link-icon\"></span>🌸 Meetups</a><div class=\"js-spoilerbox__body bbcode-spoilerbox__body\"><em>If I met you and didn't put you here, please tell me!!</em><br /><em>I'm not social, so I don't meet a lot of people. I rely on others introducing me to others xd</em><br /><div class=\"well\"><strong>COE 2024</strong><br /><a class=\"user-name js-usercard\" data-user-id=\"@mmi\" href=\"https://osu.ppy.sh/users/%40mmi\">mmi</a> - <a class=\"user-name js-usercard\" data-user-id=\"2295850\" href=\"https://osu.ppy.sh/users/2295850\">Lefafel</a> - <a class=\"user-name js-usercard\" data-user-id=\"895581\" href=\"https://osu.ppy.sh/users/895581\">-GN</a> - <a class=\"user-name js-usercard\" data-user-id=\"18983\" href=\"https://osu.ppy.sh/users/18983\">Doomsday</a> - <a class=\"user-name js-usercard\" data-user-id=\"5773079\" href=\"https://osu.ppy.sh/users/5773079\">Walavouchey</a> - <a class=\"user-name js-usercard\" data-user-id=\"12090610\" href=\"https://osu.ppy.sh/users/12090610\">Tatze</a> - A finnish mapper forgot name :sob:</div><div class=\"well\"><strong>COE 2023</strong><br /><a class=\"user-name js-usercard\" data-user-id=\"@mmi\" href=\"https://osu.ppy.sh/users/%40mmi\">mmi</a> - <a class=\"user-name js-usercard\" data-user-id=\"10080990\" href=\"https://osu.ppy.sh/users/10080990\">Falco</a> - <a class=\"user-name js-usercard\" data-user-id=\"8967040\" href=\"https://osu.ppy.sh/users/8967040\">Kilgar</a> - <a class=\"user-name js-usercard\" data-user-id=\"10660738\" href=\"https://osu.ppy.sh/users/10660738\">Ganondorf</a> - <a class=\"user-name js-usercard\" data-user-id=\"39828\" href=\"https://osu.ppy.sh/users/39828\">WubWoofWolf</a></div><div class=\"well\"><strong>COE 2019</strong><br /><a class=\"user-name js-usercard\" data-user-id=\"5034957\" href=\"https://osu.ppy.sh/users/5034957\">Sytex</a> - <a class=\"user-name js-usercard\" data-user-id=\"10376046\" href=\"https://osu.ppy.sh/users/10376046\">Nerddog</a></div></div></div><div class=\"js-spoilerbox bbcode-spoilerbox\"><a class=\"js-spoilerbox__link bbcode-spoilerbox__link\" href=\"#\"><span class=\"bbcode-spoilerbox__link-icon\"></span>🌸 Thanks</a><div class=\"js-spoilerbox__body bbcode-spoilerbox__body\"><div class=\"well\">seifuku - 08/23/2024 - 12 months<br />JustChe - 08/14/2024 - 1 month<br />Anonymous - 11/13/2023 - 1 month<br />Anonymous - 08/14/2023 - 4 months</div></div></div></div>",
+        "raw": "[notice]\n[b]🌸 Links[/b]\n[url=https://score.kirino.sh]osu! scores inspector[/url] <--- my site, if you need anything, ask me on osu!alt discord.\n[url=https://github.com/darkchii/score-inspector-extension]osu! scores inspector extension[/url] Browser extension to add osu!alt and osu! scores inspector stats to osu! website (B,C,D ranks, etc.)\n[url=https://discord.gg/VZWRZZXcW4]osu!alternative Discord[/url]\n\n0-2* completion: 83.807% - 15,314/18,273\n[i](17/02/2025)[/i]\n\n2025 Goals:\n- 30.000 Total SS (extreme difficulty goal, likely not gonna happen)\n- Remain #1 NL SS\n- Complete all under 2* maps\n- Reach 100.000 playcount\n- Reach 80 Billion ranked score\n- Reach 120 Billion total score (very mayhaps level 101)\n[/notice]\n[box=🌸 Goals]\n[notice]\n[b]24.000 SS[/b] • n/a\n[b]23.000 SS[/b] • 17/02/2025\n[b]22.000 SS[/b] • 11/09/2024\n[b]21.000 SS[/b] • 10/12/2024\n[b]20.000 SS[/b] • 05/13/2024\n[b]19.000 SS[/b] • 04/29/2024\n[b]18.000 SS[/b] • 12/27/2023\n[b]17.000 SS[/b] • 12/18/2023\n[b]16.000 SS[/b] • 11/27/2023\n[b]15.000 SS[/b] • 11/14/2023\n[b]14.000 SS[/b] • 08/15/2023\n[b]13.000 SS[/b] • 01/31/2023\n[b]12.000 SS[/b] • 11/06/2022\n[b]11.000 SS[/b] • 09/12/2022\n[b]10.000 SS[/b] • 08/11/2022\n[b]9.000 SS[/b] • 04/21/2022\n[b]8.000 SS[/b] • 01/27/2022\n[b]7.000 SS[/b] • 01/21/2022\n[b]6.000 SS[/b] • 12/17/2021\n[b]5.000 SS[/b] • 07/21/2021\n[b]4.000 SS[/b] • 07/05/2021\n[b]3.000 SS[/b] • 05/04/2021\n[b]2.000 SS[/b] • 04/16/2021\n[b]1.000 SS[/b] • 10/12/2019\n[/notice]\n[/box]\n[box=🌸 Collabs]\n[notice]\n[imagemap]\nhttps://tsumiki.s-ul.eu/22hbjgfr\n0 0 50 100 https://osu.ppy.sh/users/15434024 Errxr\n50 0 50 100 https://osu.ppy.sh/users/10153735 Amayakase\n[/imagemap]\n[/notice]\n[notice]\n[centre]\n[b]12/15/2023[/b]\n[url=https://osu.ppy.sh/users/3819901][img]https://i.kirino.sh/i/e2a2fa31-0ed1-43d1-8659-d22bb8fe3947.png[/img][/url][url=https://osu.ppy.sh/users/10153735][img]https://i.kirino.sh/i/9d2312f1-99c5-4323-9967-25c5ecd94a73.png[/img][/url]\n[/notice]\n[notice]\nCollab with [profile=12200180]cozyin[/profile]\n[imagemap]\nhttps://cdn.discordapp.com/attachments/1254150210846851105/1254153051443298405/cozyin_amayakase_collab_png.png?ex=6678748c&is=6677230c&hm=7b1be6e6159470e8f3addc8eacec7a59262117bc9fe8b3cd740afced20db27b0&\n0.27 6.96 49.56 35.51 https://osu.ppy.sh/users/12200180 cozyin\n49.69 6.67 50.24 36.00 https://osu.ppy.sh/users/10153735 Amayakase\n[/imagemap]\n\n[b]7/26/2022[/b]\n[url=https://osu.ppy.sh/users/8175874][img]http://smcmax.com/s/fumo-collab1.png[/img][/url][url=https://osu.ppy.sh/users/7635621][img]http://smcmax.com/s/fumo-collab2.png[/img][/url][url=https://osu.ppy.sh/users/8967040][img]http://smcmax.com/s/fumo-collab3.png[/img][/url][url=https://osu.ppy.sh/users/10153735][img]http://smcmax.com/s/fumo-collab4.png[/img][/url][url=https://osu.ppy.sh/users/15413621][img]http://smcmax.com/s/fumo-collab5.png[/img][/url][url=https://osu.ppy.sh/users/7802400][img]http://smcmax.com/s/fumo-collab6.png[/img][/url][url=https://osu.ppy.sh/users/14220975][img]http://smcmax.com/s/fumo-collab7.png[/img][/url][url=https://osu.ppy.sh/users/16533448][img]http://smcmax.com/s/fumo-collab8.png[/img][/url][url=https://osu.ppy.sh/users/4886116][img]http://smcmax.com/s/fumo-collab9.png[/img][/url][url=https://osu.ppy.sh/users/8876153][img]http://smcmax.com/s/fumo-collab10.png[/img][/url][url=https://osu.ppy.sh/users/17568288][img]http://smcmax.com/s/fumo-collab11.png[/img][/url][url=https://osu.ppy.sh/users/6245906][img]http://smcmax.com/s/fumo-collab12.png[/img][/url][url=https://osu.ppy.sh/users/10660738][img]http://smcmax.com/s/fumo-collab13.png[/img][/url][url=https://osu.ppy.sh/users/1023489][img]http://smcmax.com/s/fumo-collab14.png[/img][/url][url=https://osu.ppy.sh/users/4281350][img]http://smcmax.com/s/fumo-collab15.png[/img][/url]\n[/notice]\n[notice]\n[b]2018[/b]\n[url=https://osu.ppy.sh/users/5034957][img]https://i.ppy.sh/d6d8300ad290f4418cd7a3ab34fdb3c7aa7b0e8e/68747470733a2f2f696d6775722d617263686976652e7070792e73682f6d586479727a452e706e67[/img][/url]\n[url=https://osu.ppy.sh/users/8085312][img]https://i.ppy.sh/0e5fd36f8deae13122dd097917720a198f577799/68747470733a2f2f696d6775722d617263686976652e7070792e73682f687a4c6662437a2e706e67[/img][/url]\n[url=https://osu.ppy.sh/users/10153735][img]https://i.ppy.sh/9f2fe8d6c5edc95474f5489aba62d08371af7fb3/68747470733a2f2f696d6775722d617263686976652e7070792e73682f324647354c4c302e706e67[/img][/url]\n[url=https://osu.ppy.sh/users/5899751][img]https://i.ppy.sh/b3835c80ba4136eede785969dbb0234c1e2a6135/68747470733a2f2f696d6775722d617263686976652e7070792e73682f636d35593639612e706e67[/img][/url]\n[url=https://osu.ppy.sh/users/7201945][img]https://i.ppy.sh/f992ddfdc8333e99fba2abbca9a7ea7f039c13ff/68747470733a2f2f696d6775722d617263686976652e7070792e73682f4c61396b774f6e2e706e67[/img][/url]\n[url=https://osu.ppy.sh/users/11618548][img]https://i.ppy.sh/897043e8fe36d6373d8c63228065bbbc75410c1a/68747470733a2f2f696d6775722d617263686976652e7070792e73682f474138657133772e706e67[/img][/url]\n[url=https://osu.ppy.sh/users/5400349][img]https://i.ppy.sh/a40ae54ac6b81c6e58c7e044641f51cac66d83f9/68747470733a2f2f696d6775722d617263686976652e7070792e73682f486a3536327a532e706e67[/img][/url]\n[/notice]\n[/centre]\n[/box]\n[box=🌸 Meetups]\n[i]If I met you and didn't put you here, please tell me!![/i]\n[i]I'm not social, so I don't meet a lot of people. I rely on others introducing me to others xd[/i]\n[notice]\n[b]COE 2024[/b]\n[profile]mmi[/profile] - [profile=2295850]Lefafel[/profile] - [profile=895581]-GN[/profile] - [profile=18983]Doomsday[/profile] - [profile=5773079]Walavouchey[/profile] - [profile=12090610]Tatze[/profile] - A finnish mapper forgot name :sob:\n[/notice]\n[notice]\n[b]COE 2023[/b]\n[profile]mmi[/profile] - [profile=10080990]Falco[/profile] - [profile=8967040]Kilgar[/profile] - [profile=10660738]Ganondorf[/profile] - [profile=39828]WubWoofWolf[/profile]\n[/notice]\n[notice]\n[b]COE 2019[/b]\n[profile=5034957]Sytex[/profile] - [profile=10376046]Nerddog[/profile]\n[/notice]\n[/box]\n[box=🌸 Thanks]\n[notice]\nseifuku - 08/23/2024 - 12 months\nJustChe - 08/14/2024 - 1 month\nAnonymous - 11/13/2023 - 1 month\nAnonymous - 08/14/2023 - 4 months\n[/notice]\n[/box]"
+    },
+    "pending_beatmapset_count": 0,
+    "previous_usernames": [
+        "LeCC05",
+        "Tsumiki-",
+        "Amayakase",
+        "Misaki Nakahara"
+    ],
+    "rank_highest": {
+        "rank": 135064,
+        "updated_at": "2018-06-24T00:00:00Z"
+    },
+    "ranked_beatmapset_count": 0,
+    "replays_watched_counts": [
+        {
+            "start_date": "2017-06-01",
+            "count": 1
+        },
+        {
+            "start_date": "2017-07-01",
+            "count": 1
+        },
+        {
+            "start_date": "2017-08-01",
+            "count": 1
+        },
+        {
+            "start_date": "2018-05-01",
+            "count": 1
+        },
+        {
+            "start_date": "2018-08-01",
+            "count": 1
+        },
+        {
+            "start_date": "2019-07-01",
+            "count": 1
+        },
+        {
+            "start_date": "2021-03-01",
+            "count": 1
+        },
+        {
+            "start_date": "2021-04-01",
+            "count": 3
+        },
+        {
+            "start_date": "2021-06-01",
+            "count": 1
+        },
+        {
+            "start_date": "2021-11-01",
+            "count": 2
+        },
+        {
+            "start_date": "2021-12-01",
+            "count": 13
+        },
+        {
+            "start_date": "2022-01-01",
+            "count": 6
+        },
+        {
+            "start_date": "2022-02-01",
+            "count": 5
+        },
+        {
+            "start_date": "2022-03-01",
+            "count": 1
+        },
+        {
+            "start_date": "2022-04-01",
+            "count": 2
+        },
+        {
+            "start_date": "2022-05-01",
+            "count": 6
+        },
+        {
+            "start_date": "2022-06-01",
+            "count": 1
+        },
+        {
+            "start_date": "2022-08-01",
+            "count": 4
+        },
+        {
+            "start_date": "2022-09-01",
+            "count": 4
+        },
+        {
+            "start_date": "2022-10-01",
+            "count": 5
+        },
+        {
+            "start_date": "2022-11-01",
+            "count": 5
+        },
+        {
+            "start_date": "2022-12-01",
+            "count": 2
+        },
+        {
+            "start_date": "2023-01-01",
+            "count": 14
+        },
+        {
+            "start_date": "2023-02-01",
+            "count": 5
+        },
+        {
+            "start_date": "2023-03-01",
+            "count": 1
+        },
+        {
+            "start_date": "2023-04-01",
+            "count": 6
+        },
+        {
+            "start_date": "2023-05-01",
+            "count": 4
+        },
+        {
+            "start_date": "2023-06-01",
+            "count": 1
+        },
+        {
+            "start_date": "2023-07-01",
+            "count": 3
+        },
+        {
+            "start_date": "2023-08-01",
+            "count": 6
+        },
+        {
+            "start_date": "2023-10-01",
+            "count": 1
+        },
+        {
+            "start_date": "2023-11-01",
+            "count": 1
+        },
+        {
+            "start_date": "2023-12-01",
+            "count": 4
+        },
+        {
+            "start_date": "2024-01-01",
+            "count": 7
+        },
+        {
+            "start_date": "2024-04-01",
+            "count": 5
+        },
+        {
+            "start_date": "2024-05-01",
+            "count": 11
+        },
+        {
+            "start_date": "2024-06-01",
+            "count": 8
+        },
+        {
+            "start_date": "2024-07-01",
+            "count": 10
+        },
+        {
+            "start_date": "2024-08-01",
+            "count": 2
+        },
+        {
+            "start_date": "2024-09-01",
+            "count": 1
+        },
+        {
+            "start_date": "2024-10-01",
+            "count": 8
+        },
+        {
+            "start_date": "2024-11-01",
+            "count": 22
+        },
+        {
+            "start_date": "2024-12-01",
+            "count": 5
+        },
+        {
+            "start_date": "2025-01-01",
+            "count": 6
+        },
+        {
+            "start_date": "2025-02-01",
+            "count": 1
+        }
+    ],
+    "scores_best_count": 100,
+    "scores_first_count": 0,
+    "scores_pinned_count": 0,
+    "scores_recent_count": 0,
+    "statistics": {
+        "count_100": 9370,
+        "count_300": 48052,
+        "count_50": 1232,
+        "count_miss": 1334,
+        "level": {
+            "current": 32,
+            "progress": 87
+        },
+        "global_rank": 335321,
+        "global_rank_exp": null,
+        "pp": 423.542,
+        "pp_exp": 0,
+        "ranked_score": 136284735,
+        "hit_accuracy": 96.988,
+        "play_count": 499,
+        "play_time": 31483,
+        "total_score": 231567018,
+        "total_hits": 58654,
+        "maximum_combo": 1659,
+        "replays_watched_by_others": 0,
+        "is_ranked": true,
+        "grade_counts": {
+            "ss": 3,
+            "ssh": 0,
+            "s": 86,
+            "sh": 0,
+            "a": 39
+        },
+        "country_rank": 2054,
+        "rank": {
+            "country": 2054
+        },
+        "variants": [
+            {
+                "mode": "mania",
+                "variant": "4k",
+                "country_rank": 3441,
+                "global_rank": 584699,
+                "pp": 14.6414
+            },
+            {
+                "mode": "mania",
+                "variant": "7k",
+                "country_rank": null,
+                "global_rank": null,
+                "pp": 0
+            }
+        ]
+    },
+    "support_level": 2,
+    "team": {
+        "flag_url": "https://assets.ppy.sh/teams/flag/439/30dd2e3d2768deed4f21c7953804819f9a4731159ae12256767b4e48988af409.png",
+        "id": 439,
+        "name": "SS",
+        "short_name": "SS"
+    },
+    "user_achievements": [
+        {
+            "achieved_at": "2024-12-25T12:11:01Z",
+            "achievement_id": 171
+        },
+        {
+            "achieved_at": "2024-12-25T12:01:53Z",
+            "achievement_id": 159
+        },
+        {
+            "achieved_at": "2024-12-25T11:49:43Z",
+            "achievement_id": 349
+        },
+        {
+            "achieved_at": "2024-12-25T11:49:43Z",
+            "achievement_id": 340
+        },
+        {
+            "achieved_at": "2024-12-25T11:41:42Z",
+            "achievement_id": 346
+        },
+        {
+            "achieved_at": "2024-12-25T11:38:54Z",
+            "achievement_id": 339
+        },
+        {
+            "achieved_at": "2024-12-25T11:38:54Z",
+            "achievement_id": 336
+        },
+        {
+            "achieved_at": "2024-05-31T21:48:33Z",
+            "achievement_id": 283
+        },
+        {
+            "achieved_at": "2024-01-15T14:34:13Z",
+            "achievement_id": 334
+        },
+        {
+            "achieved_at": "2023-12-26T20:27:06Z",
+            "achievement_id": 260
+        },
+        {
+            "achieved_at": "2023-12-26T20:18:37Z",
+            "achievement_id": 254
+        },
+        {
+            "achieved_at": "2023-12-26T20:09:23Z",
+            "achievement_id": 264
+        },
+        {
+            "achieved_at": "2023-12-26T19:58:14Z",
+            "achievement_id": 208
+        },
+        {
+            "achieved_at": "2023-12-26T19:50:49Z",
+            "achievement_id": 190
+        },
+        {
+            "achieved_at": "2023-12-26T19:41:08Z",
+            "achievement_id": 185
+        },
+        {
+            "achieved_at": "2023-12-26T19:31:35Z",
+            "achievement_id": 157
+        },
+        {
+            "achieved_at": "2023-12-26T19:21:16Z",
+            "achievement_id": 326
+        },
+        {
+            "achieved_at": "2023-12-26T15:16:28Z",
+            "achievement_id": 328
+        },
+        {
+            "achieved_at": "2023-11-03T19:51:59Z",
+            "achievement_id": 306
+        },
+        {
+            "achieved_at": "2023-09-29T15:29:34Z",
+            "achievement_id": 302
+        },
+        {
+            "achieved_at": "2023-07-28T21:33:27Z",
+            "achievement_id": 300
+        },
+        {
+            "achieved_at": "2023-07-28T21:23:55Z",
+            "achievement_id": 279
+        },
+        {
+            "achieved_at": "2023-07-28T21:21:05Z",
+            "achievement_id": 269
+        },
+        {
+            "achieved_at": "2023-07-28T21:18:03Z",
+            "achievement_id": 147
+        },
+        {
+            "achieved_at": "2023-07-28T20:51:02Z",
+            "achievement_id": 319
+        },
+        {
+            "achieved_at": "2023-07-28T20:49:38Z",
+            "achievement_id": 317
+        },
+        {
+            "achieved_at": "2023-06-05T18:21:19Z",
+            "achievement_id": 303
+        },
+        {
+            "achieved_at": "2022-09-12T20:32:38Z",
+            "achievement_id": 143
+        },
+        {
+            "achieved_at": "2022-09-12T20:26:45Z",
+            "achievement_id": 170
+        },
+        {
+            "achieved_at": "2022-09-12T20:21:52Z",
+            "achievement_id": 142
+        },
+        {
+            "achieved_at": "2022-09-12T20:13:10Z",
+            "achievement_id": 141
+        },
+        {
+            "achieved_at": "2022-09-12T20:05:37Z",
+            "achievement_id": 188
+        },
+        {
+            "achieved_at": "2022-09-12T19:41:01Z",
+            "achievement_id": 253
+        },
+        {
+            "achieved_at": "2022-09-12T19:13:07Z",
+            "achievement_id": 274
+        },
+        {
+            "achieved_at": "2022-09-12T19:01:55Z",
+            "achievement_id": 272
+        },
+        {
+            "achieved_at": "2022-09-12T18:59:27Z",
+            "achievement_id": 270
+        },
+        {
+            "achieved_at": "2022-09-12T18:45:52Z",
+            "achievement_id": 202
+        },
+        {
+            "achieved_at": "2022-09-12T18:37:49Z",
+            "achievement_id": 175
+        },
+        {
+            "achieved_at": "2022-09-12T18:32:45Z",
+            "achievement_id": 160
+        },
+        {
+            "achieved_at": "2022-09-12T18:28:14Z",
+            "achievement_id": 154
+        },
+        {
+            "achieved_at": "2022-09-12T18:25:21Z",
+            "achievement_id": 151
+        },
+        {
+            "achieved_at": "2022-09-10T16:56:38Z",
+            "achievement_id": 287
+        },
+        {
+            "achieved_at": "2022-08-08T20:21:46Z",
+            "achievement_id": 181
+        },
+        {
+            "achieved_at": "2022-08-05T18:14:00Z",
+            "achievement_id": 276
+        },
+        {
+            "achieved_at": "2022-02-09T22:18:45Z",
+            "achievement_id": 44
+        },
+        {
+            "achieved_at": "2021-11-03T18:30:18Z",
+            "achievement_id": 213
+        },
+        {
+            "achieved_at": "2021-11-03T18:07:43Z",
+            "achievement_id": 179
+        },
+        {
+            "achieved_at": "2021-11-03T17:51:38Z",
+            "achievement_id": 35
+        },
+        {
+            "achieved_at": "2021-11-03T17:32:14Z",
+            "achievement_id": 26
+        },
+        {
+            "achieved_at": "2021-11-03T17:16:30Z",
+            "achievement_id": 19
+        },
+        {
+            "achieved_at": "2021-11-02T22:11:48Z",
+            "achievement_id": 8
+        },
+        {
+            "achieved_at": "2021-09-29T19:02:03Z",
+            "achievement_id": 28
+        },
+        {
+            "achieved_at": "2021-08-17T19:02:10Z",
+            "achievement_id": 36
+        },
+        {
+            "achieved_at": "2021-08-17T18:39:53Z",
+            "achievement_id": 27
+        },
+        {
+            "achieved_at": "2021-08-17T18:14:11Z",
+            "achievement_id": 18
+        },
+        {
+            "achieved_at": "2021-08-17T17:58:28Z",
+            "achievement_id": 9
+        },
+        {
+            "achieved_at": "2021-07-26T16:01:11Z",
+            "achievement_id": 37
+        },
+        {
+            "achieved_at": "2021-07-26T15:59:20Z",
+            "achievement_id": 14
+        },
+        {
+            "achieved_at": "2021-07-26T15:57:28Z",
+            "achievement_id": 11
+        },
+        {
+            "achieved_at": "2021-07-22T18:49:52Z",
+            "achievement_id": 17
+        },
+        {
+            "achieved_at": "2021-07-10T14:40:22Z",
+            "achievement_id": 140
+        },
+        {
+            "achieved_at": "2021-07-10T14:37:33Z",
+            "achievement_id": 138
+        },
+        {
+            "achieved_at": "2021-07-10T14:31:42Z",
+            "achievement_id": 6
+        },
+        {
+            "achieved_at": "2021-07-10T14:23:44Z",
+            "achievement_id": 194
+        },
+        {
+            "achieved_at": "2021-07-10T12:27:20Z",
+            "achievement_id": 34
+        },
+        {
+            "achieved_at": "2021-07-10T12:13:24Z",
+            "achievement_id": 25
+        },
+        {
+            "achieved_at": "2021-07-10T11:57:28Z",
+            "achievement_id": 12
+        },
+        {
+            "achieved_at": "2021-07-10T11:39:16Z",
+            "achievement_id": 10
+        },
+        {
+            "achieved_at": "2021-05-10T17:09:55Z",
+            "achievement_id": 133
+        },
+        {
+            "achieved_at": "2021-04-07T21:22:53Z",
+            "achievement_id": 150
+        },
+        {
+            "achieved_at": "2021-03-12T23:01:17Z",
+            "achievement_id": 38
+        },
+        {
+            "achieved_at": "2020-12-25T20:59:18Z",
+            "achievement_id": 139
+        },
+        {
+            "achieved_at": "2020-06-26T11:12:45Z",
+            "achievement_id": 16
+        },
+        {
+            "achieved_at": "2020-06-25T22:17:19Z",
+            "achievement_id": 223
+        },
+        {
+            "achieved_at": "2020-06-25T22:06:06Z",
+            "achievement_id": 7
+        },
+        {
+            "achieved_at": "2020-06-15T16:12:34Z",
+            "achievement_id": 61
+        },
+        {
+            "achieved_at": "2020-06-10T12:56:55Z",
+            "achievement_id": 81
+        },
+        {
+            "achieved_at": "2020-05-29T21:16:51Z",
+            "achievement_id": 222
+        },
+        {
+            "achieved_at": "2020-02-13T18:24:48Z",
+            "achievement_id": 22
+        },
+        {
+            "achieved_at": "2019-10-22T18:05:06Z",
+            "achievement_id": 144
+        },
+        {
+            "achieved_at": "2019-10-21T22:53:19Z",
+            "achievement_id": 178
+        },
+        {
+            "achieved_at": "2019-07-04T15:57:34Z",
+            "achievement_id": 60
+        },
+        {
+            "achieved_at": "2019-07-04T15:33:46Z",
+            "achievement_id": 136
+        },
+        {
+            "achieved_at": "2019-07-03T14:59:19Z",
+            "achievement_id": 168
+        },
+        {
+            "achieved_at": "2019-05-28T21:24:47Z",
+            "achievement_id": 67
+        },
+        {
+            "achieved_at": "2019-05-07T19:17:41Z",
+            "achievement_id": 104
+        },
+        {
+            "achieved_at": "2019-03-24T11:10:21Z",
+            "achievement_id": 204
+        },
+        {
+            "achieved_at": "2019-03-23T15:55:36Z",
+            "achievement_id": 131
+        },
+        {
+            "achieved_at": "2019-03-23T15:54:26Z",
+            "achievement_id": 125
+        },
+        {
+            "achieved_at": "2019-03-05T15:38:03Z",
+            "achievement_id": 21
+        },
+        {
+            "achieved_at": "2018-07-09T16:03:29Z",
+            "achievement_id": 95
+        },
+        {
+            "achieved_at": "2018-06-27T15:44:15Z",
+            "achievement_id": 177
+        },
+        {
+            "achieved_at": "2018-06-21T19:44:50Z",
+            "achievement_id": 46
+        },
+        {
+            "achieved_at": "2018-04-22T18:25:17Z",
+            "achievement_id": 23
+        },
+        {
+            "achieved_at": "2018-03-13T09:43:29Z",
+            "achievement_id": 59
+        },
+        {
+            "achieved_at": "2018-02-28T16:40:28Z",
+            "achievement_id": 66
+        },
+        {
+            "achieved_at": "2018-02-21T11:40:12Z",
+            "achievement_id": 50
+        },
+        {
+            "achieved_at": "2018-02-10T22:44:40Z",
+            "achievement_id": 135
+        },
+        {
+            "achieved_at": "2017-12-22T15:48:23Z",
+            "achievement_id": 58
+        },
+        {
+            "achieved_at": "2017-12-21T22:28:26Z",
+            "achievement_id": 176
+        },
+        {
+            "achieved_at": "2017-12-17T12:58:37Z",
+            "achievement_id": 71
+        },
+        {
+            "achieved_at": "2017-12-17T12:45:52Z",
+            "achievement_id": 111
+        },
+        {
+            "achieved_at": "2017-12-16T21:18:13Z",
+            "achievement_id": 87
+        },
+        {
+            "achieved_at": "2017-10-21T19:42:28Z",
+            "achievement_id": 20
+        },
+        {
+            "achieved_at": "2017-07-23T13:24:11Z",
+            "achievement_id": 65
+        },
+        {
+            "achieved_at": "2017-07-20T20:22:00Z",
+            "achievement_id": 5
+        },
+        {
+            "achieved_at": "2017-07-07T22:05:09Z",
+            "achievement_id": 103
+        },
+        {
+            "achieved_at": "2017-07-07T21:52:17Z",
+            "achievement_id": 13
+        },
+        {
+            "achieved_at": "2017-07-06T18:15:00Z",
+            "achievement_id": 4
+        },
+        {
+            "achieved_at": "2017-07-04T15:02:43Z",
+            "achievement_id": 80
+        },
+        {
+            "achieved_at": "2017-07-01T22:29:23Z",
+            "achievement_id": 158
+        },
+        {
+            "achieved_at": "2017-06-13T10:59:33Z",
+            "achievement_id": 54
+        },
+        {
+            "achieved_at": "2017-06-13T10:47:14Z",
+            "achievement_id": 137
+        },
+        {
+            "achieved_at": "2017-06-11T15:45:54Z",
+            "achievement_id": 153
+        },
+        {
+            "achieved_at": "2017-06-04T11:09:20Z",
+            "achievement_id": 57
+        },
+        {
+            "achieved_at": "2017-05-26T20:37:58Z",
+            "achievement_id": 148
+        },
+        {
+            "achieved_at": "2017-05-23T11:09:52Z",
+            "achievement_id": 132
+        },
+        {
+            "achieved_at": "2017-05-19T17:39:02Z",
+            "achievement_id": 39
+        },
+        {
+            "achieved_at": "2017-05-19T09:41:20Z",
+            "achievement_id": 124
+        },
+        {
+            "achieved_at": "2017-05-19T09:41:20Z",
+            "achievement_id": 79
+        },
+        {
+            "achieved_at": "2017-05-19T08:35:59Z",
+            "achievement_id": 3
+        },
+        {
+            "achieved_at": "2017-05-17T15:39:56Z",
+            "achievement_id": 128
+        },
+        {
+            "achieved_at": "2017-05-12T19:24:49Z",
+            "achievement_id": 40
+        },
+        {
+            "achieved_at": "2017-05-10T12:25:14Z",
+            "achievement_id": 64
+        },
+        {
+            "achieved_at": "2017-05-09T19:24:57Z",
+            "achievement_id": 121
+        },
+        {
+            "achieved_at": "2017-05-08T19:47:10Z",
+            "achievement_id": 120
+        },
+        {
+            "achieved_at": "2017-05-08T18:52:41Z",
+            "achievement_id": 126
+        },
+        {
+            "achieved_at": "2017-05-08T18:27:41Z",
+            "achievement_id": 123
+        },
+        {
+            "achieved_at": "2017-05-08T10:03:11Z",
+            "achievement_id": 15
+        },
+        {
+            "achieved_at": "2017-05-08T09:53:01Z",
+            "achievement_id": 1
+        },
+        {
+            "achieved_at": "2017-05-07T11:23:05Z",
+            "achievement_id": 119
+        },
+        {
+            "achieved_at": "2017-05-06T22:36:23Z",
+            "achievement_id": 152
+        },
+        {
+            "achieved_at": "2017-05-06T22:36:23Z",
+            "achievement_id": 122
+        },
+        {
+            "achieved_at": "2017-05-06T16:49:44Z",
+            "achievement_id": 56
+        },
+        {
+            "achieved_at": "2017-05-05T15:05:55Z",
+            "achievement_id": 63
+        },
+        {
+            "achieved_at": "2017-05-04T22:27:04Z",
+            "achievement_id": 55
+        },
+        {
+            "achieved_at": "2017-05-04T21:20:48Z",
+            "achievement_id": 127
+        }
+    ],
+    "rank_history": {
+        "mode": "mania",
+        "data": [
+            301383,
+            301691,
+            302029,
+            302449,
+            302885,
+            303258,
+            303594,
+            303893,
+            304229,
+            304548,
+            304922,
+            305362,
+            305727,
+            306036,
+            306394,
+            306732,
+            307116,
+            307522,
+            307911,
+            308284,
+            308651,
+            309022,
+            309392,
+            309760,
+            310167,
+            310512,
+            310856,
+            311267,
+            311680,
+            312040,
+            312485,
+            312877,
+            313278,
+            313648,
+            314039,
+            314363,
+            314700,
+            315045,
+            315471,
+            315917,
+            316315,
+            316639,
+            316980,
+            317304,
+            317699,
+            318096,
+            318529,
+            318958,
+            319371,
+            319771,
+            320160,
+            320520,
+            320905,
+            321385,
+            321821,
+            322196,
+            322581,
+            322962,
+            323339,
+            323763,
+            324203,
+            324666,
+            325021,
+            325422,
+            325820,
+            326226,
+            326642,
+            327110,
+            327507,
+            327882,
+            328250,
+            328608,
+            328986,
+            329413,
+            329894,
+            330277,
+            330652,
+            331028,
+            331390,
+            331755,
+            332197,
+            332657,
+            333033,
+            333407,
+            333745,
+            334118,
+            334489,
+            334901,
+            335321,
+            335321
+        ]
+    },
+    "rankHistory": {
+        "mode": "mania",
+        "data": [
+            301383,
+            301691,
+            302029,
+            302449,
+            302885,
+            303258,
+            303594,
+            303893,
+            304229,
+            304548,
+            304922,
+            305362,
+            305727,
+            306036,
+            306394,
+            306732,
+            307116,
+            307522,
+            307911,
+            308284,
+            308651,
+            309022,
+            309392,
+            309760,
+            310167,
+            310512,
+            310856,
+            311267,
+            311680,
+            312040,
+            312485,
+            312877,
+            313278,
+            313648,
+            314039,
+            314363,
+            314700,
+            315045,
+            315471,
+            315917,
+            316315,
+            316639,
+            316980,
+            317304,
+            317699,
+            318096,
+            318529,
+            318958,
+            319371,
+            319771,
+            320160,
+            320520,
+            320905,
+            321385,
+            321821,
+            322196,
+            322581,
+            322962,
+            323339,
+            323763,
+            324203,
+            324666,
+            325021,
+            325422,
+            325820,
+            326226,
+            326642,
+            327110,
+            327507,
+            327882,
+            328250,
+            328608,
+            328986,
+            329413,
+            329894,
+            330277,
+            330652,
+            331028,
+            331390,
+            331755,
+            332197,
+            332657,
+            333033,
+            333407,
+            333745,
+            334118,
+            334489,
+            334901,
+            335321,
+            335321
+        ]
+    },
+    "ranked_and_approved_beatmapset_count": 0,
+    "unranked_beatmapset_count": 0
+}

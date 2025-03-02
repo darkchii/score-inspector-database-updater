@@ -2,8 +2,8 @@ const { Op } = require("sequelize");
 const { InspectorOsuUser, AltScore, InspectorClanMember, InspectorClanStats, AltUser, AltUserAchievement, AltUserBadge } = require("./db");
 const { CalculateXP } = require("./Osu");
 
-module.exports.BatchUpdateUser = BatchUpdateUser;
-async function BatchUpdateUser(users) {
+module.exports.BatchUpdateUserAltData = BatchUpdateUserAltData;
+async function BatchUpdateUserAltData(users) {
     if (users.length === 0) {
         return users;
     }
@@ -28,25 +28,6 @@ async function BatchUpdateUser(users) {
         raw: true
     });
 
-    const medal_data = await AltUserAchievement.findAll({
-        where: {
-            user_id: users.map(u => u.user_id),
-            achievement_id: { [Op.gt]: 0 }
-        },
-        group: ['user_id'],
-        attributes: ['user_id', [AltUserAchievement.sequelize.fn('COUNT', AltUserAchievement.sequelize.literal('achievement_id')), 'medals']],
-        raw: true
-    });
-
-    const badge_data = await AltUserBadge.findAll({
-        where: {
-            user_id: users.map(u => u.user_id),
-        },
-        group: ['user_id'],
-        attributes: ['user_id', [AltUserBadge.sequelize.fn('COUNT', AltUserBadge.sequelize.literal('user_id')), 'badges']],
-        raw: true
-    });
-
     for await (const user of users) {
         const user_data = data.find(x => x.user_id === user.user_id);
         if (!user_data) continue;
@@ -60,8 +41,6 @@ async function BatchUpdateUser(users) {
         const scores_C = parseInt(user_data?.c_count ?? 0);
         const scores_D = parseInt(user_data?.d_count ?? 0);
         const total_pp = parseFloat(user_data?.total_pp ?? 0);
-        const medals = parseInt(medal_data.find(x => x.user_id === user.user_id)?.medals ?? 0);
-        const badges = parseInt(badge_data.find(x => x.user_id === user.user_id)?.badges ?? 0);
 
         user.b_count = scores_B ?? user.b_count ?? 0;
         user.c_count = scores_C ?? user.c_count ?? 0;
@@ -72,164 +51,12 @@ async function BatchUpdateUser(users) {
         user.alt_s_count = scores_S ?? user.alt_s_count ?? 0;
         user.alt_sh_count = scores_SH ?? user.alt_sh_count ?? 0;
         user.alt_a_count = scores_A ?? user.alt_a_count ?? 0;
-        user.medals = medals ?? user.medals ?? 0;
-        user.badges = badges ?? user.badges ?? 0;
 
         //save
         await user.save();
     }
 
     return users;
-}
-
-module.exports.UpdateClan = UpdateClan;
-async function UpdateClan(id) {
-    const data = {
-        total_ss: 0,
-        total_ssh: 0,
-        total_ss_both: 0,
-        total_s: 0,
-        total_sh: 0,
-        total_s_both: 0,
-        total_a: 0,
-        total_b: 0,
-        total_c: 0,
-        total_d: 0,
-        playcount: 0,
-        playtime: 0,
-        ranked_score: 0,
-        total_score: 0,
-        replays_watched: 0,
-        total_hits: 0,
-        average_pp: 0,
-        total_pp: 0,
-        accuracy: 0,
-        clears: 0,
-        medals: 0,
-        badges: 0,
-        xp: 0,
-    };
-
-    let temp_sum_pp = 0;
-    let temp_sum_acc = 0;
-
-    //get all members of the clan
-    const members = await InspectorClanMember.findAll({
-        where: {
-            clan_id: id,
-            pending: false
-        }
-    });
-
-    if (members.length === 0) {
-        console.log(`Clan ${id} has no members`);
-        return;
-    }
-
-    data.members = members.length;
-
-    let ids = members.map(m => m.osu_id);
-    //remove undefined ids
-    ids = ids.filter(x => x);
-
-    //we use alt user because we want to get the stats of the user in the clan
-    //alt is also more up to date with restrictions
-    const local_users = await InspectorOsuUser.findAll({
-        where: {
-            user_id: ids
-        }
-    });
-
-    const remote_users = await AltUser.findAll({
-        where: {
-            user_id: ids
-        },
-    });
-
-    const filtered_local_users = local_users.filter(u => remote_users.find(ru => ru.user_id === u.user_id));
-
-    filtered_local_users.forEach(u => {
-        data.total_ss += u.ss_count;
-        data.total_ssh += u.ssh_count;
-        data.total_ss_both += u.ss_count + u.ssh_count;
-        data.total_s += u.s_count;
-        data.total_sh += u.sh_count;
-        data.total_s_both += u.s_count + u.sh_count;
-        data.total_a += u.a_count;
-        data.total_b += (u.b_count ?? 0);
-        data.total_c += (u.c_count ?? 0);
-        data.total_d += (u.d_count ?? 0);
-        data.total_pp += (u.total_pp ?? 0);
-        data.playcount += u.playcount;
-        data.playtime += u.playtime;
-        data.ranked_score += u.ranked_score;
-        data.total_score += u.total_score;
-        data.replays_watched += u.replays_watched;
-        data.total_hits += u.total_hits;
-        data.clears += u.ss_count + u.s_count + u.sh_count + u.ssh_count + u.a_count + (u.b_count ?? 0) + (u.c_count ?? 0) + (u.d_count ?? 0);
-        temp_sum_pp += u.pp;
-        temp_sum_acc += u.hit_accuracy ?? 0;
-    });
-
-
-    data.accuracy = temp_sum_acc / filtered_local_users.length;
-    if (data.accuracy === NaN || data.accuracy === Infinity || data.accuracy === -Infinity || data.accuracy === undefined || data.accuracy === null || data.accuracy === NaN || data.accuracy === 0
-        || isNaN(data.accuracy) || data.accuracy === "NaN" || data.accuracy === "Infinity" || data.accuracy === "-Infinity" || data.accuracy === "undefined" || data.accuracy === "null" || data.accuracy === "NaN" || data.accuracy === "0"
-    ) {
-        data.accuracy = 0;
-    }
-
-    const medal_count = await AltUserAchievement.count({
-        where: {
-            user_id: ids,
-            achievement_id: { [Op.gt]: 0 }
-        }
-    });
-
-    data.xp = CalculateXP(data.total_ss_both, data.total_s_both, data.total_a, data.ranked_score, data.total_score, data.medals, data.playtime);
-
-    const badge_count = await AltUserBadge.count({
-        where: {
-            user_id: ids
-        }
-    });
-
-    if (medal_count) {
-        data.medals = medal_count;
-    }
-
-    if (badge_count) {
-        data.badges = badge_count;
-    }
-
-    //new pp calc. the old one was too slow. this one is not perfect but it's good enough for now
-
-    let total_pp = 0;
-
-    let users_with_pp = filtered_local_users.filter(u => u.pp > 0);
-    users_with_pp.sort((a, b) => b.pp - a.pp);
-    //get top 10 only
-    users_with_pp = users_with_pp.slice(0, 10);
-    users_with_pp.forEach((u, index) => {
-        const _weight = Math.pow(0.6, index + 1);
-        total_pp += u.pp * _weight;
-    });
-
-    data.average_pp = total_pp;
-
-    let stats = await InspectorClanStats.findOne({
-        where: {
-            clan_id: id
-        }
-    });
-
-    for (const key in data) {
-        stats.set(key, data[key]);
-    }
-
-    console.log(`Updated clan ${id}`);
-
-    await stats.save();
 }
 
 const db_now = "timezone('utc', now())";

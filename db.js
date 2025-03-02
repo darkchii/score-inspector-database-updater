@@ -13,6 +13,9 @@ const { AltBeatmapModel } = require("./Models/AltBeatmapModel");
 const { InspectorClanRankingModel } = require("./Models/InspectorClanRankingModel");
 const { AltScoreModsModel } = require("./Models/AltScoreModsModel");
 const { OsuTeamModel } = require("./Models/OsuTeamModel");
+const { OsuUserBaseModel } = require("./Models/OsuUserBaseModel");
+const { InspectorUserModel } = require("./Models/InspectorUserModel");
+const { OsuUserRulesetDataModel } = require("./Models/OsuUserRulesetDataModel");
 require('dotenv').config();
 
 let databases = {
@@ -57,6 +60,15 @@ AltUserBadge.belongsTo(AltUser, { as: 'user', foreignKey: 'user_id' });
 AltScore.hasOne(AltScoreMods, { as: 'modern_mods', foreignKey: 'beatmap_id' });
 AltScoreMods.belongsTo(AltScore, { as: 'modern_mods', foreignKey: 'beatmap_id' });
 
+const InspectorUser = InspectorUserModel(databases.inspector);
+
+const OsuUserBase = OsuUserBaseModel(databases.inspector);
+const OsuUserRulesetData = OsuUserRulesetDataModel(databases.inspector);
+
+module.exports.OsuUserBase = OsuUserBase;
+module.exports.OsuUserRulesetData = OsuUserRulesetData;
+
+module.exports.InspectorUser = InspectorUser;
 module.exports.AltScore = AltScore;
 module.exports.AltScoreMods = AltScoreMods;
 module.exports.AltUser = AltUser;
