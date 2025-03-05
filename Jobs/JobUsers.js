@@ -172,7 +172,7 @@ async function Loop() {
                 new Promise((resolve, reject) => {
                     setTimeout(() => {
                         reject(new Error('User update took longer than 10 seconds, skipping to next user'));
-                    }, 20 * 1000); //20 seconds
+                    }, 60 * 1000); //1 minute
                 })
             ]);
             console.log(`[CACHER] Updated ${users.length} users ... done with page ${page} ... (total users: ${page * BATCH_FETCH + users.length})`)
