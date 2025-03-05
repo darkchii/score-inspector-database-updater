@@ -118,7 +118,7 @@ async function ProcessStars() {
         } catch (err) {
             console.error(err);
             //sleep for 1 minute
-            await new Promise(r => setTimeout(r, 60000));
+            await new Promise(r => setTimeout(r, 6000));
         }
     }
 }
