@@ -10,6 +10,7 @@ const populationStatsCacher = require("./Jobs/JobPopulation.js");
 const systemStatsCacher = require("./Jobs/JobSystemStats.js");
 const monthlyRankingsCacher = require("./Jobs/JobMonthlyRanking.js");
 const teamCacher = require("./Jobs/JobTeams.js");
+const activityCacher = require("./Jobs/JobGameActivity.js");
 const { BulkProcessStars } = require('./Jobs/JobProcessModdedStarratings.js');
 const { BulkProcessMissingLazerMods } = require('./Jobs/JobProcessMissingLazerMods.js');
 
@@ -28,6 +29,7 @@ const Cachers = [
     { cacher: performanceDistributionCacher, interval: '0 */4 * * *', data: [], onStart: true }, //every 4 hours
     { cacher: scoreStatCacher, interval: '0 * * * *', data: ['24h', '7d', 'all'], onStart: true },
     { cacher: scoreStatCacher, interval: '*/30 * * * *', data: ['30min'], onStart: true },
+    { cacher: activityCacher, interval: '*/15 * * * *', data: [], onStart: true }, //every 15 minutes
     { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'osu' },
     { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'taiko' },
     { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'fruits' },
