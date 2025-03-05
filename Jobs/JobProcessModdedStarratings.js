@@ -45,7 +45,7 @@ async function BulkProcessStars(amount = 200) {
             }));
         }
 
-        // await Promise.all(async_sr_calcs);
+        await Promise.all(async_sr_calcs);
         console.timeEnd(`[BULK PROCESS STARS] Processing ${scores[0].length} scores ...`);
     }
 
