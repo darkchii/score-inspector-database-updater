@@ -20,49 +20,33 @@ async function BulkProcessStars(amount = 200) {
 
     let api_url = 'http://localhost:5001';
     if (process.env.NODE_ENV === 'development') {
-        api_url = 'http://192.168.178.23:5001';
+        api_url = 'http://192.168.178.59:5001';
     }
 
     const fetched_ratings = [];
 
     if (scores[0].length > 0) {
+        let async_sr_calcs = [];
+        console.time(`[BULK PROCESS STARS] Processing ${scores[0].length} scores ...`);
         for await (const score of scores[0]) {
-            const beatmap_id = score.beatmap_id;
             const user_id = score.user_id;
-            const ruleset = 0;
-            const mods = score.mods;
+            const data = {
+                beatmap_id: score.beatmap_id,
+                ruleset: 0,
+                mods: score.mods,
+            };
 
-            const api_body = JSON.stringify({ beatmap_id, ruleset, mods });
-
-            const response = await fetch(`${api_url}/attributes`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: api_body,
-            });
-
-            const json = await response.json();
-
-            if (json?.star_rating >= 0) {
-                json.user_id = user_id;
-                json.beatmap_id = beatmap_id;
-
-                console.log(`[BULK PROCESS STARS] Fetched star rating for user ${user_id} on beatmap ${beatmap_id}`);
-
-                fetched_ratings.push(json);
-            } else {
-                console.log(`[BULK PROCESS STARS] Failed to fetch star rating for user ${user_id} on beatmap ${beatmap_id}`);
-
-                await fetch(`${api_url}/cache?beatmap_id=${beatmap_id}`, {
-                    method: 'DELETE',
-                });
-                //if the cacher fails, it still keeps the "failed" data
-                //which is star_rating = -1 and max_combo = 0, the rest is null
-                //this usually happens because the osu beatmap file didn't download for whatever reason
-                //its typically a one-off thing, so we can just delete the cache and try again later
-            }
+            async_sr_calcs.push(new Promise(async (resolve, reject) => {
+                const rating = await getAttributes(data, user_id, api_url);
+                if (rating) {
+                    fetched_ratings.push(rating);
+                }
+                resolve();
+            }));
         }
+
+        // await Promise.all(async_sr_calcs);
+        console.timeEnd(`[BULK PROCESS STARS] Processing ${scores[0].length} scores ...`);
     }
 
     if (fetched_ratings.length > 0) {
@@ -112,18 +96,58 @@ async function BulkProcessStars(amount = 200) {
 
             query_promises.push(new Promise((resolve, reject) => {
                 Databases.osuAlt.query(query).then(() => {
-                    console.log(`[BULK PROCESS STARS] Updated star rating for user ${user_id} on beatmap ${beatmap_id}`);
+                    // console.log(`[BULK PROCESS STARS] Updated star rating for user ${user_id} on beatmap ${beatmap_id}`);
                     resolve();
                 }).catch((err) => {
-                    console.log(`[BULK PROCESS STARS] Failed to update star rating for user ${user_id} on beatmap ${beatmap_id}`);
+                    // console.log(`[BULK PROCESS STARS] Failed to update star rating for user ${user_id} on beatmap ${beatmap_id}`);
                     console.log(err);
                     resolve();
                 });
             }));
         }
 
+        console.time(`[BULK PROCESS STARS] Updating ${fetched_ratings.length} scores ...`);
         await Promise.all(query_promises);
+        console.timeEnd(`[BULK PROCESS STARS] Updating ${fetched_ratings.length} scores ...`);
     }
+}
+
+async function getAttributes(data, user_id, api_url) {
+    // const api_body = JSON.stringify({ data.beatmap_id, data.ruleset, data.mods });
+    const api_body = JSON.stringify(data);
+
+    const response = await fetch(`${api_url}/attributes`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: api_body,
+    });
+
+    const json = await response.json();
+
+    if (json?.star_rating >= 0) {
+        json.user_id = user_id;
+        json.beatmap_id = data.beatmap_id;
+
+        // console.log(`[BULK PROCESS STARS] Fetched star rating for user ${user_id} on beatmap ${data.beatmap_id}`);
+
+        // fetched_ratings.push(json);
+
+        return json;
+    } else {
+        // console.log(`[BULK PROCESS STARS] Failed to fetch star rating for user ${user_id} on beatmap ${data.beatmap_id}`);
+    }
+
+    try{
+        await fetch(`${api_url}/cache?beatmap_id=${data.beatmap_id}`, {
+            method: 'DELETE',
+        });
+    }catch(err){
+        //dont care
+    }
+
+    return null;
 }
 
 module.exports = {
