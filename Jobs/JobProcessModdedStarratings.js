@@ -39,7 +39,45 @@ async function BulkProcessStars(amount = 200) {
             async_sr_calcs.push(new Promise(async (resolve, reject) => {
                 const rating = await getAttributes(data, user_id, api_url);
                 if (rating) {
-                    fetched_ratings.push(rating);
+                    const {
+                        user_id,
+                        beatmap_id,
+                        star_rating,
+                        aim_difficulty,
+                        speed_difficulty,
+                        speed_note_count,
+                        flashlight_difficulty,
+                        aim_difficult_slider_count, //added in January 2025 PP update
+                        aim_difficult_strain_count,
+                        speed_difficult_strain_count,
+                        approach_rate,
+                        overall_difficulty,
+                        drain_rate,
+                        max_combo,
+                        slider_factor } = rating;
+
+                        const query = `
+                        UPDATE scoresmods
+                        SET star_rating = ${star_rating},
+                        aim_difficulty = ${aim_difficulty},
+                        speed_difficulty = ${speed_difficulty},
+                        speed_note_count = ${speed_note_count},
+                        flashlight_difficulty = ${flashlight_difficulty ?? null},
+                        aim_difficult_slider_count = ${aim_difficult_slider_count},
+                        aim_difficult_strain_count = ${aim_difficult_strain_count},
+                        speed_difficult_strain_count = ${speed_difficult_strain_count},
+                        approach_rate = ${approach_rate ?? null},
+                        overall_difficulty = ${overall_difficulty ?? null},
+                        drain_rate = ${drain_rate ?? null},
+                        max_combo = ${max_combo},
+                        slider_factor = ${slider_factor},
+                        date_attributes = date_played,
+                        recalc = FALSE
+                        WHERE user_id = ${user_id}
+                        AND beatmap_id = ${beatmap_id}
+                    `;
+
+                    await Databases.osuAlt.query(query);
                 }
                 resolve();
             }));
@@ -47,68 +85,6 @@ async function BulkProcessStars(amount = 200) {
 
         await Promise.all(async_sr_calcs);
         console.timeEnd(`[BULK PROCESS STARS] Processing ${scores[0].length} scores ...`);
-    }
-
-    if (fetched_ratings.length > 0) {
-        const query_promises = [];
-        for (const rating of fetched_ratings) {
-            const {
-                user_id,
-                beatmap_id,
-                star_rating,
-                aim_difficulty,
-                speed_difficulty,
-                speed_note_count,
-                flashlight_difficulty,
-                aim_difficult_slider_count, //added in January 2025 PP update
-                aim_difficult_strain_count,
-                speed_difficult_strain_count,
-                approach_rate,
-                overall_difficulty,
-                drain_rate,
-                max_combo,
-                slider_factor } = rating;
-
-            //set to null if not found
-            const query = `
-                UPDATE scoresmods
-                SET star_rating = ${star_rating},
-                aim_difficulty = ${aim_difficulty},
-                speed_difficulty = ${speed_difficulty},
-                speed_note_count = ${speed_note_count},
-                flashlight_difficulty = ${flashlight_difficulty ?? null},
-                aim_difficult_slider_count = ${aim_difficult_slider_count},
-                aim_difficult_strain_count = ${aim_difficult_strain_count},
-                speed_difficult_strain_count = ${speed_difficult_strain_count},
-                approach_rate = ${approach_rate ?? null},
-                overall_difficulty = ${overall_difficulty ?? null},
-                drain_rate = ${drain_rate ?? null},
-                max_combo = ${max_combo},
-                slider_factor = ${slider_factor},
-                date_attributes = date_played,
-                recalc = FALSE
-                WHERE user_id = ${user_id}
-                AND beatmap_id = ${beatmap_id}
-            `;
-
-            // await Databases.osuAlt.query(query);
-            // console.log(`[BULK PROCESS STARS] Updated star rating for user ${user_id} on beatmap ${beatmap_id}`);
-
-            query_promises.push(new Promise((resolve, reject) => {
-                Databases.osuAlt.query(query).then(() => {
-                    // console.log(`[BULK PROCESS STARS] Updated star rating for user ${user_id} on beatmap ${beatmap_id}`);
-                    resolve();
-                }).catch((err) => {
-                    // console.log(`[BULK PROCESS STARS] Failed to update star rating for user ${user_id} on beatmap ${beatmap_id}`);
-                    console.log(err);
-                    resolve();
-                });
-            }));
-        }
-
-        console.time(`[BULK PROCESS STARS] Updating ${fetched_ratings.length} scores ...`);
-        await Promise.all(query_promises);
-        console.timeEnd(`[BULK PROCESS STARS] Updating ${fetched_ratings.length} scores ...`);
     }
 }
 
