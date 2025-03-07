@@ -153,7 +153,7 @@ async function UpdateUsers() {
 }
 
 //seperate function to constantly update users (because it's a long process, and we don't care for it to happen at the same time as the other cachers)
-const BATCH_FETCH = 1000;
+const BATCH_FETCH = 250;
 async function Loop() {
     let page = 0;
     while (true) {

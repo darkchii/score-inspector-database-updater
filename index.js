@@ -92,6 +92,7 @@ async function Loop() {
 }
 
 function ConstantLoop() {
+    if(ConstantCachers.length === 0) return;
     //constantcachers dont need to store in jobqueue
     //just re-run the function when it's done, but always independent and async from each other
     for (const cacher of ConstantCachers) {
