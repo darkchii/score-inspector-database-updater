@@ -12,14 +12,14 @@ module.exports = cacher;
 async function UpdateUsers() {
     const columns = Object.keys(InspectorOsuUser.rawAttributes);
     const exclude = [
-        'b_count', 
-        'c_count', 
-        'd_count', 
-        'total_pp', 
-        'alt_ssh_count', 
-        'alt_ss_count', 
-        'alt_s_count', 
-        'alt_sh_count', 
+        'b_count',
+        'c_count',
+        'd_count',
+        'total_pp',
+        'alt_ssh_count',
+        'alt_ss_count',
+        'alt_s_count',
+        'alt_sh_count',
         'alt_a_count',
         'medals',
         'badges',
@@ -45,6 +45,12 @@ async function UpdateUsers() {
         attributes: actual_columns,
         raw: true
     });
+
+    //convert local_users to a map for ultra fast access (user_id -> user)
+    const local_users_map = new Map();
+    for await (const user of local_users) {
+        local_users_map.set(user.user_id, user);
+    }
 
     // //check if any stat went over a threshold for achievement
     for await (const user of remote_users) {
@@ -100,9 +106,10 @@ async function UpdateUsers() {
         user.global_ss_rank = index + 1;
 
         //check local user to see if we need to update the highest rank
-        const local_user = local_users.find(x => x.user_id === user.user_id);
+        // const local_user = local_users.find(x => x.user_id === user.user_id);
+        const local_user = local_users_map.get(user.user_id);
         if (!local_user) {
-            console.log(`[CACHER] User ${user.username} not found in local database ...`);
+            //console.log(`[CACHER] User ${user.username} not found in local database ...`);
             continue;
         }
 
@@ -116,7 +123,6 @@ async function UpdateUsers() {
     }
 
     console.log(`[CACHER] Calculating country SS ranks ...`);
-
     //next, get all UNIQUE country codes from remote_users
     const country_codes = [...new Set(remote_users.map(x => x.country_code))];
     //for each country code, get all users with that country code, order them by ss_count, then find the index of the user in the array
@@ -127,9 +133,10 @@ async function UpdateUsers() {
             user.country_ss_rank = index + 1;
 
             //check local user to see if we need to update the highest rank
-            const local_user = local_users.find(x => x.user_id === user.user_id);
+            // const local_user = local_users.find(x => x.user_id === user.user_id);
+            const local_user = local_users_map.get(user.user_id);
             if (!local_user) {
-                console.log(`[CACHER] User ${user.username} not found in local database ...`);
+                // console.log(`[CACHER] User ${user.username} not found in local database ...`);
                 continue;
             }
 
@@ -151,6 +158,8 @@ async function UpdateUsers() {
     });
     console.log(`[CACHER] Finished updating users ...`);
 }
+
+UpdateUsers();
 
 //seperate function to constantly update users (because it's a long process, and we don't care for it to happen at the same time as the other cachers)
 const BATCH_FETCH = 250;
