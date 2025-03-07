@@ -180,7 +180,6 @@ async function Loop() {
         } catch (err) {
             console.error(err);
             await new Promise((resolve, reject) => { setTimeout(() => { resolve(); }, 10 * 1000); });
-            continue;
         }
     }
 }
