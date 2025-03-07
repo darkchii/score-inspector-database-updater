@@ -2,7 +2,6 @@
 //mainly to circumvent extremely slow sql queries that don't need to be live
 const schedule = require('node-schedule');
 const usersCacher = require("./Jobs/JobUsers.js");
-const usersNextCacher = require("./Jobs/JobUsersNext.js");
 const performanceDistributionCacher = require("./Jobs/JobPerformanceDistribution.js");
 const scoreStatCacher = require("./Jobs/JobScoreStatistics.js");
 const scoreRankCacher = require("./Jobs/JobScoreRank.js");
@@ -145,6 +144,7 @@ if (process.env.NODE_ENV === 'production') {
 } else {
     console.log('Not in production mode, not starting cacher');
     //test
+    // ProcessStars();
     // ConstantLoop()
 }
 // ProcessMissingLazerMods();

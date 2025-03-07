@@ -16,6 +16,7 @@ const { OsuTeamModel } = require("./Models/OsuTeamModel");
 const { OsuUserBaseModel } = require("./Models/OsuUserBaseModel");
 const { InspectorUserModel } = require("./Models/InspectorUserModel");
 const { OsuUserRulesetDataModel } = require("./Models/OsuUserRulesetDataModel");
+const { OsuTeamRulesetModel } = require("./Models/OsuTeamRulesetMode");
 require('dotenv').config();
 
 let databases = {
@@ -48,6 +49,7 @@ module.exports.Databases = databases;
 
 const InspectorOsuUser = OsuUserModel(databases.inspector);
 const InspectorTeam = OsuTeamModel(databases.inspector);
+const InspectorTeamRuleset = OsuTeamRulesetModel(databases.inspector);
 const InspectorUserMilestone = InspectorUserMilestoneModel(databases.inspector);
 const InspectorScoreStat = InspectorScoreStatModel(databases.inspector);
 const InspectorHistoricalScoreRankOsu = InspectorHistoricalScoreRankModel(databases.inspector, 'osu');
@@ -55,6 +57,9 @@ const InspectorHistoricalScoreRankTaiko = InspectorHistoricalScoreRankModel(data
 const InspectorHistoricalScoreRankMania = InspectorHistoricalScoreRankModel(databases.inspector, 'mania');
 const InspectorHistoricalScoreRankFruits = InspectorHistoricalScoreRankModel(databases.inspector, 'fruits');
 const InspectorCountryStat = InspectorCountryStatModel(databases.inspector);
+
+InspectorTeam.hasMany(InspectorTeamRuleset, { as: 'rulesets', foreignKey: 'id' });
+InspectorTeamRuleset.belongsTo(InspectorTeam, { as: 'team', foreignKey: 'id' });
 
 const AltScore = ScoreModel(databases.osuAlt);
 const AltScoreMods = AltScoreModsModel(databases.osuAlt);
@@ -100,6 +105,7 @@ module.exports.AltUserBadge = AltUserBadge;
 module.exports.AltBeatmap = AltBeatmap;
 module.exports.InspectorOsuUser = InspectorOsuUser;
 module.exports.InspectorTeam = InspectorTeam;
+module.exports.InspectorTeamRuleset = InspectorTeamRuleset;
 module.exports.InspectorUserMilestone = InspectorUserMilestone;
 module.exports.InspectorScoreStat = InspectorScoreStat;
 module.exports.InspectorHistoricalScoreRankOsu = InspectorHistoricalScoreRankOsu;

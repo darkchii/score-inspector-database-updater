@@ -1,100 +1,181 @@
 const { Sequelize } = require("sequelize");
-const { InspectorOsuUser, InspectorTeam } = require("../db");
-const { GetOsuUsers } = require("../Osu");
+const { InspectorOsuUser, InspectorTeam, InspectorTeamRuleset } = require("../db");
+const { GetOsuUsers, MODE_SLUGS } = require("../Osu");
+const { DOMParser } = require("@xmldom/xmldom");
 
 const cacher = {
     func: UpdateTeams,
     name: 'UpdateTeams',
 }
 
+const url = 'https://osu.ppy.sh/rankings/{mode}/team?page=';
+const PAGE_INTERVAL = 1000; //1 second to prevent spamming and getting rate limited
+const TEAMS_PER_PAGE = 50;
+
 module.exports = cacher;
 
-async function UpdateTeams(){
-    //Updates all osu_users with team_id and the osu_teams table
+async function UpdateTeams() {
+    try {
+        for await (const mode of MODE_SLUGS) {
+            console.log(`[TEAM STATS] Updating ${mode} teams ...`);
+            let page = 1;
+            let completed = false;
 
-    const users = await InspectorOsuUser.findAll({
-        //random order
-        order: [
-            [Sequelize.fn('RAND')]
-        ],
-        raw: true
-    });
-
-    const id_chunks = [];
-
-    //split into chunks of 50 (osu api v2 limit)
-    for(let i = 0; i < users.length; i += 50){
-        id_chunks.push(users.slice(i, i + 50).map(x => x.user_id));
-    }
-
-    console.log(`Updating ${id_chunks.length} chunks of 50 users (${users.length} total)`);
-    try{
-        for await(const chunk of id_chunks){
-            const _users = await GetOsuUsers(chunk);
-
-            if(!_users || !_users.length || _users.length === 0){
-                //wait 1 minute
-                await new Promise(r => setTimeout(r, 60000));
-                continue;
-            }
-
-            console.log(`Fetched ${_users.length} users`);
-
-            const _users_with_teams = _users.filter(x => x.team);
-            console.log(`Found ${_users_with_teams.length} users with teams`);
-
-            if(_users_with_teams.length === 0){
-                await new Promise(r => setTimeout(r, 500));
-                continue;
-            }
-
-            //update team_id InspectorOsuUser team_id
-            await Promise.all(_users_with_teams.map(async user => {
-                await InspectorOsuUser.update({
-                    team_id: user.team.id
-                }, {
-                    where: {
-                        user_id: user.id
-                    }
-                });
-            }));
-
-            //insert/update osu_teams
-            await Promise.all(_users_with_teams.map(async user => {
-                let team = user.team;
-                let exists = await InspectorTeam.findOne({
-                    where: {
-                        id: team.id
-                    }
-                });
-
-                if(!exists){
-                    try{
-                        await InspectorTeam.create({
-                            id: team.id,
-                            flag_url: team.flag_url,
-                            name: team.name,
-                            short_name: team.short_name
-                        });
-                    }catch(err){
-                        //it most likely is a race condition, where another one is inserted at the same time
-                    }
-                }else{
-                    await InspectorTeam.update({
-                        flag_url: team.flag_url,
-                        name: team.name,
-                        short_name: team.short_name
-                    }, {
-                        where: {
-                            id: team.id
-                        }
+            while (!completed) {
+                try {
+                    const _url = `${url.replace('{mode}', mode)}${page}`;
+                    const res = await fetch(_url, {
+                        method: 'GET',
                     });
+                    //There is no API for this, we scrape it
+                    const teams = processTeamPage(await res.text(), mode);
+
+                    if (teams.length > 0) {
+                        await Promise.all(teams.map(async team => {
+                            //update or insert
+                            if (await InspectorTeam.findOne({ where: { id: team.id } })) {
+                                await InspectorTeam.update({
+                                    name: team.name,
+                                    flag_url: team.flag_url,
+                                    members: team.members,
+                                    last_updated: team.last_updated,
+                                }, { where: { id: team.id } });
+                            } else {
+                                await InspectorTeam.create({
+                                    id: team.id,
+                                    name: team.name,
+                                    flag_url: team.flag_url,
+                                    members: team.members,
+                                    last_updated: team.last_updated,
+                                });
+                            }
+
+                            if(await InspectorTeamRuleset.findOne({ where: { id: team.id, mode: team.mode_int } })) {
+                                await InspectorTeamRuleset.update({
+                                    play_count: team.play_count,
+                                    ranked_score: team.ranked_score,
+                                    average_score: team.average_score,
+                                    performance: team.performance,
+                                }, { where: { id: team.id, mode: team.mode_int } });
+                            } else {
+                                await InspectorTeamRuleset.create({
+                                    id: team.id,
+                                    mode: team.mode_int,
+                                    play_count: team.play_count,
+                                    ranked_score: team.ranked_score,
+                                    average_score: team.average_score,
+                                    performance: team.performance,
+                                });
+                            }
+                        }));
+                    }
+
+                    if (teams.length < TEAMS_PER_PAGE) {
+                        completed = true;
+                        break;
+                    }
+
+                    console.log(`[TEAM STATS] Updated ${mode} teams page ${page}`);
+                } catch (err) {
+                    console.error(err);
+                    console.log(`[TEAM STATS] Error updating ${mode} teams page ${page}, skipping ...`);
+                    //dont care, not critical, we dont care about ranking itself, we just update this subset later
                 }
-            }));
-            await new Promise(r => setTimeout(r, 2500));
+
+                page++;
+                await new Promise(r => setTimeout(r, PAGE_INTERVAL));
+            }
+
         }
-    }catch(err){
-        console.warn(`Error updating teams`);
-        console.warn(err);
+    } catch (err) {
+        console.error(err);
     }
+
+    console.log(`[TEAM STATS] Finished updating teams`);
+    console.log(`[TEAM STATS] Sleeping for 60 minutes ...`);
+    await new Promise(r => setTimeout(r, 60 * 60 * 1000));
+}
+
+const TEAM_TABLE_INDICES = {
+    // rank: 0, //dont care
+    name: 1,
+    members: 2,
+    play_count: 3,
+    ranked_score: 4,
+    average_score: 5,
+    performance: 6,
+}
+
+function processTeamPage(text, mode) {
+    //parse the page and update the database
+    //return true if there are more pages, false otherwise
+    //find every <tr class="ranking-page-table__row">
+
+    //parse as XML (nodejs, so no DOMParser)
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(text, 'text/html');
+    const rows = doc.getElementsByTagName('tr');
+    const filtered = Array.from(rows).filter(row => row.getAttribute('class') === 'ranking-page-table__row');
+
+    let teams = [];
+
+    for (const row of filtered) {
+        const cells = row.getElementsByTagName('td');
+        const team = {};
+
+        for (const [key, index] of Object.entries(TEAM_TABLE_INDICES)) {
+            let cell = cells[index];
+            if (key === 'name') {
+                let name_element = cell.getElementsByTagName('a')[1];
+                let name = name_element.textContent;
+                name = name.trim();
+                let href = name_element.getAttribute('href');
+                //the id is always after /teams/, there may be other data after it
+                let id = href.split('/teams/')[1].split('/')[0];
+                team.id = Number(id);
+                team[key] = name;
+
+                //get element with class flag-team
+                let flag_element = cell.getElementsByClassName('flag-team')[0];
+                //find node with the background image
+                let url = flag_element.getAttribute('style');
+                if (url) {
+                    //extract the url
+                    url = url.split('url(')[1].split(')')[0];
+                    //remove the quotes ' and "
+                    url = url.replace(/['"]/g, '');
+                    team.flag_url = url.trim();
+                } else {
+                    team.flag_url = null;
+                }
+            } else {
+                //its a number string with commas, need to parse this
+                team[key] = Number(cell.textContent.replace(/,/g, ''));
+            }
+
+            team.mode = mode;
+            team.mode_int = MODE_SLUGS.indexOf(mode);
+            team.last_updated = new Date();
+        }
+
+        teams.push(team);
+    }
+
+    return teams;
+}
+
+async function Loop() {
+    while (true) {
+        try {
+            await UpdateTeams();
+        } catch (err) {
+            console.error(err);
+            //sleep for 1 minute to prevent spamming
+            await new Promise(r => setTimeout(r, 60 * 1000));
+        }
+    }
+}
+
+if (process.env.NODE_ENV === 'production') {
+    Loop();
 }
