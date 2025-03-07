@@ -24,12 +24,12 @@ module.exports = StartCacher;
 const Cachers = [
     //run every 4 hours, parallel to everything else so it doesn't interfere with the other jobs
     //(this is a very heavy job)
-    { cacher: monthlyRankingsCacher, interval: '0 */4 * * *', data: [], parallel: true, onStart: true },
+    { cacher: monthlyRankingsCacher, interval: '0 */4 * * *', data: [], parallel: true }, //every 4 hours
     { cacher: usersCacher, interval: '0 */1 * * *', data: [], onStart: true }, //every 1 hour
-    { cacher: performanceDistributionCacher, interval: '0 */4 * * *', data: [], onStart: true }, //every 4 hours
-    { cacher: scoreStatCacher, interval: '0 * * * *', data: ['24h', '7d', 'all'], onStart: true },
-    { cacher: scoreStatCacher, interval: '*/30 * * * *', data: ['30min'], onStart: true },
-    { cacher: activityCacher, interval: '*/15 * * * *', data: [], onStart: true }, //every 15 minutes
+    { cacher: performanceDistributionCacher, interval: '0 */4 * * *', data: [] }, //every 4 hours
+    { cacher: scoreStatCacher, interval: '0 * * * *', data: ['24h', '7d', 'all'] },
+    { cacher: scoreStatCacher, interval: '*/30 * * * *', data: ['30min'] },
+    { cacher: activityCacher, interval: '*/15 * * * *', data: [] }, //every 15 minutes
     { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'osu' },
     { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'taiko' },
     { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'fruits' },
