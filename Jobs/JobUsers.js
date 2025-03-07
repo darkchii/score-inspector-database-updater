@@ -159,8 +159,6 @@ async function UpdateUsers() {
     console.log(`[CACHER] Finished updating users ...`);
 }
 
-UpdateUsers();
-
 //seperate function to constantly update users (because it's a long process, and we don't care for it to happen at the same time as the other cachers)
 const BATCH_FETCH = 250;
 async function Loop() {
