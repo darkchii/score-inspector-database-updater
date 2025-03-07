@@ -136,7 +136,7 @@ async function GetOsuUsers(id_array, timeout = 5000) {
             let _users = JSON.parse(JSON.stringify(res.data))?.users;
             users = [...users, ..._users];
         } catch (err) {
-            console.error('Unable to get osu users: ' + err.message);
+            console.warn('Unable to get osu users: ' + err.message);
         }
     }
 

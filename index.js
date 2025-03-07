@@ -70,8 +70,8 @@ async function QueueProcessor() {
                 }
                 console.log(`[CACHER] Finished ${job.cacher.name}`);
             } catch (e) {
-                console.error(`[CACHER] Error running ${job.cacher.name}`);
-                console.error(e);
+                console.warn(`[CACHER] Error running ${job.cacher.name}`);
+                console.warn(e);
             }
         }
         await new Promise(r => setTimeout(r, 1000));
@@ -104,8 +104,8 @@ function ConstantLoop() {
                     console.log(`[CACHER] Finished ${cacher.cacher.name}`);
                     //artificial delay to prevent spamming (like debug mode)
                 }catch(e){
-                    console.error(`[CACHER] Error running ${cacher.cacher.name}`);
-                    console.error(e);
+                    console.warn(`[CACHER] Error running ${cacher.cacher.name}`);
+                    console.warn(e);
                     //artificial delay to prevent spamming (like debug mode)
                 }
                 await new Promise(r => setTimeout(r, cacher.wait || 1000));
@@ -119,7 +119,7 @@ async function ProcessStars() {
         try {
             await BulkProcessStars();
         } catch (err) {
-            console.error(err);
+            console.warn(err);
             //sleep for 1 minute
             await new Promise(r => setTimeout(r, 6000));
         }
@@ -131,7 +131,7 @@ async function ProcessMissingLazerMods() {
         try {
             await BulkProcessMissingLazerMods();
         } catch (err) {
-            console.error(err);
+            console.warn(err);
             //sleep for 1 minute
             await new Promise(r => setTimeout(r, 60000));
         }

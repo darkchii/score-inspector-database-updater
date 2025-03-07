@@ -35,7 +35,7 @@ async function UpdateUsers() {
             let [data_osu, data_taiko, data_fruits, data_mania] = await Promise.all(modes.map(mode => GetOsuUser(user.id, mode, 'id')));
 
             if (data_osu === null) {
-                console.error(`Failed to get data for ${user.id} - ${user.username}, skipping`);
+                console.warn(`Failed to get data for ${user.id} - ${user.username}, skipping`);
                 continue;
             }
 
@@ -53,7 +53,7 @@ async function UpdateUsers() {
 
         console.log(`Got data for ${user_data.length} users`);
     } catch (err) {
-        console.error(err);
+        console.warn(err);
     }
 
     try {
@@ -246,7 +246,7 @@ async function Loop() {
         try {
             await UpdateUsers();
         } catch (err) {
-            console.error(err);
+            console.warn(err);
             await new Promise((resolve, reject) => { setTimeout(() => { resolve(); }, 10 * 1000); }); //wait 10 seconds before trying again
             continue;
         }

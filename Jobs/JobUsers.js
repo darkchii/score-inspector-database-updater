@@ -187,7 +187,7 @@ async function Loop() {
             console.log(`[CACHER] Updated ${users.length} users ... done with page ${page} ... (total users: ${page * BATCH_FETCH + users.length})`)
             page++;
         } catch (err) {
-            console.error(err);
+            console.warn(err);
             await new Promise((resolve, reject) => { setTimeout(() => { resolve(); }, 10 * 1000); });
         }
     }

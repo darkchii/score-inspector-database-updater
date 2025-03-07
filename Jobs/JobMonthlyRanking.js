@@ -165,10 +165,10 @@ async function UpdateMonthlyRankings() {
                     }
                 }
             } catch (err) {
-                console.error(err);
+                console.warn(err);
             }
         }
     } catch (err) {
-        console.error(err);
+        console.warn(err);
     }
 }

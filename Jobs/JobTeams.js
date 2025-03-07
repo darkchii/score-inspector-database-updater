@@ -94,7 +94,7 @@ async function UpdateTeams(){
             await new Promise(r => setTimeout(r, 2500));
         }
     }catch(err){
-        console.error(`Error updating teams`);
-        console.error(err);
+        console.warn(`Error updating teams`);
+        console.warn(err);
     }
 }
