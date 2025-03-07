@@ -1,6 +1,6 @@
 const { Databases } = require("../db")
 
-async function BulkProcessStars(amount = 200) {
+async function BulkProcessStars(amount = 25) {
     const scores = await Databases.osuAlt.query(`
         SELECT * FROM scoresmods
         WHERE 
