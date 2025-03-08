@@ -29,10 +29,10 @@ const Cachers = [
     //TEMP DISABLED { cacher: scoreStatCacher, interval: '0 * * * *', data: ['24h', '7d', 'all'] },
     //TEMP DISABLED { cacher: scoreStatCacher, interval: '*/30 * * * *', data: ['30min'] },
     //TEMP DISABLED { cacher: activityCacher, interval: '*/15 * * * *', data: [] }, //every 15 minutes
-    //TEMP DISABLED { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'osu' },
-    //TEMP DISABLED { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'taiko' },
-    //TEMP DISABLED { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'fruits' },
-    //TEMP DISABLED { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'mania' },
+    { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'osu' },
+    { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'taiko' },
+    { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'fruits' },
+    { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'mania' },
     //TEMP DISABLED { cacher: populationStatsCacher, interval: '0 */4 * * *', data: [] }, //every 4 hours
     //TEMP DISABLED { cacher: systemStatsCacher, interval: '*/30 * * * *', data: [], timeout: 20 }, //needs timeout, for some reason it keeps running forever on very rare occasions
 ]
