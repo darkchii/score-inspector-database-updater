@@ -27,8 +27,17 @@ async function UpdateTeams() {
                     const res = await fetch(_url, {
                         method: 'GET',
                     });
+
+                    const text = await res.text();
+
+                    if(res.status !== 200){
+                        throw new Error(`Failed to fetch page ${page} with status ${res.status}`);
+                    }
+
+                    const is_last = isLastPage(text);
+                    //pause for dev
                     //There is no API for this, we scrape it
-                    const teams = processTeamPage(await res.text(), mode);
+                    const teams = processTeamPage(text, mode);
 
                     if (teams.length > 0) {
                         await Promise.all(teams.map(async team => {
@@ -69,13 +78,13 @@ async function UpdateTeams() {
                             }
                         }));
                     }
+                    
+                    console.log(`[TEAM STATS] Updated ${mode} teams page ${page}`);
 
-                    if (teams.length < TEAMS_PER_PAGE) {
+                    if (teams.length < TEAMS_PER_PAGE || is_last) {
                         completed = true;
                         break;
                     }
-
-                    console.log(`[TEAM STATS] Updated ${mode} teams page ${page}`);
                 } catch (err) {
                     console.error(err);
                     console.log(`[TEAM STATS] Error updating ${mode} teams page ${page}, skipping ...`);
@@ -164,6 +173,20 @@ function processTeamPage(text, mode) {
     return teams;
 }
 
+function isLastPage(text){
+    let parser = new DOMParser();
+    let doc = parser.parseFromString(text, 'text/html');
+
+    //we need to find span element that contains class "pagination-v2__link" and "pagination-v2__link--quick"
+    let spans = doc.getElementsByTagName('span');
+    let filtered = Array.from(spans).filter(span => span.getAttribute('class') === 'pagination-v2__link pagination-v2__link--quick pagination-v2__link--disabled');
+
+    //find those with a subelement span with text "next"
+    let next = filtered.find(span => span.getElementsByTagName('span')[0].textContent?.replace(/['"]/g, '')?.trim() === 'next');
+    //if it exists, we are on the last page because it exists and cant be clicked (span is disabled)
+    return Boolean(next);
+}
+
 async function Loop() {
     while (true) {
         try {
@@ -177,5 +200,5 @@ async function Loop() {
 }
 
 if (process.env.NODE_ENV === 'production') {
-    Loop();
 }
+Loop();
