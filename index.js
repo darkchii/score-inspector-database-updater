@@ -23,18 +23,18 @@ module.exports = StartCacher;
 const Cachers = [
     //run every 4 hours, parallel to everything else so it doesn't interfere with the other jobs
     //(this is a very heavy job)
-    { cacher: monthlyRankingsCacher, interval: '0 */4 * * *', data: [], parallel: true }, //every 4 hours
-    { cacher: usersCacher, interval: '0 */1 * * *', data: [], onStart: true }, //every 1 hour
-    { cacher: performanceDistributionCacher, interval: '0 */4 * * *', data: [] }, //every 4 hours
-    { cacher: scoreStatCacher, interval: '0 * * * *', data: ['24h', '7d', 'all'] },
-    { cacher: scoreStatCacher, interval: '*/30 * * * *', data: ['30min'] },
-    { cacher: activityCacher, interval: '*/15 * * * *', data: [] }, //every 15 minutes
-    { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'osu' },
-    { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'taiko' },
-    { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'fruits' },
-    { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'mania' },
-    { cacher: populationStatsCacher, interval: '0 */4 * * *', data: [] }, //every 4 hours
-    { cacher: systemStatsCacher, interval: '*/30 * * * *', data: [], timeout: 20 }, //needs timeout, for some reason it keeps running forever on very rare occasions
+    //TEMP DISABLED { cacher: monthlyRankingsCacher, interval: '0 */4 * * *', data: [], parallel: true }, //every 4 hours
+    //TEMP DISABLED { cacher: usersCacher, interval: '0 */1 * * *', data: [], onStart: true }, //every 1 hour
+    //TEMP DISABLED { cacher: performanceDistributionCacher, interval: '0 */4 * * *', data: [] }, //every 4 hours
+    //TEMP DISABLED { cacher: scoreStatCacher, interval: '0 * * * *', data: ['24h', '7d', 'all'] },
+    //TEMP DISABLED { cacher: scoreStatCacher, interval: '*/30 * * * *', data: ['30min'] },
+    //TEMP DISABLED { cacher: activityCacher, interval: '*/15 * * * *', data: [] }, //every 15 minutes
+    //TEMP DISABLED { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'osu' },
+    //TEMP DISABLED { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'taiko' },
+    //TEMP DISABLED { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'fruits' },
+    //TEMP DISABLED { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'mania' },
+    //TEMP DISABLED { cacher: populationStatsCacher, interval: '0 */4 * * *', data: [] }, //every 4 hours
+    //TEMP DISABLED { cacher: systemStatsCacher, interval: '*/30 * * * *', data: [], timeout: 20 }, //needs timeout, for some reason it keeps running forever on very rare occasions
 ]
 
 //these just run again when finished, not relying on a schedule

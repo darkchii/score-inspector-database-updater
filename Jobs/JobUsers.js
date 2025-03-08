@@ -191,5 +191,5 @@ async function Loop() {
     }
 }
 if (process.env.NODE_ENV === 'production') {
-    Loop();
+    // Loop(); //TEMP DISABLED
 }
