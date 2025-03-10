@@ -16,6 +16,8 @@ module.exports = cacher;
 
 async function UpdateTeams() {
     try {
+
+        let start_time = new Date();
         for await (const mode of MODE_SLUGS) {
             console.log(`[TEAM STATS] Updating ${mode} teams ...`);
             let page = 1;
@@ -30,7 +32,7 @@ async function UpdateTeams() {
 
                     const text = await res.text();
 
-                    if(res.status !== 200){
+                    if (res.status !== 200) {
                         throw new Error(`Failed to fetch page ${page} with status ${res.status}`);
                     }
 
@@ -48,6 +50,7 @@ async function UpdateTeams() {
                                     flag_url: team.flag_url,
                                     members: team.members,
                                     last_updated: team.last_updated,
+                                    deleted: false,
                                 }, { where: { id: team.id } });
                             } else {
                                 await InspectorTeam.create({
@@ -56,15 +59,17 @@ async function UpdateTeams() {
                                     flag_url: team.flag_url,
                                     members: team.members,
                                     last_updated: team.last_updated,
+                                    deleted: false,
                                 });
                             }
 
-                            if(await InspectorTeamRuleset.findOne({ where: { id: team.id, mode: team.mode_int } })) {
+                            if (await InspectorTeamRuleset.findOne({ where: { id: team.id, mode: team.mode_int } })) {
                                 await InspectorTeamRuleset.update({
                                     play_count: team.play_count,
                                     ranked_score: team.ranked_score,
                                     average_score: team.average_score,
                                     performance: team.performance,
+                                    deleted: false,
                                 }, { where: { id: team.id, mode: team.mode_int } });
                             } else {
                                 await InspectorTeamRuleset.create({
@@ -74,11 +79,12 @@ async function UpdateTeams() {
                                     ranked_score: team.ranked_score,
                                     average_score: team.average_score,
                                     performance: team.performance,
+                                    deleted: false,
                                 });
                             }
                         }));
                     }
-                    
+
                     console.log(`[TEAM STATS] Updated ${mode} teams page ${page}`);
 
                     if (teams.length < TEAMS_PER_PAGE || is_last) {
@@ -94,8 +100,17 @@ async function UpdateTeams() {
                 page++;
                 await new Promise(r => setTimeout(r, PAGE_INTERVAL));
             }
-
         }
+
+        await InspectorTeam.update({
+            deleted: true,
+        }, {
+            where: {
+                last_updated: {
+                    [Sequelize.Op.lt]: start_time
+                }
+            }
+        });
     } catch (err) {
         console.error(err);
     }
@@ -173,7 +188,7 @@ function processTeamPage(text, mode) {
     return teams;
 }
 
-function isLastPage(text){
+function isLastPage(text) {
     let parser = new DOMParser();
     let doc = parser.parseFromString(text, 'text/html');
 

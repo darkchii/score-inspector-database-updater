@@ -7,6 +7,7 @@ const OsuTeamModel = (db) => db.define('OsuTeam', {
     flag_url: { type: Sequelize.STRING, allowNull: true, },
     members: { type: Sequelize.INTEGER, allowNull: false, },
     last_updated: { type: Sequelize.DATE, allowNull: false, },
+    deleted: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false },
 }, {
     tableName: 'osu_teams',
     timestamps: false
