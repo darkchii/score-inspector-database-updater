@@ -11,6 +11,7 @@ const cacher = {
 const url = 'https://osu.ppy.sh/rankings/{mode}/team?page=';
 const PAGE_INTERVAL = 1000; //1 second to prevent spamming and getting rate limited
 const TEAMS_PER_PAGE = 50;
+const OVERALL_WAIT = 2 * 60 * 60 * 1000; //2 hours
 
 module.exports = cacher;
 
@@ -116,8 +117,7 @@ async function UpdateTeams() {
     }
 
     console.log(`[TEAM STATS] Finished updating teams`);
-    console.log(`[TEAM STATS] Sleeping for 60 minutes ...`);
-    await new Promise(r => setTimeout(r, 60 * 60 * 1000));
+    await new Promise(r => setTimeout(r, OVERALL_WAIT));
 }
 
 const TEAM_TABLE_INDICES = {
