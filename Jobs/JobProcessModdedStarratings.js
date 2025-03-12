@@ -1,6 +1,6 @@
 const { Databases } = require("../db")
 
-async function BulkProcessStars(amount = 25) {
+async function BulkProcessStars(amount = 250) {
     const scores = await Databases.osuAlt.query(`
         SELECT * FROM scoresmods
         WHERE 
@@ -22,8 +22,6 @@ async function BulkProcessStars(amount = 25) {
     if (process.env.NODE_ENV === 'development') {
         api_url = 'http://192.168.178.59:5001';
     }
-
-    const fetched_ratings = [];
 
     if (scores[0].length > 0) {
         let async_sr_calcs = [];
@@ -113,14 +111,6 @@ async function getAttributes(data, user_id, api_url) {
         return json;
     } else {
         // console.log(`[BULK PROCESS STARS] Failed to fetch star rating for user ${user_id} on beatmap ${data.beatmap_id}`);
-    }
-
-    try{
-        await fetch(`${api_url}/cache?beatmap_id=${data.beatmap_id}`, {
-            method: 'DELETE',
-        });
-    }catch(err){
-        //dont care
     }
 
     return null;
