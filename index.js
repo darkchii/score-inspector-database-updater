@@ -33,7 +33,7 @@ const Cachers = [
     { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'taiko' },
     { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'fruits' },
     { cacher: scoreRankCacher, interval: '1 0 * * *', data: 'mania' },
-    { cacher: populationStatsCacher, interval: '0 */4 * * *', data: [] }, //every 4 hours
+    // { cacher: populationStatsCacher, interval: '0 */4 * * *', data: [] }, //every 4 hours
     { cacher: systemStatsCacher, interval: '*/30 * * * *', data: [], timeout: 20 }, //needs timeout, for some reason it keeps running forever on very rare occasions
 ]
 
