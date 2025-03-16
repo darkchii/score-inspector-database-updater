@@ -10,14 +10,12 @@ const { AltPriorityUserModel } = require("./Models/AltPriorityUserModel");
 const { AltUserAchievementModel } = require("./Models/AltUserAchievementModel");
 const { AltUserBadgeModel } = require("./Models/AltUserBadgeModel");
 const { AltBeatmapModel } = require("./Models/AltBeatmapModel");
-const { InspectorClanRankingModel } = require("./Models/InspectorClanRankingModel");
 const { AltScoreModsModel } = require("./Models/AltScoreModsModel");
 const { OsuTeamModel } = require("./Models/OsuTeamModel");
-const { OsuUserBaseModel } = require("./Models/OsuUserBaseModel");
 const { InspectorUserModel } = require("./Models/InspectorUserModel");
-const { OsuUserRulesetDataModel } = require("./Models/OsuUserRulesetDataModel");
 const { OsuTeamRulesetModel } = require("./Models/OsuTeamRulesetMode");
 const { OsuTeamMemberModel } = require("./Models/OsuTeamMemberModel");
+const { OsuTeamUserModel } = require("./Models/OsuTeamUserModel");
 require('dotenv').config();
 
 let databases = {
@@ -74,6 +72,7 @@ const InspectorCountryStat = InspectorCountryStatModel(databases.inspector);
 const InspectorTeam = OsuTeamModel(databases.osu_teams);
 const InspectorTeamRuleset = OsuTeamRulesetModel(databases.osu_teams);
 const InspectorTeamMember = OsuTeamMemberModel(databases.osu_teams);
+const InspectorTeamUser = OsuTeamUserModel(databases.osu_teams);
 InspectorTeam.hasMany(InspectorTeamRuleset, { as: 'rulesets', foreignKey: 'id' });
 InspectorTeamRuleset.belongsTo(InspectorTeam, { as: 'team', foreignKey: 'id' });
 InspectorTeamMember.belongsTo(InspectorTeam, { as: 'team', foreignKey: 'team_id' });
@@ -106,12 +105,6 @@ AltScoreMods.belongsTo(AltScore, { as: 'modern_mods', foreignKey: 'beatmap_id' }
 
 const InspectorUser = InspectorUserModel(databases.inspector);
 
-const OsuUserBase = OsuUserBaseModel(databases.inspector);
-const OsuUserRulesetData = OsuUserRulesetDataModel(databases.inspector);
-
-module.exports.OsuUserBase = OsuUserBase;
-module.exports.OsuUserRulesetData = OsuUserRulesetData;
-
 module.exports.InspectorUser = InspectorUser;
 module.exports.AltScore = AltScore;
 module.exports.AltScoreMods = AltScoreMods;
@@ -124,6 +117,7 @@ module.exports.InspectorOsuUser = InspectorOsuUser;
 module.exports.InspectorTeam = InspectorTeam;
 module.exports.InspectorTeamRuleset = InspectorTeamRuleset;
 module.exports.InspectorTeamMember = InspectorTeamMember;
+module.exports.InspectorTeamUser = InspectorTeamUser;
 module.exports.InspectorUserMilestone = InspectorUserMilestone;
 module.exports.InspectorScoreStat = InspectorScoreStat;
 module.exports.InspectorHistoricalScoreRankOsu = InspectorHistoricalScoreRankOsu;

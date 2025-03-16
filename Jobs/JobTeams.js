@@ -1,5 +1,5 @@
 const { Sequelize } = require("sequelize");
-const { InspectorOsuUser, InspectorTeam, InspectorTeamRuleset, InspectorTeamMember } = require("../db");
+const { InspectorOsuUser, InspectorTeam, InspectorTeamRuleset, InspectorTeamMember, InspectorTeamUser } = require("../db");
 const { GetOsuUsers, MODE_SLUGS } = require("../Osu");
 const { DOMParser } = require("@xmldom/xmldom");
 
@@ -127,6 +127,206 @@ async function UpdateTeams() {
     await new Promise(r => setTimeout(r, OVERALL_WAIT));
 }
 
+const USER_UPDATE_LIMIT = 200;
+const TEAM_STAT_UPDATE_INTERVAL = 10; //every 10 user fetches, we update team stats
+async function UpdateTeamMembers() {
+    let fetch_count = 0;
+    while (true) {
+        if (fetch_count >= TEAM_STAT_UPDATE_INTERVAL) {
+            fetch_count = 0;
+
+            //update team stats
+            const teams = await InspectorTeam.findAll({
+                where: {
+                    deleted: false,
+                }
+            })
+            console.log(`[TEAM STATS] Updating ${teams.length} team stats ...`);
+
+            for await (const team of teams) {
+                let members = await InspectorTeamMember.findAll({ where: { team_id: team.id } });
+                let member_ids = members.map(member => member.user_id);
+                let users = await InspectorTeamUser.findAll({ where: { id: member_ids } });
+                let _rulesets = await InspectorTeamRuleset.findAll({ where: { id: team.id } });
+
+                //remap rulesets to key-value pairs
+                let rulesets = {};
+                for await (const ruleset of _rulesets) {
+                    rulesets[ruleset.mode] = ruleset;
+                }
+
+                if (users.length === 0) {
+                    continue;
+                }
+
+                for await (const mode of MODE_SLUGS) {
+                    if (!rulesets[MODE_SLUGS.indexOf(mode)]) {
+                        //no ruleset for this mode
+                        //this is decided by osu, so we just skip it
+                        //if it disappears from the osu site, we still keep it (less complex)
+                        continue;
+                    }
+
+                    let data = {
+                        clears: 0,
+                        total_ss: 0,
+                        total_s: 0,
+                        total_a: 0,
+                        total_score: 0,
+                        play_time: 0,
+                        total_hits: 0,
+                        replays_watched: 0,
+                    }
+
+                    for (const user of users) {
+                        if (user.mode !== MODE_SLUGS.indexOf(mode)) {
+                            continue;
+                        }
+
+                        data.clears += user.count_ssh + user.count_ss + user.count_sh + user.count_s + user.count_a;
+                        data.total_ss += user.count_ss + user.count_ssh;
+                        data.total_s += user.count_s;
+                        data.total_a += user.count_a;
+                        data.total_score += user.total_score;
+                        data.play_time += user.play_time;
+                        data.total_hits += user.total_hits;
+                        data.replays_watched += user.replays_watched;
+                    }
+
+                    rulesets[MODE_SLUGS.indexOf(mode)].clears = data.clears;
+                    rulesets[MODE_SLUGS.indexOf(mode)].total_ss = data.total_ss;
+                    rulesets[MODE_SLUGS.indexOf(mode)].total_s = data.total_s;
+                    rulesets[MODE_SLUGS.indexOf(mode)].total_a = data.total_a;
+                    rulesets[MODE_SLUGS.indexOf(mode)].total_score = data.total_score;
+                    rulesets[MODE_SLUGS.indexOf(mode)].play_time = data.play_time;
+                    rulesets[MODE_SLUGS.indexOf(mode)].total_hits = data.total_hits;
+                    rulesets[MODE_SLUGS.indexOf(mode)].replays_watched = data.replays_watched;
+                }
+
+                //save the rulesets
+                for await (const ruleset of Object.values(rulesets)) {
+                    ruleset.save();
+                }
+            }
+            console.log(`[TEAM STATS] Updated ${teams.length} team stats`);
+        }
+
+        try {
+            //find 200 users
+            //first find users that are in TeamMember, but not in TeamUser
+            let user_ids = [];
+            const team_members = await InspectorTeamMember.findAll({
+                where: {
+                    user_id: {
+                        [Sequelize.Op.notIn]: Sequelize.literal(`(SELECT id as user_id FROM osu_users)`)
+                    }
+                },
+                limit: USER_UPDATE_LIMIT
+            });
+
+            user_ids = team_members.map(member => member.user_id);
+
+            if (user_ids.length < USER_UPDATE_LIMIT) {
+                //find oldest updated users (or last_updated is null)
+                const oldest_users = await InspectorTeamUser.findAll({
+                    order: [
+                        ['last_updated', 'ASC']
+                    ],
+                    limit: USER_UPDATE_LIMIT - user_ids.length
+                });
+
+                user_ids = [...user_ids, ...oldest_users.map(user => user.id)];
+            }
+
+            const users = await GetOsuUsers(user_ids, 5000, true);
+
+            //build objects for each user and each mode per user
+            let user_objects = [];
+            for await (const user of users) {
+                for await (const mode of MODE_SLUGS) {
+                    if (!user.statistics_rulesets) {
+                        //probably a bot account or extremely new player
+                        continue;
+                    }
+                    let stats = user.statistics_rulesets[mode];
+                    if (!stats) {
+                        continue;
+                    }
+
+                    let user_object = {
+                        id: user.id,
+                        username: user.username,
+                        mode: MODE_SLUGS.indexOf(mode),
+                        last_updated: new Date(),
+                        count_300: stats.count_300,
+                        count_100: stats.count_100,
+                        count_50: stats.count_50,
+                        count_miss: stats.count_miss,
+                        play_count: stats.play_count,
+                        ranked_score: stats.ranked_score,
+                        total_score: stats.total_score,
+                        pp: stats.pp,
+                        global_rank: stats.global_rank,
+                        hit_accuracy: stats.hit_accuracy,
+                        play_time: stats.play_time,
+                        total_hits: stats.total_hits,
+                        maximum_combo: stats.maximum_combo,
+                        replays_watched: stats.replays_watched_by_others,
+                        count_ssh: stats.grade_counts.ssh,
+                        count_ss: stats.grade_counts.ss,
+                        count_sh: stats.grade_counts.sh,
+                        count_s: stats.grade_counts.s,
+                        count_a: stats.grade_counts.a
+                    };
+
+                    user_objects.push(user_object);
+                }
+            }
+
+            // console.log(user_objects);
+            await Promise.all(user_objects.map(async user => {
+                if (await InspectorTeamUser.findOne({ where: { id: user.id, mode: user.mode } })) {
+                    await InspectorTeamUser.update({
+                        username: user.username,
+                        last_updated: user.last_updated,
+                        count_300: user.count_300,
+                        count_100: user.count_100,
+                        count_50: user.count_50,
+                        count_miss: user.count_miss,
+                        play_count: user.play_count,
+                        ranked_score: user.ranked_score,
+                        total_score: user.total_score,
+                        pp: user.pp,
+                        global_rank: user.global_rank,
+                        hit_accuracy: user.hit_accuracy,
+                        play_time: user.play_time,
+                        total_hits: user.total_hits,
+                        maximum_combo: user.maximum_combo,
+                        replays_watched: user.replays_watched,
+                        count_ssh: user.count_ssh,
+                        count_ss: user.count_ss,
+                        count_sh: user.count_sh,
+                        count_s: user.count_s,
+                        count_a: user.count_a
+                    }, { where: { id: user.id, mode: user.mode } });
+                    console.log('update')
+                } else {
+                    await InspectorTeamUser.create(user);
+                    console.log('create')
+                }
+            }));
+
+            console.log(`[TEAM STATS] Updated ${user_objects.length} team user objects (${user_ids.length} users)`);
+        } catch (err) {
+            console.error(err);
+        }
+
+        fetch_count++;
+
+        await new Promise(r => setTimeout(r, 5 * 1000));
+    }
+}
+
 async function UpdateTeamsDetailed() {
     //instead of doing this after the general update, we want to do this separately
     //this is because this is a slow process and we dont want to spam the server
@@ -175,7 +375,7 @@ async function UpdateTeamsDetailed() {
     }
 }
 
-async function scrapeTeam(team_id) {
+async function scrapeTeam(team_id, dry = false) {
     try {
         const _url = team_url.replace('{team_id}', team_id);
         const res = await fetch(_url, {
@@ -201,22 +401,54 @@ async function scrapeTeam(team_id) {
                 applications_open: team.info.team_application,
             }, { where: { id: team_id } });
 
-            //update or insert the members
-            await Promise.all(team.members.map(async user => {
-                //update or insert
-                if (await InspectorTeamMember.findOne({ where: { user_id: user.id } })) {
-                    await InspectorTeamMember.update({
-                        team_id: team_id,
-                        is_leader: user.is_leader || false,
-                    }, { where: { user_id: user.id } });
-                } else {
-                    await InspectorTeamMember.create({
-                        team_id: team_id,
-                        user_id: user.id,
-                        is_leader: user.is_leader || false,
-                    });
+            //original team member ids
+            const original_members = await InspectorTeamMember.findAll({
+                where: {
+                    team_id: team_id
                 }
-            }));
+            });
+
+            if (!dry) {
+                //delete all members that are not in the new list
+                await Promise.all(original_members.map(async member => {
+                    if (!team.members.find(user => user.id === member.user_id)) {
+                        await InspectorTeamMember.destroy({
+                            where: {
+                                user_id: member.user_id
+                            }
+                        });
+                    }
+                }));
+            }else{
+                //count how many members are not in the new list
+                let count = 0;
+                original_members.map(member => {
+                    if (!team.members.find(user => user.id === member.user_id)) {
+                        count++;
+                    }
+                });
+
+                console.log(`[TEAM STATS DRY] Team ${team_id} has ${count} members not in the new list`);
+            }
+
+            //update or insert the members
+            if (!dry) {
+                await Promise.all(team.members.map(async user => {
+                    //update or insert
+                    if (await InspectorTeamMember.findOne({ where: { user_id: user.id } })) {
+                        await InspectorTeamMember.update({
+                            team_id: team_id,
+                            is_leader: user.is_leader || false,
+                        }, { where: { user_id: user.id } });
+                    } else {
+                        await InspectorTeamMember.create({
+                            team_id: team_id,
+                            user_id: user.id,
+                            is_leader: user.is_leader || false,
+                        });
+                    }
+                }));
+            }
         }
         console.log(`[TEAM STATS] Scraped team ${team_id}`);
     } catch (err) {
@@ -227,8 +459,6 @@ async function scrapeTeam(team_id) {
         }
     }
 }
-
-// scrapeTeam(439);
 
 //dont care for mode, since we will track stats for all modes regardless
 //this is to get the tag and the full member list
@@ -427,4 +657,5 @@ async function Loop() {
 if (process.env.NODE_ENV === 'production') {
     Loop();
     UpdateTeamsDetailed();
+    UpdateTeamMembers();
 }
