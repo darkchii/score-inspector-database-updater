@@ -455,6 +455,14 @@ async function scrapeTeam(team_id, dry = false) {
         if (err.message.includes('status 429')) {
             await new Promise(r => setTimeout(r, 5000));
         }
+
+        //if status is 404, mark the team as deleted
+        if (err.message.includes('status 404')) {
+            await InspectorTeam.update({
+                deleted: true,
+            }, { where: { id: team_id } });
+            console.log(`[TEAM STATS] Team ${team_id} is deleted`);
+        }
     }
 }
 
