@@ -309,10 +309,8 @@ async function UpdateTeamMembers() {
                         count_s: user.count_s,
                         count_a: user.count_a
                     }, { where: { id: user.id, mode: user.mode } });
-                    console.log('update')
                 } else {
                     await InspectorTeamUser.create(user);
-                    console.log('create')
                 }
             }));
 
