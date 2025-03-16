@@ -341,8 +341,8 @@ async function UpdateTeamsDetailed() {
                 where: {
                     last_scraped: {
                         [Sequelize.Op.or]: {
-                            [Sequelize.Op.lt]: new Date(new Date() - 6 * 60 * 60 * 1000),
                             [Sequelize.Op.eq]: null,
+                            [Sequelize.Op.lt]: new Date(new Date() - 6 * 60 * 60 * 1000),
                         }
                     },
                     deleted: false,
