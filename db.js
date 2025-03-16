@@ -35,6 +35,20 @@ let databases = {
                 backoffBase: 500, // 1 second
             }
         }),
+    osu_teams: new Sequelize(
+        process.env.MYSQL_DB_TEAMS,
+        process.env.MYSQL_USER,
+        process.env.MYSQL_PASS,
+        {
+            host: process.env.MYSQL_HOST,
+            dialect: 'mariadb',
+            timezone: 'Europe/Amsterdam',
+            logging: false,
+            retry: {
+                max: 10, // maximum amount of retries
+                backoffBase: 500, // 1 second
+            }
+        }),
     osuAlt: new Sequelize(
         process.env.ALT_DB_DATABASE,
         process.env.ALT_DB_USER,
@@ -49,9 +63,6 @@ let databases = {
 module.exports.Databases = databases;
 
 const InspectorOsuUser = OsuUserModel(databases.inspector);
-const InspectorTeam = OsuTeamModel(databases.inspector);
-const InspectorTeamRuleset = OsuTeamRulesetModel(databases.inspector);
-const InspectorTeamMember = OsuTeamMemberModel(databases.inspector);
 const InspectorUserMilestone = InspectorUserMilestoneModel(databases.inspector);
 const InspectorScoreStat = InspectorScoreStatModel(databases.inspector);
 const InspectorHistoricalScoreRankOsu = InspectorHistoricalScoreRankModel(databases.inspector, 'osu');
@@ -60,6 +71,9 @@ const InspectorHistoricalScoreRankMania = InspectorHistoricalScoreRankModel(data
 const InspectorHistoricalScoreRankFruits = InspectorHistoricalScoreRankModel(databases.inspector, 'fruits');
 const InspectorCountryStat = InspectorCountryStatModel(databases.inspector);
 
+const InspectorTeam = OsuTeamModel(databases.osu_teams);
+const InspectorTeamRuleset = OsuTeamRulesetModel(databases.osu_teams);
+const InspectorTeamMember = OsuTeamMemberModel(databases.osu_teams);
 InspectorTeam.hasMany(InspectorTeamRuleset, { as: 'rulesets', foreignKey: 'id' });
 InspectorTeamRuleset.belongsTo(InspectorTeam, { as: 'team', foreignKey: 'id' });
 InspectorTeamMember.belongsTo(InspectorTeam, { as: 'team', foreignKey: 'team_id' });
