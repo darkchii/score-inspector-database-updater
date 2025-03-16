@@ -90,29 +90,6 @@ async function Loop() {
     }
 }
 
-function ConstantLoop() {
-    if(ConstantCachers.length === 0) return;
-    //constantcachers dont need to store in jobqueue
-    //just re-run the function when it's done, but always independent and async from each other
-    for (const cacher of ConstantCachers) {
-        (async () => {
-            while (true) {
-                try{
-                    console.log(`[CACHER] Running ${cacher.cacher.name} ...`);
-                    await cacher.cacher.func(cacher.data);
-                    console.log(`[CACHER] Finished ${cacher.cacher.name}`);
-                    //artificial delay to prevent spamming (like debug mode)
-                }catch(e){
-                    console.warn(`[CACHER] Error running ${cacher.cacher.name}`);
-                    console.warn(e);
-                    //artificial delay to prevent spamming (like debug mode)
-                }
-                await new Promise(r => setTimeout(r, cacher.wait || 1000));
-            }
-        })();
-    }
-}
-
 async function ProcessStars() {
     while (true) {
         try {
@@ -138,7 +115,6 @@ async function ProcessMissingLazerMods() {
 }
 if (process.env.NODE_ENV === 'production') {
     QueueProcessor();
-    ConstantLoop()
     Loop();
     ProcessStars();
 } else {
