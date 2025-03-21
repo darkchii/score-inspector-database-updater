@@ -10,6 +10,8 @@ const OsuTeamModel = (db) => db.define('OsuTeam', {
     deleted: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false },
     last_scraped: { type: Sequelize.DATE, allowNull: true, },
     applications_open: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false },
+    header_url: { type: Sequelize.STRING, allowNull: true, },
+    url: { type: Sequelize.STRING, allowNull: true, },
 }, {
     tableName: 'osu_teams',
     timestamps: false

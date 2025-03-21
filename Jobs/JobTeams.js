@@ -519,6 +519,9 @@ function findTeamHeader(doc){
     //class profile-info__bg profile-info__bg--team, the background-image
     const bg_element = doc.getElementsByClassName('profile-info__bg profile-info__bg--team')[0];
     const url = bg_element.getAttribute('style');
+    if(!url){
+        return null;
+    }
     //extract the url
     let header_url = url.split('url(')[1].split(')')[0];
     //remove the quotes ' and "
