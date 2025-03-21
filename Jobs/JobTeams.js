@@ -397,6 +397,8 @@ async function scrapeTeam(team_id, dry = false) {
                 short_name: team.tag,
                 last_scraped: new Date(),
                 applications_open: team.info.team_application,
+                url: team.info.url,
+                header_url: team.header,
             }, { where: { id: team_id } });
 
             //original team member ids
@@ -446,6 +448,13 @@ async function scrapeTeam(team_id, dry = false) {
                         });
                     }
                 }));
+            }else{
+                //print out team except for members
+                console.table({
+                    id: team_id,
+                    tag: team.tag,
+                    header: team.header,
+                })
             }
         }
         console.log(`[TEAM STATS] Scraped team ${team_id}`);
@@ -473,6 +482,7 @@ function processTeamPage(text) {
     const doc = parser.parseFromString(text, 'text/html');
     const tag = findTeamTag(doc);
     const team_info = findTeamInfo(doc);
+    const header = findTeamHeader(doc);
     let users = findTeamMembers(doc);
 
     //set is_leader to true for the team leader, nothing else
@@ -486,6 +496,7 @@ function processTeamPage(text) {
 
     const team = {
         tag: tag,
+        header: header,
         info: team_info,
         members: users,
     }
@@ -497,13 +508,28 @@ function processTeamPage(text) {
 
 function findTeamTag(doc) {
     const flag_element = doc.getElementsByClassName('profile-info__flag')[0];
-    const tag = flag_element.textContent.trim();
+    let tag = flag_element.textContent.trim();
+
+    //remove the brackets
+    tag = tag.replace(/[\[\]]/g, '');
     return tag;
+}
+
+function findTeamHeader(doc){
+    //class profile-info__bg profile-info__bg--team, the background-image
+    const bg_element = doc.getElementsByClassName('profile-info__bg profile-info__bg--team')[0];
+    const url = bg_element.getAttribute('style');
+    //extract the url
+    let header_url = url.split('url(')[1].split(')')[0];
+    //remove the quotes ' and "
+    header_url = header_url.replace(/['"]/g, '');
+    return header_url.trim();
 }
 
 const INFO_DATA = {
     "team_application": "bool",
     "team_leader": "user",
+    "url": "url",
 };
 
 function findTeamInfo(doc) {
@@ -534,6 +560,10 @@ function findTeamInfo(doc) {
                 let elmt = value_element.getElementsByTagName('a')[0];
                 let user_id = elmt.getAttribute('data-user-id');
                 info_data[title] = parseInt(user_id);
+                break;
+            case "url":
+                let url = value_element.getElementsByTagName('a')[0].getAttribute('href');
+                info_data[title] = url;
                 break;
         }
     }
