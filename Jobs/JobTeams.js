@@ -2,6 +2,7 @@ const { Sequelize } = require("sequelize");
 const { InspectorOsuUser, InspectorTeam, InspectorTeamRuleset, InspectorTeamMember, InspectorTeamUser } = require("../db");
 const { GetOsuUsers, MODE_SLUGS } = require("../Osu");
 const { DOMParser } = require("@xmldom/xmldom");
+const { Jimp, cssColorToHex } = require("jimp");
 
 const cacher = {
     func: UpdateTeams,
@@ -361,7 +362,7 @@ async function UpdateTeamsDetailed() {
                     break;
                 }
 
-                await scrapeTeam(team.id);
+                await scrapeTeam(team.id, team.flag_url);
                 await new Promise(r => setTimeout(r, PAGE_INTERVAL * 1.5));
             }
         } catch (err) {
@@ -373,7 +374,7 @@ async function UpdateTeamsDetailed() {
     }
 }
 
-async function scrapeTeam(team_id, dry = false) {
+async function scrapeTeam(team_id, flag_url, dry = false) {
     try {
         const _url = team_url.replace('{team_id}', team_id);
         const res = await fetch(_url, {
@@ -386,20 +387,24 @@ async function scrapeTeam(team_id, dry = false) {
             throw new Error(`Failed to fetch team ${team_id} with status ${res.status}`);
         }
 
-        const team = processTeamPage(text);
+        const team = await processTeamPage(text, flag_url);
 
         if (team.tag !== null) {
             //assume success, update or insert
 
             //first update the team itself
             //it MUST exist, since we are running the scrape based on existing team data
-            await InspectorTeam.update({
-                short_name: team.tag,
-                last_scraped: new Date(),
-                applications_open: team.info.team_application,
-                url: team.info.url,
-                header_url: team.header,
-            }, { where: { id: team_id } });
+            if (!dry) {
+                await InspectorTeam.update({
+                    short_name: team.tag,
+                    last_scraped: new Date(),
+                    applications_open: team.info.team_application,
+                    url: team.info.url,
+                    header_url: team.header,
+                    //only update color if it is not null, otherwise we keep the old color
+                    color: team.color || null,
+                }, { where: { id: team_id } });
+            }
 
             //original team member ids
             const original_members = await InspectorTeamMember.findAll({
@@ -419,7 +424,7 @@ async function scrapeTeam(team_id, dry = false) {
                         });
                     }
                 }));
-            }else{
+            } else {
                 //count how many members are not in the new list
                 let count = 0;
                 original_members.map(member => {
@@ -448,12 +453,13 @@ async function scrapeTeam(team_id, dry = false) {
                         });
                     }
                 }));
-            }else{
+            } else {
                 //print out team except for members
                 console.table({
                     id: team_id,
                     tag: team.tag,
                     header: team.header,
+                    color: team.color,
                 })
             }
         }
@@ -477,12 +483,13 @@ async function scrapeTeam(team_id, dry = false) {
 
 //dont care for mode, since we will track stats for all modes regardless
 //this is to get the tag and the full member list
-function processTeamPage(text) {
+async function processTeamPage(text, flag_url) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(text, 'text/html');
     const tag = findTeamTag(doc);
     const team_info = findTeamInfo(doc);
     const header = findTeamHeader(doc);
+    const color = await getTeamColor(flag_url);
     let users = findTeamMembers(doc);
 
     //set is_leader to true for the team leader, nothing else
@@ -498,12 +505,54 @@ function processTeamPage(text) {
         tag: tag,
         header: header,
         info: team_info,
+        color: color,
         members: users,
     }
 
     // console.log(team);
 
     return team;
+}
+
+async function getTeamColor(flag_url) {
+    //get the dominant color of the flag
+    if (!flag_url) {
+        return null;
+    }
+
+    try {
+        //download the image
+        const image = await Jimp.read(flag_url);
+        const width = image.bitmap.width;
+        const height = image.bitmap.height;
+        const pixelCount = width * height;
+
+        let totalRed = 0;
+        let totalGreen = 0;
+        let totalBlue = 0;
+
+        image.scan(0, 0, width, height, (x, y, idx) => {
+            totalRed += image.bitmap.data[idx];
+            totalGreen += image.bitmap.data[idx + 1];
+            totalBlue += image.bitmap.data[idx + 2];
+        });
+
+        const avgRed = Math.round(totalRed / pixelCount);
+        const avgGreen = Math.round(totalGreen / pixelCount);
+        const avgBlue = Math.round(totalBlue / pixelCount);
+
+        const toHex = (value) => {
+            const hex = value.toString(16);
+            return hex.length === 1 ? '0' + hex : hex;
+        };
+
+        const hex = `#${toHex(avgRed)}${toHex(avgGreen)}${toHex(avgBlue)}`;
+        return hex;
+    } catch (err) {
+        console.error(err);
+        console.warn(`[TEAM STATS] Failed to get color for flag ${flag_url}`);
+        return null;
+    }
 }
 
 function findTeamTag(doc) {
@@ -515,11 +564,11 @@ function findTeamTag(doc) {
     return tag;
 }
 
-function findTeamHeader(doc){
+function findTeamHeader(doc) {
     //class profile-info__bg profile-info__bg--team, the background-image
     const bg_element = doc.getElementsByClassName('profile-info__bg profile-info__bg--team')[0];
     const url = bg_element.getAttribute('style');
-    if(!url){
+    if (!url) {
         return null;
     }
     //extract the url

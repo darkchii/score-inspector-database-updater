@@ -12,6 +12,7 @@ const OsuTeamModel = (db) => db.define('OsuTeam', {
     applications_open: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false },
     header_url: { type: Sequelize.STRING, allowNull: true, },
     url: { type: Sequelize.STRING, allowNull: true, },
+    color: { type: Sequelize.STRING, allowNull: true, },
 }, {
     tableName: 'osu_teams',
     timestamps: false
