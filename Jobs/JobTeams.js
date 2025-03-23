@@ -528,7 +528,7 @@ async function getTeamColor(flag_url) {
             let hex = num.toString(16);
             return hex.length === 1 ? `0${hex}` : hex;
         }
-        const hex = `#${toHex(palette.Vibrant.rgb[0])}${toHex(palette.Vibrant.rgb[1])}${toHex(palette.Vibrant.rgb[2])}`;
+        const hex = `#${toHex(Math.round(palette.LightVibrant.rgb[0]))}${toHex(Math.round(palette.LightVibrant.rgb[1]))}${toHex(Math.round(palette.LightVibrant.rgb[2]))}`;
         return hex;
     } catch (err) {
         console.error(err);
