@@ -2,7 +2,7 @@ const { Sequelize } = require("sequelize");
 const { InspectorOsuUser, InspectorTeam, InspectorTeamRuleset, InspectorTeamMember, InspectorTeamUser } = require("../db");
 const { GetOsuUsers, MODE_SLUGS } = require("../Osu");
 const { DOMParser } = require("@xmldom/xmldom");
-const { Jimp, cssColorToHex } = require("jimp");
+const { Jimp } = require("jimp");
 
 const cacher = {
     func: UpdateTeams,
@@ -530,16 +530,23 @@ async function getTeamColor(flag_url) {
         let totalRed = 0;
         let totalGreen = 0;
         let totalBlue = 0;
+        let totalAlphaCount = 0;
 
         image.scan(0, 0, width, height, (x, y, idx) => {
+            if(image.bitmap.data[idx + 3] < 100) {
+                totalAlphaCount += 1;
+                return;
+            }
             totalRed += image.bitmap.data[idx];
             totalGreen += image.bitmap.data[idx + 1];
             totalBlue += image.bitmap.data[idx + 2];
         });
 
-        const avgRed = Math.round(totalRed / pixelCount);
-        const avgGreen = Math.round(totalGreen / pixelCount);
-        const avgBlue = Math.round(totalBlue / pixelCount);
+        const pixelCountWithoutAlpha = pixelCount - totalAlphaCount;
+
+        const avgRed = pixelCountWithoutAlpha > 0 ? Math.round(totalRed / pixelCountWithoutAlpha) : 0;
+        const avgGreen = pixelCountWithoutAlpha > 0 ? Math.round(totalGreen / pixelCountWithoutAlpha) : 0;
+        const avgBlue = pixelCountWithoutAlpha > 0 ? Math.round(totaltotalBlueRed / pixelCountWithoutAlpha) : 0;
 
         const toHex = (value) => {
             const hex = value.toString(16);
