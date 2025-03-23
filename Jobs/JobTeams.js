@@ -19,6 +19,9 @@ let IS_GENERAL_UPDATE_RUNNING = false;
 module.exports = cacher;
 
 async function UpdateTeams() {
+    //otherwise this runs at any restart immediately and pauses the scraper
+    //this prevents us from checking if the scraper runs correctly
+    await new Promise(r => setTimeout(r, OVERALL_WAIT));
     IS_GENERAL_UPDATE_RUNNING = true;
 
     try {
@@ -124,8 +127,6 @@ async function UpdateTeams() {
     IS_GENERAL_UPDATE_RUNNING = false;
 
     console.log(`[TEAM STATS] Finished updating general team listing`);
-
-    await new Promise(r => setTimeout(r, OVERALL_WAIT));
 }
 
 const USER_UPDATE_LIMIT = 200;
@@ -402,7 +403,7 @@ async function scrapeTeam(team_id, flag_url, dry = false) {
                     url: team.info.url,
                     header_url: team.header,
                     //only update color if it is not null, otherwise we keep the old color
-                    color: team.color || null,
+                    ...(team.color ? { color: team.color } : {}),
                 }, { where: { id: team_id } });
             }
 
