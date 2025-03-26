@@ -339,18 +339,29 @@ async function UpdateTeamsDetailed() {
                 continue;
             }
 
-            const teams = await InspectorTeam.findAll({
+            let teams = await InspectorTeam.findAll({
                 where: {
                     last_scraped: {
                         [Sequelize.Op.or]: {
                             [Sequelize.Op.eq]: null,
-                            [Sequelize.Op.lt]: new Date(new Date() - 12 * 60 * 60 * 1000),
                         }
                     },
                     deleted: false,
                 },
                 limit: 50
             });
+
+            if(teams.length === 0) {
+                teams = await InspectorTeam.findAll({
+                    where: {
+                        last_scraped: {
+                            [Sequelize.Op.lt]: new Date(new Date() - 12 * 60 * 60 * 1000),
+                        },
+                        deleted: false,
+                    },
+                    limit: 50
+                });
+            }
 
             if (teams.length === 0) {
                 console.log(`[TEAM STATS] No teams to scrape, waiting ...`);
@@ -536,6 +547,8 @@ async function getTeamColor(flag_url) {
         return null;
     }
 }
+
+getTeamColor('https://assets.ppy.sh/teams/flag/150/40d7bef3e9b2d92050eeb17adfa9bb0807d0ccbbb1056b2293472a43570e0092.jpeg')
 
 function findTeamTag(doc) {
     const flag_element = doc.getElementsByClassName('profile-info__flag')[0];
