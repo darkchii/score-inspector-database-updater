@@ -1,6 +1,7 @@
 const { Databases } = require("../db")
 
 async function BulkProcessStars(amount = 250) {
+    console.log(`[BULK PROCESS STARS] Looking for maximum ${amount} scores to process ...`);
     const scores = await Databases.osuAlt.query(`
         SELECT * FROM scoresmods
         WHERE 
@@ -12,6 +13,7 @@ async function BulkProcessStars(amount = 250) {
         `);
 
     if (scores[0].length === 0) {
+        console.log(`[BULK PROCESS STARS] No scores to process`);
         await new Promise(r => setTimeout(r, 10000));
         return;
     }
@@ -54,7 +56,7 @@ async function BulkProcessStars(amount = 250) {
                         max_combo,
                         slider_factor } = rating;
 
-                        const query = `
+                    const query = `
                         UPDATE scoresmods
                         SET star_rating = ${star_rating},
                         aim_difficulty = ${aim_difficulty},
