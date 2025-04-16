@@ -673,10 +673,11 @@ function processTeamLeaderboardPage(text, mode) {
         for (const [key, index] of Object.entries(TEAM_TABLE_INDICES)) {
             let cell = cells[index];
             if (key === 'name') {
-                let name_element = cell.getElementsByTagName('a')[1];
+                let full_name_element = cell.getElementsByTagName('a')[0];
+                let name_element = full_name_element.getElementsByClassName('ranking-page-table-main__link-text')[0];
                 let name = name_element.textContent;
                 name = name.trim();
-                let href = name_element.getAttribute('href');
+                let href = full_name_element.getAttribute('href');
                 //the id is always after /teams/, there may be other data after it
                 let id = href.split('/teams/')[1].split('/')[0];
                 team.id = Number(id);
