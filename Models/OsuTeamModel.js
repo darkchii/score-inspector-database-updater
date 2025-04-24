@@ -13,6 +13,7 @@ const OsuTeamModel = (db) => db.define('OsuTeam', {
     header_url: { type: Sequelize.STRING, allowNull: true, },
     url: { type: Sequelize.STRING, allowNull: true, },
     color: { type: Sequelize.STRING, allowNull: true, },
+    created_at: { type: Sequelize.DATE, allowNull: true },
 }, {
     tableName: 'osu_teams',
     timestamps: false

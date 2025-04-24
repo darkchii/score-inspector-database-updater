@@ -413,6 +413,7 @@ async function scrapeTeam(team_id, flag_url, dry = false) {
                     applications_open: team.info.team_application,
                     url: team.info.url,
                     header_url: team.header,
+                    created_at: team.info.formed,
                     //only update color if it is not null, otherwise we keep the old color
                     ...(team.color ? { color: team.color } : {}),
                 }, { where: { id: team_id } });
@@ -548,8 +549,6 @@ async function getTeamColor(flag_url) {
     }
 }
 
-getTeamColor('https://assets.ppy.sh/teams/flag/150/40d7bef3e9b2d92050eeb17adfa9bb0807d0ccbbb1056b2293472a43570e0092.jpeg')
-
 function findTeamTag(doc) {
     const flag_element = doc.getElementsByClassName('profile-info__flag')[0];
     let tag = flag_element.textContent.trim();
@@ -577,6 +576,7 @@ const INFO_DATA = {
     "team_application": "bool",
     "team_leader": "user",
     "url": "url",
+    "formed": "tooltip_date"
 };
 
 function findTeamInfo(doc) {
@@ -612,6 +612,14 @@ function findTeamInfo(doc) {
                 let url = value_element.getElementsByTagName('a')[0].getAttribute('href');
                 info_data[title] = url;
                 break;
+            case "tooltip_date":
+                let time_element = value_element.getElementsByTagName('time')[0];
+                if (time_element) {
+                    let date = time_element.getAttribute('title');
+                    info_data[title] = new Date(date);
+                } else {
+                    info_data[title] = null;
+                }
         }
     }
 
