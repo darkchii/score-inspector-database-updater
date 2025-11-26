@@ -474,6 +474,8 @@ async function scrapeTeam(team_id, flag_url, dry = false) {
                     header: team.header,
                     color: team.color,
                 })
+
+                console.table(team.members);
             }
         }
         console.log(`[TEAM STATS] Scraped team ${team_id}`);
@@ -631,10 +633,12 @@ function findTeamMembers(doc) {
     const members_element = doc.getElementsByClassName('team-members')[0];
 
     //find all elements with class "js-react--user-card"
-    const user_elements = members_element.getElementsByClassName('js-react--user-card');
+    const user_elements = members_element.getElementsByClassName('js-react u-contents');
+    //filter to elements with data-react = "user-card"
+    const filtered_user_elements = Array.from(user_elements).filter(element => element.getAttribute('data-react') === 'user-card');
 
     //get the data-user attribute from each element
-    const user_data_set = Array.from(user_elements).map(element => element.getAttribute('data-user'));
+    const user_data_set = Array.from(filtered_user_elements).map(element => element.getAttribute('data-user'));
     let users = user_data_set.map(user => JSON.parse(user));
 
     //filter out where id is null
