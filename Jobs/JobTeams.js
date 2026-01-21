@@ -18,7 +18,7 @@ let IS_GENERAL_UPDATE_RUNNING = false;
 
 module.exports = cacher;
 
-async function UpdateTeams() {
+async function UpdateTeams(dry = false) {
     //otherwise this runs at any restart immediately and pauses the scraper
     //this prevents us from checking if the scraper runs correctly
     await new Promise(r => setTimeout(r, OVERALL_WAIT));
@@ -50,47 +50,49 @@ async function UpdateTeams() {
                     const teams = processTeamLeaderboardPage(text, mode);
 
                     if (teams.length > 0) {
-                        await Promise.all(teams.map(async team => {
-                            //update or insert
-                            if (await InspectorTeam.findOne({ where: { id: team.id } })) {
-                                await InspectorTeam.update({
-                                    name: team.name,
-                                    flag_url: team.flag_url,
-                                    members: team.members,
-                                    last_updated: team.last_updated,
-                                    deleted: false,
-                                }, { where: { id: team.id } });
-                            } else {
-                                await InspectorTeam.create({
-                                    id: team.id,
-                                    name: team.name,
-                                    flag_url: team.flag_url,
-                                    members: team.members,
-                                    last_updated: team.last_updated,
-                                    deleted: false,
-                                });
-                            }
+                        if (!dry) {
+                            await Promise.all(teams.map(async team => {
+                                //update or insert
+                                if (await InspectorTeam.findOne({ where: { id: team.id } })) {
+                                    await InspectorTeam.update({
+                                        name: team.name,
+                                        flag_url: team.flag_url,
+                                        members: team.members,
+                                        last_updated: team.last_updated,
+                                        deleted: false,
+                                    }, { where: { id: team.id } });
+                                } else {
+                                    await InspectorTeam.create({
+                                        id: team.id,
+                                        name: team.name,
+                                        flag_url: team.flag_url,
+                                        members: team.members,
+                                        last_updated: team.last_updated,
+                                        deleted: false,
+                                    });
+                                }
 
-                            if (await InspectorTeamRuleset.findOne({ where: { id: team.id, mode: team.mode_int } })) {
-                                await InspectorTeamRuleset.update({
-                                    play_count: team.play_count,
-                                    ranked_score: team.ranked_score,
-                                    average_score: team.average_score,
-                                    performance: team.performance,
-                                    deleted: false,
-                                }, { where: { id: team.id, mode: team.mode_int } });
-                            } else {
-                                await InspectorTeamRuleset.create({
-                                    id: team.id,
-                                    mode: team.mode_int,
-                                    play_count: team.play_count,
-                                    ranked_score: team.ranked_score,
-                                    average_score: team.average_score,
-                                    performance: team.performance,
-                                    deleted: false,
-                                });
-                            }
-                        }));
+                                if (await InspectorTeamRuleset.findOne({ where: { id: team.id, mode: team.mode_int } })) {
+                                    await InspectorTeamRuleset.update({
+                                        play_count: team.play_count,
+                                        ranked_score: team.ranked_score,
+                                        average_score: team.average_score,
+                                        performance: team.performance,
+                                        deleted: false,
+                                    }, { where: { id: team.id, mode: team.mode_int } });
+                                } else {
+                                    await InspectorTeamRuleset.create({
+                                        id: team.id,
+                                        mode: team.mode_int,
+                                        play_count: team.play_count,
+                                        ranked_score: team.ranked_score,
+                                        average_score: team.average_score,
+                                        performance: team.performance,
+                                        deleted: false,
+                                    });
+                                }
+                            }));
+                        }
                     }
 
                     console.log(`[TEAM STATS] Updated ${mode} teams page ${page}`);
@@ -110,15 +112,17 @@ async function UpdateTeams() {
             }
         }
 
-        await InspectorTeam.update({
-            deleted: true,
-        }, {
-            where: {
-                last_updated: {
-                    [Sequelize.Op.lt]: start_time
+        if (!dry) {
+            await InspectorTeam.update({
+                deleted: true,
+            }, {
+                where: {
+                    last_updated: {
+                        [Sequelize.Op.lt]: start_time
+                    }
                 }
-            }
-        });
+            });
+        }
     } catch (err) {
         console.error(err);
         console.log(`[TEAM STATS] Error updating teams, skipping ...`);
@@ -131,7 +135,7 @@ async function UpdateTeams() {
 
 const USER_UPDATE_LIMIT = 200;
 const TEAM_STAT_UPDATE_INTERVAL = 10; //every 10 user fetches, we update team stats
-async function UpdateTeamMembers() {
+async function UpdateTeamMembers(dry = false) {
     let fetch_count = 0;
     while (true) {
         if (fetch_count >= TEAM_STAT_UPDATE_INTERVAL) {
@@ -206,8 +210,10 @@ async function UpdateTeamMembers() {
                 }
 
                 //save the rulesets
-                for await (const ruleset of Object.values(rulesets)) {
-                    ruleset.save();
+                if (!dry) {
+                    for await (const ruleset of Object.values(rulesets)) {
+                        ruleset.save();
+                    }
                 }
             }
             console.log(`[TEAM STATS] Updated ${teams.length} team stats`);
@@ -286,35 +292,37 @@ async function UpdateTeamMembers() {
             }
 
             // console.log(user_objects);
-            await Promise.all(user_objects.map(async user => {
-                if (await InspectorTeamUser.findOne({ where: { id: user.id, mode: user.mode } })) {
-                    await InspectorTeamUser.update({
-                        username: user.username,
-                        last_updated: user.last_updated,
-                        count_300: user.count_300,
-                        count_100: user.count_100,
-                        count_50: user.count_50,
-                        count_miss: user.count_miss,
-                        play_count: user.play_count,
-                        ranked_score: user.ranked_score,
-                        total_score: user.total_score,
-                        pp: user.pp,
-                        global_rank: user.global_rank,
-                        hit_accuracy: user.hit_accuracy,
-                        play_time: user.play_time,
-                        total_hits: user.total_hits,
-                        maximum_combo: user.maximum_combo,
-                        replays_watched: user.replays_watched,
-                        count_ssh: user.count_ssh,
-                        count_ss: user.count_ss,
-                        count_sh: user.count_sh,
-                        count_s: user.count_s,
-                        count_a: user.count_a
-                    }, { where: { id: user.id, mode: user.mode } });
-                } else {
-                    await InspectorTeamUser.create(user);
-                }
-            }));
+            if (!dry) {
+                await Promise.all(user_objects.map(async user => {
+                    if (await InspectorTeamUser.findOne({ where: { id: user.id, mode: user.mode } })) {
+                        await InspectorTeamUser.update({
+                            username: user.username,
+                            last_updated: user.last_updated,
+                            count_300: user.count_300,
+                            count_100: user.count_100,
+                            count_50: user.count_50,
+                            count_miss: user.count_miss,
+                            play_count: user.play_count,
+                            ranked_score: user.ranked_score,
+                            total_score: user.total_score,
+                            pp: user.pp,
+                            global_rank: user.global_rank,
+                            hit_accuracy: user.hit_accuracy,
+                            play_time: user.play_time,
+                            total_hits: user.total_hits,
+                            maximum_combo: user.maximum_combo,
+                            replays_watched: user.replays_watched,
+                            count_ssh: user.count_ssh,
+                            count_ss: user.count_ss,
+                            count_sh: user.count_sh,
+                            count_s: user.count_s,
+                            count_a: user.count_a
+                        }, { where: { id: user.id, mode: user.mode } });
+                    } else {
+                        await InspectorTeamUser.create(user);
+                    }
+                }));
+            }
 
             console.log(`[TEAM STATS] Updated ${user_objects.length} team user objects (${user_ids.length} users)`);
         } catch (err) {
@@ -327,7 +335,7 @@ async function UpdateTeamMembers() {
     }
 }
 
-async function UpdateTeamsDetailed() {
+async function UpdateTeamsDetailed(dry = false) {
     //instead of doing this after the general update, we want to do this separately
     //this is because this is a slow process and we dont want to spam the server
 
@@ -351,7 +359,7 @@ async function UpdateTeamsDetailed() {
                 limit: 50
             });
 
-            if(teams.length === 0) {
+            if (teams.length === 0) {
                 teams = await InspectorTeam.findAll({
                     where: {
                         last_scraped: {
@@ -374,7 +382,7 @@ async function UpdateTeamsDetailed() {
                     break;
                 }
 
-                await scrapeTeam(team.id, team.flag_url);
+                await scrapeTeam(team.id, team.flag_url, dry);
                 await new Promise(r => setTimeout(r, PAGE_INTERVAL * 1.5));
             }
         } catch (err) {
@@ -686,7 +694,7 @@ function processTeamLeaderboardPage(text, mode) {
             let cell = cells[index];
             if (key === 'name') {
                 let full_name_element = cell.getElementsByTagName('a')[0];
-                let name_element = full_name_element.getElementsByClassName('ranking-page-table-main__link-text')[0];
+                let name_element = full_name_element.getElementsByClassName('u-ellipsis-overflow')[0];
                 let name = name_element.textContent;
                 name = name.trim();
                 let href = full_name_element.getAttribute('href');
@@ -738,10 +746,10 @@ function isLastPage(text) {
     return Boolean(next);
 }
 
-async function Loop() {
+async function Loop(dry = false) {
     while (true) {
         try {
-            await UpdateTeams();
+            await UpdateTeams(dry);
         } catch (err) {
             console.error(err);
             //sleep for 1 minute to prevent spamming
@@ -754,4 +762,10 @@ if (process.env.NODE_ENV === 'production') {
     Loop();
     UpdateTeamsDetailed();
     UpdateTeamMembers();
+} else {
+    // UpdateTeams();
+    // Loop(true);
+    // UpdateTeamsDetailed(true);
+    // UpdateTeamMembers(true);
+    // scrapeTeam(35565, 'https://assets.ppy.sh/teams/flag/5460/76a80469afa36acbcab3f92bea7424ab32cad45baa0ba8189278fd2393f8da98.png');
 }
