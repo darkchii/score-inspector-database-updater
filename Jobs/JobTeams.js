@@ -19,6 +19,10 @@ let IS_GENERAL_UPDATE_RUNNING = false;
 module.exports = cacher;
 
 async function UpdateTeams(dry = false) {
+    console.log(`[TEAM STATS] Starting team totals update ...`);
+    UpdateTeamTotals(dry);
+
+    console.log(`[TEAM STATS] Starting general team listing update ...`);
     //otherwise this runs at any restart immediately and pauses the scraper
     //this prevents us from checking if the scraper runs correctly
     await new Promise(r => setTimeout(r, OVERALL_WAIT));
@@ -131,6 +135,68 @@ async function UpdateTeams(dry = false) {
     IS_GENERAL_UPDATE_RUNNING = false;
 
     console.log(`[TEAM STATS] Finished updating general team listing`);
+}
+
+async function UpdateTeamTotals(dry = false) {
+    //Makes a fictional mode '4', which is basically the sum of all modes
+    const teams = await InspectorTeam.findAll({
+        where: {
+            deleted: false,
+        },
+        limit: !dry ? null : 5, //if dry run, limit to 5 for testing
+    });
+
+    for await (const team of teams) {
+        let _rulesets = await InspectorTeamRuleset.findAll({ where: { id: team.id } });
+        if(_rulesets.length === 0) {
+            continue;
+        }
+
+        let _total_data = {
+            play_count: 0,
+            ranked_score: 0,
+            average_score: 0,
+            performance: 0,
+            clears: 0,
+            total_ss: 0,
+            total_s: 0,
+            total_a: 0,
+            total_score: 0,
+            play_time: 0,
+            total_hits: 0,
+            replays_watched: 0
+        }
+
+        for await (const ruleset of _rulesets) {
+            _total_data.play_count += ruleset.play_count || 0;
+            _total_data.ranked_score += ruleset.ranked_score || 0;
+            _total_data.average_score += ruleset.average_score || 0;
+            _total_data.performance += ruleset.performance || 0;
+            _total_data.clears += ruleset.clears || 0;
+            _total_data.total_ss += ruleset.total_ss || 0;
+            _total_data.total_s += ruleset.total_s || 0;
+            _total_data.total_a += ruleset.total_a || 0;
+            _total_data.total_score += ruleset.total_score || 0;
+            _total_data.play_time += ruleset.play_time || 0;
+            _total_data.total_hits += ruleset.total_hits || 0;
+            _total_data.replays_watched += ruleset.replays_watched || 0;
+        }
+
+        if(!dry) {
+            if(await InspectorTeamRuleset.findOne({ where: { id: team.id, mode: 4 } })) {
+                await InspectorTeamRuleset.update(_total_data, { where: { id: team.id, mode: 4 } });
+            }else{
+                await InspectorTeamRuleset.create({
+                    id: team.id,
+                    mode: 4,
+                    ..._total_data
+                });
+            }
+            console.log(`[TEAM STATS] Team ${team.id} total data updated.`);
+        }else{
+            console.log(`[TEAM STATS DRY] Team ${team.id} total data:`, _total_data);
+        }
+    }
 }
 
 const USER_UPDATE_LIMIT = 200;
@@ -763,6 +829,7 @@ if (process.env.NODE_ENV === 'production') {
     UpdateTeamsDetailed();
     UpdateTeamMembers();
 } else {
+    // UpdateTeamTotals();
     // UpdateTeams();
     // Loop(true);
     // UpdateTeamsDetailed(true);
