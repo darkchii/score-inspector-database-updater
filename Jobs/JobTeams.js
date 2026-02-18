@@ -147,7 +147,7 @@ async function UpdateTeamTotals(dry = false) {
     });
 
     for await (const team of teams) {
-        let _rulesets = await InspectorTeamRuleset.findAll({ where: { id: team.id } });
+        let _rulesets = await InspectorTeamRuleset.findAll({ where: { id: team.id, mode: { [Sequelize.Op.lt]: 4 } } });
         if(_rulesets.length === 0) {
             continue;
         }
@@ -830,8 +830,8 @@ if (process.env.NODE_ENV === 'production') {
     UpdateTeamsDetailed();
     UpdateTeamMembers();
 } else {
-    // UpdateTeamTotals();
-    // UpdateTeams();
+    // UpdateTeamTotals(true);
+    // UpdateTeams(true);
     // Loop(true);
     // UpdateTeamsDetailed(true);
     // UpdateTeamMembers(true);
