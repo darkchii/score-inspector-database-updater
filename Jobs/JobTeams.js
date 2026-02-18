@@ -657,7 +657,8 @@ const INFO_DATA = {
 
 function findTeamInfo(doc) {
     //find all team info entries (class "team-info-entry")
-    const info_elements = doc.getElementsByClassName('team-info-entry');
+    const info_element_containers = doc.getElementsByClassName('team-info-entries');
+    const info_elements = info_element_containers[0].getElementsByClassName('team-info-entry');
 
     //info_data key will be content of child element with class "team-info-entry__title"
     //value will be content of child element with class "team-info-entry__value"
@@ -834,5 +835,5 @@ if (process.env.NODE_ENV === 'production') {
     // Loop(true);
     // UpdateTeamsDetailed(true);
     // UpdateTeamMembers(true);
-    // scrapeTeam(35565, 'https://assets.ppy.sh/teams/flag/5460/76a80469afa36acbcab3f92bea7424ab32cad45baa0ba8189278fd2393f8da98.png');
+    // scrapeTeam(970, 'https://assets.ppy.sh/teams/flag/5460/76a80469afa36acbcab3f92bea7424ab32cad45baa0ba8189278fd2393f8da98.png', true)
 }
